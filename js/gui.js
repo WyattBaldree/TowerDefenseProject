@@ -91,11 +91,15 @@ function makeLevelGUI(){
 	restartLevelButton = new Button(0, 0, 60, 30, 5, 5, 5, 5, 1);
 	restartLevelButton.setInTexture(Art.blueButtonIn);
 	restartLevelButton.setOutTexture(Art.blueButtonOut);
+	restartLevelButton.text = "Restart";
+	restartLevelButton.fontSize = 15;
 	restartLevelButton.onClickFunction = function(){ startLevel() }
 
 	returnToMainMenuButton = new Button(90, 0, 60, 30, 5, 5, 5, 5, 1);
 	returnToMainMenuButton.setInTexture(Art.blueButtonIn);
 	returnToMainMenuButton.setOutTexture(Art.blueButtonOut);
+	returnToMainMenuButton.text = "Main";
+	returnToMainMenuButton.fontSize = 15;
 	returnToMainMenuButton.onClickFunction = function(){ setGameState(0) }
 }
 
