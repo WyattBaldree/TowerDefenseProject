@@ -60,7 +60,7 @@ function draw() {
 	updateStep();
 	cleanUp();
 	drawStep();
-	debugCoordinates();
+	//debugCoordinates();
 }
 
 // Update the game state in this loop.
@@ -92,7 +92,7 @@ function updateStep(){
 
 // Draw everything in the game here.
 function drawStep(){
-
+	//rotate(0);
 	stroke(color('black'));
 	fill(color('lightBlue'));
 	
@@ -184,14 +184,17 @@ function setGameState(state){
 		case 0:
 			endLevel();
 			openMainMenu();
+			gameState = 0;
 			break;
 		case 1:
 			endLevel();
 			openLevelSelectMenu();
+			gameState = 1;
 			break;
 		case 2:
 			startLevel();
 			openLeveLGUI();
+			gameState = 2;
 			break;
 	}
 }
@@ -268,10 +271,16 @@ function spawn(_enemyID, _pathID){
 	let startPathY = Path.getY(_pathID,0);
 	switch(_enemyID) {
 		case 0:
-		    new Enemy(startPathX,startPathY,_pathID)
+		    new RegularEnemy(startPathX,startPathY,_pathID)
 		    break;
 		case 1:
 		    new ArmoredEnemy(startPathX,startPathY,_pathID)
+			break;
+		case 2:
+		    new FastEnemy(startPathX,startPathY,_pathID)
+			break;
+		case 3:
+		    new UntargetableEnemy(startPathX,startPathY,_pathID)
 			break;
 		default:
 		    // code block
@@ -289,7 +298,7 @@ function debugCoordinates(){
 
 		for( let j = 0 ; j < playAreaGridHeight ; j++){
 			let coordinate = i + "," + j;
-			text( coordinate , i*gridScale + gridScale/4 , j*gridScale + gridScale/2);
+			text( coordinate , i*gridScale + gridScale/2 , j*gridScale + gridScale/2);
 		}
 	}	
 

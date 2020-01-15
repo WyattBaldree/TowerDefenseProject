@@ -3,8 +3,9 @@ class Timeline{
 	static currentSpawn = 0;
 
 	static advanceTimeline(){
+		Timeline.levelTimer++;
 		if (Timeline.currentSpawn < Timeline.totalSpawns()){
-			Timeline.levelTimer++;
+			
 			while (Timeline.levelTimer > Timeline.time(Timeline.currentSpawn)){
 				spawn(Timeline.enemyID(Timeline.currentSpawn), Timeline.pathID(Timeline.currentSpawn));
 				Timeline.currentSpawn++

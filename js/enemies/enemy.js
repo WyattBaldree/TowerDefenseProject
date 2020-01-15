@@ -3,7 +3,7 @@ var enemyList = new Array(); // holds all enemy objects.
 class Enemy extends Unit{
 	constructor(x,y,pathID){
 		super(x,y);
-		this.health = 10;
+		this.health = 100;
 		this.armor = 0;
 		this.speed = 2;
 		this.damage = 1;
@@ -11,13 +11,17 @@ class Enemy extends Unit{
 		this.moneyValue = 10;
 		this.currentIndex = 0;
 		this.untargetable = false;
+		this.angle = 0;
 		enemyList.push(this);
 
 		this.debug = color('green');
 	}
 
 	drawSelf(){
-		super.drawSelf();
+		strokeWeight(1);
+		stroke(color('black'));
+		fill(color('blue'));
+		ellipse(this.x + gridScale/2, this.y + gridScale/2, gridScale)
 	}
 
 	update(){
@@ -81,6 +85,7 @@ class Enemy extends Unit{
 			let vJ = deltaY/distance
 			let velocityX = vI * finalSpeed;
 			let velocityY = vJ * finalSpeed;
+			this.angle = Math.atan2(velocityY, velocityX) * 180 / Math.PI;
 
 			console.log(distance)
 			console.log(velocityX)

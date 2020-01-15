@@ -7,5 +7,10 @@ class Art{
 		Art.blueButton2Out = loadImage('img/blue_button09.png');
 		Art.blueButton2In = loadImage('img/blue_button10.png');
 		Art.grayBackground = loadImage('img/grey_panel.png');
+		Art.greenSoldier = loadImage('img/tower-defense-top-down/PNG/Default size/towerDefense_tile245.png');
+		Art.graySoldier = loadImage('img/tower-defense-top-down/PNG/Default size/towerDefense_tile246.png');
+		Art.brownSoldier = loadImage('img/tower-defense-top-down/PNG/Default size/towerDefense_tile247.png');
+		Art.zombieSoldier = loadImage('img/tower-defense-top-down/PNG/Default size/towerDefense_tile248.png');
+
 	}
 }
