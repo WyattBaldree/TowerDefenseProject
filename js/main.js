@@ -6,7 +6,7 @@ var playAreaHeight = 540;
 var playAreaGridWidth = playAreaWidth/gridScale;
 var playAreaGridHeight = playAreaHeight/gridScale;
 
-var FPS = 60;
+var FPS = 60 ;
 
 
 var currentLevel;
