@@ -85,9 +85,11 @@ function closeLevelSelectMenu(){
 ////////////////////////////// LEVEL GUI (main game gui)
 
 let restartLevelButton;
-let returnToMainMenuButton
+let returnToMainMenuButton;
+let towerSelectionBackground;
+let arrowTowerButton;
+let beamTowerButton;
 function makeLevelGUI(){
-
 	restartLevelButton = new Button(0, 0, 60, 30, 5, 5, 5, 5, 1);
 	restartLevelButton.setInTexture(Art.blueButtonIn);
 	restartLevelButton.setOutTexture(Art.blueButtonOut);
@@ -101,16 +103,38 @@ function makeLevelGUI(){
 	returnToMainMenuButton.text = "Main";
 	returnToMainMenuButton.fontSize = 15;
 	returnToMainMenuButton.onClickFunction = function(){ setGameState(0) }
+
+	towerSelectionBackground = new NineSlice(playAreaWidth, 0, screenWidth - playAreaWidth, screenHeight, 8, 8, 8, 8, 0, Art.grayBackground);
+
+	arrowTowerButton = new Button(playAreaWidth + 20, 20, screenWidth - playAreaWidth - 40, 30, 5, 5, 5, 5, 1);
+	arrowTowerButton.setInTexture(Art.blueButtonIn);
+	arrowTowerButton.setOutTexture(Art.blueButtonOut);
+	arrowTowerButton.text = "Arrow Tower";
+	arrowTowerButton.fontSize = 15;
+	arrowTowerButton.onClickFunction = function(){ beginTowerPlacement(0); }
+
+	beamTowerButton = new Button(playAreaWidth + 20, 70, screenWidth - playAreaWidth - 40, 30, 5, 5, 5, 5, 1);
+	beamTowerButton.setInTexture(Art.blueButtonIn);
+	beamTowerButton.setOutTexture(Art.blueButtonOut);
+	beamTowerButton.text = "Beam Tower";
+	beamTowerButton.fontSize = 15;
+	beamTowerButton.onClickFunction = function(){ beginTowerPlacement(1); }
 }
 
 function openLeveLGUI(){
 	restartLevelButton.active = true;
 	returnToMainMenuButton.active = true;
+	towerSelectionBackground.active = true;
+	arrowTowerButton.active = true;
+	beamTowerButton.active = true;
 }
 
 function closeLevelGUI(){
 	restartLevelButton.active = false;
 	returnToMainMenuButton.active = false;
+	towerSelectionBackground.active = false;
+	arrowTowerButton.active = false;
+	beamTowerButton.active = false;
 }
 
 //Classes

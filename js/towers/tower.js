@@ -31,7 +31,7 @@ class Tower extends Unit{
 		let removeIndex = towerList.indexOf(this);
 		if(removeIndex >= 0) towerList.splice(removeIndex, 1);
 
-		towerArray[this.getXGrid()][this.getYGrid()] = null;
+		if(towerArray[this.getXGrid()][this.getYGrid()] == this) towerArray[this.getXGrid()][this.getYGrid()] = null;
 	}
 
 	drawSelf(){

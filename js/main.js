@@ -11,7 +11,7 @@ var FPS = 60;
 
 var currentLevel;
 
-var player = new Player(100);
+var player = new Player(1000);
 
 var selectedUnit = null;
 
@@ -22,6 +22,8 @@ let levelArray = new Array();
 
 let gameState = 0; //0 - main menu, 1 - level select, 2 - inGame;
 let levelPlay = false; //Is the level currently playing or paused.
+let controlMode = 0; //How we are currently controlling the game. 0 - normal, 1 - placing tower
+let placeTowerID = 0; // Which tower we are currently trying to place.
 
 let fontKenny;
 let fontKennyThin;
@@ -101,31 +103,34 @@ function drawStep(){
 
 	drawGrid(0, 0, playAreaWidth, playAreaHeight);
 
-
-	fill(color('red'));
-	drawSelectionSquare();
-
 	for(var u of unitList){
   		u.drawSelf();
 	}
 
-	if(selectedUnit != null){
-		selectedUnit.drawSelected();
-	}
-
-	//Do stuff based off of the position of the mouse in the grid only if the mouse is in the grid.
-	if(mouseGridX != -1 && mouseGridY != -1){
-		let hoveredTower = towerArray[mouseGridX][mouseGridY];
-		if(hoveredTower != null){
-			if(hoveredTower != selectedUnit){
-				hoveredTower.drawHovered();
+	switch(controlMode){
+		case 0:
+			if(selectedUnit != null){
+				selectedUnit.drawSelected();
 			}
-		}
+
+			//Do stuff based off of the position of the mouse in the grid only if the mouse is in the grid.
+			if(mouseGridX != -1 && mouseGridY != -1){
+				let hoveredTower = towerArray[mouseGridX][mouseGridY];
+				if(hoveredTower != null){
+					if(hoveredTower != selectedUnit){
+						hoveredTower.drawHovered();
+					}
+				}
+			}
+			Path.draw();
+			break;
+		case 1:
+			drawTowerPlacementGrid();
+			break;
 	}
-	Path.draw();
-
-
-
+	noStroke();
+	fill(color('rgba(255, 127, 0, .5)'));
+	drawSelectionSquare();
 
 	for(var gui of guiList){
   		gui.drawSelf();
@@ -155,10 +160,6 @@ function startLevel(){
 	new ArrowTowerLevel1(6, 7);
 
 	new ArrowTowerLevel1(6, 13);
-
-	//new BeamTowerLevel1(9, 7);
-
-	//new BeamTowerLevel1(9, 13);
 
 	new BombTowerLevel1(12, 7);
 
@@ -209,18 +210,33 @@ function mousePressed(event) {
   		}
   	}
 
-	//Do stuff based off of the position of the mouse in the grid only if the mouse is in the grid.
-	if(mouseGridX != -1 && mouseGridY != -1){
-		let hoveredTower = towerArray[mouseGridX][mouseGridY];
-		// When we click a grid space with a tower, selectedUnit is set to that tower. Else selectedUnit becomes null;
-		if(hoveredTower != null){
-			//selectedUnit = hoveredTower;
-			hoveredTower.die();
-		}
-		else{
-			selectedUnit = null;
-		}
-	}
+  	switch(controlMode){
+  		case 0:
+  			//Do stuff based off of the position of the mouse in the grid only if the mouse is in the grid.
+			if(mouseGridX != -1 && mouseGridY != -1){
+				let hoveredTower = towerArray[mouseGridX][mouseGridY];
+				// When we click a grid space with a tower, selectedUnit is set to that tower. Else selectedUnit becomes null;
+				if(hoveredTower != null){
+					selectedUnit = hoveredTower;
+				}
+				else{
+					selectedUnit = null;
+				}
+			}
+  			break;
+  		case 1:
+  			if(mouseGridX != -1 && mouseGridY != -1){
+				let hoveredTower = towerArray[mouseGridX][mouseGridY];
+				// When we click a grid space with a tower, selectedUnit is set to that tower. Else selectedUnit becomes null;
+				if(hoveredTower != null){
+					controlMode = 0;
+				}
+				else{
+					placeTower(mouseGridX, mouseGridY, placeTowerID);
+				}
+			}
+  			break;
+  	}
 }
 
 function mouseReleased(event) {
@@ -266,6 +282,24 @@ function drawSelectionSquare(){
 	drawFilledGridSpace(x, y);
 }
 
+function drawTowerPlacementGrid(){
+	for(let i = 0 ; i < playAreaGridWidth ; i++){
+		for(let j = 0 ; j < playAreaGridHeight ; j++){
+			if(canPlaceTowerHere(i, j)){
+				fill(color('rgba(0, 255, 0, .6)'));
+			}
+			else{
+				fill(color('rgba(255, 0, 0, .6)'));
+			}
+			drawFilledGridSpace(i, j);
+		}
+	}
+}
+
+function canPlaceTowerHere(x, y){
+	return (towerArray[x][y] == null); 
+}
+
 function spawn(_enemyID, _pathID){
 	let startPathX = Path.getX(_pathID,0);
 	let startPathY = Path.getY(_pathID,0);
@@ -287,21 +321,47 @@ function spawn(_enemyID, _pathID){
 	} 
 }
 
+function placeTower(x, y, towerId){
+	let cost = 9999;
+	let towerFunction = null; 
+	switch(towerId){
+		case 0:
+			cost = 100;
+			towerFunction = function(){new ArrowTowerLevel1(x, y)}; 
+			break;
+		case 1:
+			cost = 150;
+			towerFunction = function(){new BeamTowerLevel1(x, y)}; 
+			break;
+	}
+
+	if(player.money >= cost && canPlaceTowerHere(x, y)){
+		player.money -= cost;
+		towerFunction();
+	}
+
+	controlMode = 0;
+}
+
+function beginTowerPlacement(towerId){
+	controlMode = 1; //How we are currently controlling the game. 0 - normal, 1 - placing tower
+	placeTowerID = towerId; // Which tower we are currently trying to place.
+}
+
 function setLevel(i){
 	currentLevel = levelArray[i];
 }
 
 function debugCoordinates(){
 	if (gameState == 2){
-	textSize(9)
-	for( let i = 0 ; i < playAreaGridWidth ; i ++){
+		textSize(9)
+		for( let i = 0 ; i < playAreaGridWidth ; i ++){
 
-		for( let j = 0 ; j < playAreaGridHeight ; j++){
-			let coordinate = i + "," + j;
-			text( coordinate , i*gridScale + gridScale/2 , j*gridScale + gridScale/2);
-		}
-	}	
+			for( let j = 0 ; j < playAreaGridHeight ; j++){
+				let coordinate = i + "," + j;
+				text( coordinate , i*gridScale + gridScale/2 , j*gridScale + gridScale/2);
+			}
+		}	
+	}
+}
 
-	
-}
-}

@@ -81,11 +81,9 @@ class Enemy extends Unit{
 				finalSpeed = finalSpeed - distance;
 				this.x = currentNodeX;
 				this.y = currentNodeY;
-
-
-
-				this.currentIndex++;
-				if (this.currentIndex < Path.length(this.pathID)){
+				
+				if (this.currentIndex < Path.length(this.pathID) - 1){
+					this.currentIndex++;
 					currentNodeX = Path.getX(this.pathID,this.currentIndex) * gridScale;
 					currentNodeY = Path.getY(this.pathID,this.currentIndex) * gridScale;
 
