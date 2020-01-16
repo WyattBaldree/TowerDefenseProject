@@ -24,12 +24,8 @@ class Unit{
 	}
 
 	drawSelf(){
-		strokeWeight(1);
-		stroke(color('black'));
-		fill(color('blue'));
-		//ellipse(this.x + gridScale/2, this.y + gridScale/2, gridScale);
-
-		push();
+		if(this.texture){
+			push();
 			noSmooth();
 			angleMode(DEGREES)
 			this.tint.setAlpha(this.opacity);
@@ -38,7 +34,14 @@ class Unit{
 			rotate(this.angle);
 			scale(1 - 2 * this.flipX,1 - 2 * this.flipY);
 			image(this.texture, -gridScale/2, -gridScale/2, gridScale, gridScale);
-		pop();
+			pop();
+		}
+		else{
+			strokeWeight(1);
+			stroke(color('black'));
+			fill(color('blue'));
+			ellipse(this.x + gridScale/2, this.y + gridScale/2, gridScale);
+		}		
 	}
 
 	updateAnimation(){
