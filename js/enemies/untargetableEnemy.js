@@ -6,36 +6,33 @@ class UntargetableEnemy extends Enemy{
 		this.speed = 2;
 		this.moneyValue = 10;
 		this.untargetable = false;
-		this.targetTime = 0;
+		this.untargetableTimeCurrent = 0;
+		this.untargetableTime = 75;
 	}
-	drawSelf(){
-		push()
-		angleMode(DEGREES)
-		translate(this.x + gridScale/2 ,this.y +gridScale/2)
-		rotate(this.angle);
-		if(this.untargetable == true){
-			tint(255, 128);
-		}
-		if(this.untargetable == false){
-			tint(255, 255);
-		}
-		image(Art.zombieSoldier, -32 , -32 )
-		
-		pop()
-	}
+
 	takeDamage(damage){
 		super.takeDamage(damage);
 		this.untargetable = true;
-		this.targetTime = Timeline.levelTimer + 75;
+		this.untargetableTimeCurrent = this.untargetableTime;
 	}
+
 	becomeTargetable(){
-		if (this.untargetable == true && Timeline.levelTimer >= this.targetTime){
+		this.untargetableTimeCurrent--;
+		if (this.untargetable == true && this.untargetableTimeCurrent <= 0){
 			this.untargetable = false;
 		}
 	}
+
 	update(){
 		this.becomeTargetable();
+
+		if(this.untargetable == true){
+			this.opacity = 128;
+		}
+		else{
+			this.opacity = 255;
+		}
+
 		super.update();
-		
 	}
 }

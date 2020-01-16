@@ -6,12 +6,4 @@ class ArmoredEnemy extends Enemy{
 		this.speed = 1;
 		this.moneyValue = 10;
 	}
-	drawSelf(){
-		push()
-		angleMode(DEGREES)
-		translate(this.x + gridScale/2 ,this.y +gridScale/2)
-		rotate(this.angle);
-		image(Art.graySoldier, -32 , -32 )
-		pop()
-	}
 }

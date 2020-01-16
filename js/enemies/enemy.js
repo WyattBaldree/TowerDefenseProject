@@ -11,35 +11,10 @@ class Enemy extends Unit{
 		this.moneyValue = 10;
 		this.currentIndex = 0;
 		this.untargetable = false;
-		this.angle = 0;
-		this.texture = 0;
-		this.animationTime = 0;
-		this.animationSpeed = .1
+		
 		enemyList.push(this);
 
 		this.debug = color('green');
-	}
-
-	drawSelf(){
-		//strokeWeight(1);
-		//stroke(color('black'));
-		//fill(color('blue'));
-		//ellipse(this.x + gridScale/2, this.y + gridScale/2, gridScale)
-		push();
-		//angleMode(DEGREES)
-		//translate(this.x +32 ,this.y +32)
-		//rotate(this.angle);
-		//image(Art.greenSoldier, -32 , -32 )
-		//image(this.texture, this.x, this.y, 32, 32, 0, 0, 16, 16);
-		this.loopAnimation();
-		pop();
-	}
-
-	loopAnimation(){
-		let animations = [Art.undeadSpritePack0,Art.undeadSpritePack1];
-		
-		image(animations[Math.floor(this.animationTime % 2)], this.x, this.y, 32, 32, 0, 0, 16, 16);
-		this.animationTime += this.animationSpeed;
 	}
 
 	update(){
@@ -101,7 +76,8 @@ class Enemy extends Unit{
 			let vJ = deltaY/distance
 			let velocityX = vI * finalSpeed;
 			let velocityY = vJ * finalSpeed;
-			this.angle = Math.atan2(velocityY, velocityX) * 180 / Math.PI;
+			//this.angle = Math.atan2(velocityY, velocityX) * 180 / Math.PI;
+			this.flipX = Math.sign(-velocityX) <= 0;
 
 			console.log(distance)
 			console.log(velocityX)
