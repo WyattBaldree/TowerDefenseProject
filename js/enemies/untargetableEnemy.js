@@ -5,6 +5,7 @@ class UntargetableEnemy extends Enemy{
 		this.armor = 0;
 		this.speed = 2;
 		this.moneyValue = 10;
+		this.animationFrames = [Art.ghost0, Art.ghost1];
 		this.untargetable = false;
 		this.untargetableTimeCurrent = 0;
 		this.untargetableTime = 75;

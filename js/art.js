@@ -11,13 +11,11 @@ class Art{
 		Art.noSprite1 = loadImage('img/noSprite1.png');
 		Art.orc0 = loadImage('img/orc0.png');
 		Art.orc1 = loadImage('img/orc1.png');
-
-		Art.greenSoldier = loadImage('img/tower-defense-top-down/PNG/Default size/towerDefense_tile245.png');
-		Art.graySoldier = loadImage('img/tower-defense-top-down/PNG/Default size/towerDefense_tile246.png');
-		Art.brownSoldier = loadImage('img/tower-defense-top-down/PNG/Default size/towerDefense_tile247.png');
-		Art.zombieSoldier = loadImage('img/tower-defense-top-down/PNG/Default size/towerDefense_tile248.png');
-		Art.undeadSpritePack0 = loadImage('img/DawnLike/Characters/Undead0.png');
-		Art.undeadSpritePack1 = loadImage('img/DawnLike/Characters/Undead1.png');
-
+		Art.cyclops0 = loadImage('img/cyclops0.png');
+		Art.cyclops1 = loadImage('img/cyclops1.png');
+		Art.kobold0 = loadImage('img/kobold0.png');
+		Art.kobold1 = loadImage('img/kobold1.png');
+		Art.ghost0 = loadImage('img/ghost0.png');
+		Art.ghost1 = loadImage('img/ghost1.png');
 	}
 }

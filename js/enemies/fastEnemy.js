@@ -5,7 +5,7 @@ class FastEnemy extends Enemy{
 		this.armor = 0;
 		this.speed = 3;
 		this.moneyValue = 10;
-		this.texture = Art.undeadSpritePack0
+		this.animationFrames = [Art.kobold0, Art.kobold1];
 	}
 	
 }
