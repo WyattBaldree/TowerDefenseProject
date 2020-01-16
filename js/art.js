@@ -11,6 +11,8 @@ class Art{
 		Art.graySoldier = loadImage('img/tower-defense-top-down/PNG/Default size/towerDefense_tile246.png');
 		Art.brownSoldier = loadImage('img/tower-defense-top-down/PNG/Default size/towerDefense_tile247.png');
 		Art.zombieSoldier = loadImage('img/tower-defense-top-down/PNG/Default size/towerDefense_tile248.png');
+		Art.undeadSpritePack0 = loadImage('img/DawnLike/Characters/Undead0.png');
+		Art.undeadSpritePack1 = loadImage('img/DawnLike/Characters/Undead1.png');
 
 	}
 }

@@ -5,13 +5,7 @@ class FastEnemy extends Enemy{
 		this.armor = 0;
 		this.speed = 3;
 		this.moneyValue = 10;
+		this.texture = Art.undeadSpritePack0
 	}
-	drawSelf(){
-		push()
-		angleMode(DEGREES)
-		translate(this.x + gridScale/2 ,this.y +gridScale/2)
-		rotate(this.angle);
-		image(Art.brownSoldier, -32 , -32 )
-		pop()
-	}
+	
 }
