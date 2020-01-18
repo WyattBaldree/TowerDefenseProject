@@ -11,6 +11,7 @@ class Enemy extends Unit{
 		this.moneyValue = 10;
 		this.currentIndex = 0;
 		this.untargetable = false;
+		this.currentDistanceOnPath = 0;
 		
 		enemyList.push(this);
 
@@ -20,7 +21,9 @@ class Enemy extends Unit{
 	update(){
 		super.update();
 
-		this.move();
+		this.currentDistanceOnPath = this.getCurrentDistanceOfPath();
+
+		this.move(this.speed);
 	}
 
 	takeDamage(damage){
@@ -38,10 +41,10 @@ class Enemy extends Unit{
 		this.debug = color(temp);
 	}
 
-	move(){
+	move(spd){
 
 		if (this.currentIndex < Path.length(this.pathID)){
-			let finalSpeed = this.speed;
+			let finalSpeed = spd;
 
 			let currentNodeX = Path.getX(this.pathID,this.currentIndex) * gridScale;
 			let currentNodeY = Path.getY(this.pathID,this.currentIndex) * gridScale;
@@ -79,10 +82,13 @@ class Enemy extends Unit{
 			//this.angle = Math.atan2(velocityY, velocityX) * 180 / Math.PI;
 			this.flipX = Math.sign(-velocityX) <= 0;
 
-			console.log(distance)
-			console.log(velocityX)
+			//console.log(distance)
+			//console.log(velocityX)
 			this.x += velocityX;
 			this.y += velocityY;
+
+			
+			console.log(this.currentDistanceOnPath)
 			
 		}
 	}
@@ -99,6 +105,16 @@ class Enemy extends Unit{
 			distanceFromTargetToEnd += Math.sqrt(Math.pow(deltaX,2) + Math.pow(deltaY,2));
 		}
 		return distanceToTarget + distanceFromTargetToEnd;
+	}
+
+	getCurrentDistanceOfPath(){
+		let totalDistanceOfPath = 0;
+		for(let i = 0; i < Path.length(this.pathID) - 1; i++){
+			let deltaX = Path.getX(this.pathID, i + 1) * gridScale - Path.getX(this.pathID, i) * gridScale;
+			let deltaY = Path.getY(this.pathID, i + 1) * gridScale - Path.getY(this.pathID, i) * gridScale;
+			totalDistanceOfPath += Math.sqrt(Math.pow(deltaX,2) + Math.pow(deltaY,2));
+		}
+		return totalDistanceOfPath - this.getDistanceToEndOfPath()
 	}
 
 	die()

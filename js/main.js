@@ -54,6 +54,7 @@ function setup() {
 	makeLevelSelectMenu();
 	makeLevelGUI();
 	setGameState(0);
+	//SpawnEnemy(1, 1, 100);
 }
 
 // This is our main loop.
@@ -74,6 +75,7 @@ function updateStep(){
 
 	if(levelPlay){
 		Timeline.advanceTimeline();
+		spawnInPath(1, 1, 100);
 
 		for(var u of unitList){
 			if(u.deleted) continue;
@@ -303,22 +305,63 @@ function canPlaceTowerHere(x, y){
 function spawn(_enemyID, _pathID){
 	let startPathX = Path.getX(_pathID,0);
 	let startPathY = Path.getY(_pathID,0);
+
+	let enemy;
 	switch(_enemyID) {
 		case 0:
-		    new RegularEnemy(startPathX,startPathY,_pathID)
+		    enemy = new RegularEnemy(startPathX,startPathY,_pathID)
 		    break;
 		case 1:
-		    new ArmoredEnemy(startPathX,startPathY,_pathID)
+		    enemy = new ArmoredEnemy(startPathX,startPathY,_pathID)
 			break;
 		case 2:
-		    new FastEnemy(startPathX,startPathY,_pathID)
+		    enemy = new FastEnemy(startPathX,startPathY,_pathID)
 			break;
 		case 3:
-		    new UntargetableEnemy(startPathX,startPathY,_pathID)
+		    enemy = new UntargetableEnemy(startPathX,startPathY,_pathID)
 			break;
 		default:
 		    // code block
 	} 
+	return enemy;
+}
+
+function spawnInPath(_enemyID, _pathID, pathprogress){
+	let enemy = spawn(_enemyID, _pathID);
+	enemy.move(pathprogress);
+
+	/*//convert this.currentDistanceOnPath to x and y coordinate
+	//find the the 2 closest nodes by the distance
+	//subtract the xs and ys and mult by distance
+	//add that number to x and y of past node
+	let distance = pathprogress;
+	let nodeProgress = 0;
+	let nodeLength = 0;
+	for(let i = 0; i < Path.length(pathID) - 1; i++){
+			let deltaX = Path.getX(pathID, i + 1) * gridScale - Path.getX(pathID, i) * gridScale;
+			let deltaY = Path.getY(pathID, i + 1) * gridScale - Path.getY(pathID, i) * gridScale;
+			let currentNodeLength = Math.sqrt(Math.pow(deltaX,2) + Math.pow(deltaY,2));
+			
+			distance -= currentNodeLength;
+			if (Math.sign(distance) <= 0){ 
+				nodeProgress = i;
+				distance += currentNodeLength;
+				break;
+			}
+
+		}
+	//distance between two nodes
+	let deltaX = Path.getX(pathID, nodeProgress + 1) * gridScale - Path.getX(pathID, nodeProgress) * gridScale;
+	let deltaY = Path.getY(pathID, nodeProgress + 1) * gridScale - Path.getY(pathID, nodeProgress) * gridScale;
+
+	let totalDistanceBetweenNodes = Math.sqrt(Math.pow(deltaX,2) + Math.pow(deltaY,2));
+	let distanceRatio = distance/totalDistanceBetweenNodes
+
+	let X =  (Path.getX(pathID, nodeProgress + 1)  - Path.getX(pathID, nodeProgress) ) * distanceRatio + Path.getX(pathID, nodeProgress) ;
+	let Y =  (Path.getY(pathID, nodeProgress + 1)  - Path.getY(pathID, nodeProgress) ) * distanceRatio + Path.getY(pathID, nodeProgress) ;
+
+	new Enemy(X, Y, pathID);*/
+	
 }
 
 function placeTower(x, y, towerId){
