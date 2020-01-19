@@ -106,19 +106,19 @@ function makeLevelGUI(){
 
 	towerSelectionBackground = new NineSlice(playAreaWidth, 0, screenWidth - playAreaWidth, screenHeight, 8, 8, 8, 8, 0, Art.grayBackground);
 
-	arrowTowerButton = new Button(playAreaWidth + 20, 20, screenWidth - playAreaWidth - 40, 30, 5, 5, 5, 5, 1);
+	arrowTowerButton = new TowerSelectButton(playAreaWidth + 20, 20, screenWidth - playAreaWidth - 40, 30, 5, 5, 5, 5, 1);
 	arrowTowerButton.setInTexture(Art.blueButtonIn);
 	arrowTowerButton.setOutTexture(Art.blueButtonOut);
 	arrowTowerButton.text = "Arrow Tower";
 	arrowTowerButton.fontSize = 15;
-	arrowTowerButton.onClickFunction = function(){ beginTowerPlacement(0); }
+	arrowTowerButton.setTowerClass(ArrowTowerLevel1);
 
-	beamTowerButton = new Button(playAreaWidth + 20, 70, screenWidth - playAreaWidth - 40, 30, 5, 5, 5, 5, 1);
+	beamTowerButton = new TowerSelectButton(playAreaWidth + 20, 70, screenWidth - playAreaWidth - 40, 30, 5, 5, 5, 5, 1);
 	beamTowerButton.setInTexture(Art.blueButtonIn);
 	beamTowerButton.setOutTexture(Art.blueButtonOut);
 	beamTowerButton.text = "Beam Tower";
 	beamTowerButton.fontSize = 15;
-	beamTowerButton.onClickFunction = function(){ beginTowerPlacement(1); }
+	beamTowerButton.setTowerClass(BeamTowerLevel1);
 }
 
 function openLeveLGUI(){
@@ -319,3 +319,23 @@ class Button extends NineSlice{
 }
 
 
+class TowerSelectButton extends Button{
+	constructor(x, y, w, h, leftMargin = 0, rightMargin = 0, topMargin = 0, bottomMargin = 0, z = 0){
+		super(x, y, w, h, leftMargin, rightMargin, topMargin, bottomMargin, z);
+	}
+
+	setTowerClass(_towerClass){
+		this.towerClass = _towerClass;
+		this.onClickFunction = function(){
+			beginTowerPlacement(this.towerClass);
+		}
+	}
+
+	drawSelf(){
+		super.drawSelf();
+		if(this.towerClass){
+			let tex = this.towerClass.animationFrames[0];
+			image(tex, this.x, this.y, tex.w, tex.h);
+		}
+	}
+}

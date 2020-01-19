@@ -1,7 +1,7 @@
 class ArrowTowerLevel1 extends CooldownTower{
 	static initializeClass(){
 		let classRef = this;
-		classRef.animationFrames = [Art.noSprite0, Art.noSprite1];
+		classRef.animationFrames = [Art.archer0, Art.archer1];
 		classRef.unitName = "Arrow Tower";
 		classRef.description = "Arrow tower";
 		classRef.range = 3;

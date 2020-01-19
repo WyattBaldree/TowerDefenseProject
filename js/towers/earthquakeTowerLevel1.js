@@ -1,7 +1,7 @@
 class EarthquakeTowerLevel1 extends CooldownTower{
 	static initializeClass(){
 		let classRef = this;
-		classRef.animationFrames = [Art.noSprite0, Art.noSprite1];
+		classRef.animationFrames = [Art.warrior0, Art.warrior1];
 		classRef.unitName = "Earthquake Tower";
 		classRef.description = "Earthquake Tower";
 		classRef.range = 4;
