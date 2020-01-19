@@ -1,12 +1,18 @@
 class CooldownTower extends Tower{
+	static initializeClass(){
+		let classRef = this;
+		classRef.animationFrames = [Art.noSprite0, Art.noSprite1];
+		classRef.unitName = "Cooldown Tower";
+		classRef.description = "Default cooldown tower class";
+		classRef.range = 3;
+		classRef.damage = 5;
+		classRef.speed = 5;
+		classRef.price = 100;
+	}
+
 	constructor(x, y){
 		super(x, y);
-		this.range = 3;
-		this.damage = 5;
-		this.speed = 5;
 		this.target = null;
-
-		this.debug = false;
 	}
 
 	update(){

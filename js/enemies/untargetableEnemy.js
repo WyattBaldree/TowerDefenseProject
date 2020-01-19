@@ -1,11 +1,17 @@
 class UntargetableEnemy extends Enemy{
+	static initializeClass(){
+		let classRef = this;
+		classRef.animationFrames = [Art.ghost0, Art.ghost1];
+		classRef.unitName = "Untargetable Dude";
+		classRef.description = "Untargetable dude";
+		classRef.maxHealth = 20;
+		classRef.armor = 0;
+		classRef.speed = 2;
+		classRef.damage = 1;
+		classRef.moneyValue = 10;
+	}	
 	constructor(x,y,pathID){
 		super(x,y,pathID);
-		this.health = 20;
-		this.armor = 0;
-		this.speed = 2;
-		this.moneyValue = 10;
-		this.animationFrames = [Art.ghost0, Art.ghost1];
 		this.untargetable = false;
 		this.untargetableTimeCurrent = 0;
 		this.untargetableTime = 75;

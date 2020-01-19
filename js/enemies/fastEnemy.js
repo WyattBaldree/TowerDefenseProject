@@ -1,11 +1,13 @@
 class FastEnemy extends Enemy{
-	constructor(x,y,pathID){
-		super(x,y,pathID);
-		this.health = 10;
-		this.armor = 0;
-		this.speed = 3;
-		this.moneyValue = 10;
-		this.animationFrames = [Art.kobold0, Art.kobold1];
-	}
-	
+	static initializeClass(){
+		let classRef = this;
+		classRef.animationFrames = [Art.kobold0, Art.kobold1];
+		classRef.unitName = "Fast Dude";
+		classRef.description = "Fast dude";
+		classRef.maxHealth = 10;
+		classRef.armor = 0;
+		classRef.speed = 3;
+		classRef.damage = 1;
+		classRef.moneyValue = 10;
+	}	
 }

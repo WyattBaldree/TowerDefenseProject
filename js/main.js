@@ -50,6 +50,20 @@ function setup() {
 	createCanvas(screenWidth, screenHeight);
 	noFill();
 
+	//Initialize all unit classes
+	Unit.initializeClass();
+	Enemy.initializeClass();
+	FastEnemy.initializeClass();
+	RegularEnemy.initializeClass();
+	ArmoredEnemy.initializeClass();
+	UntargetableEnemy.initializeClass();
+	Tower.initializeClass();
+	CooldownTower.initializeClass();
+	ArrowTowerLevel1.initializeClass();
+	BeamTowerLevel1.initializeClass();
+	BombTowerLevel1.initializeClass();
+	EarthquakeTowerLevel1.initializeClass();
+
 	makeMainMenu();
 	makeLevelSelectMenu();
 	makeLevelGUI();
@@ -75,7 +89,6 @@ function updateStep(){
 
 	if(levelPlay){
 		Timeline.advanceTimeline();
-		spawnInPath(1, 1, 100);
 
 		for(var u of unitList){
 			if(u.deleted) continue;

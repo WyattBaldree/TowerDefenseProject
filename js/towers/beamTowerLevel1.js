@@ -1,9 +1,13 @@
 class BeamTowerLevel1 extends CooldownTower{
-	constructor(x, y){
-		super(x, y);
-		this.range = 4;
-		this.damage = 1;
-		this.speed = 15;
+	static initializeClass(){
+		let classRef = this;
+		classRef.animationFrames = [Art.noSprite0, Art.noSprite1];
+		classRef.unitName = "Beam Tower";
+		classRef.description = "Beam Tower";
+		classRef.range = 4;
+		classRef.damage = 1;
+		classRef.speed = 15;
+		classRef.price = 100;
 	}
 
 	shoot(){

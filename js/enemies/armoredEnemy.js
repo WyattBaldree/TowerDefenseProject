@@ -1,10 +1,13 @@
 class ArmoredEnemy extends Enemy{
-	constructor(x,y,pathID){
-		super(x,y,pathID);
-		this.health = 30;
-		this.armor = 1;
-		this.speed = 1;
-		this.moneyValue = 10;
-		this.animationFrames = [Art.cyclops0, Art.cyclops1];
+	static initializeClass(){
+		let classRef = this;
+		classRef.animationFrames = [Art.cyclops0, Art.cyclops1];
+		classRef.unitName = "Armored Dude";
+		classRef.description = "Armored dude";
+		classRef.maxHealth = 30;
+		classRef.armor = 1;
+		classRef.speed = 1;
+		classRef.damage = 1;
+		classRef.moneyValue = 10;
 	}
 }

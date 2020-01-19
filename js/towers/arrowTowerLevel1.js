@@ -1,9 +1,13 @@
 class ArrowTowerLevel1 extends CooldownTower{
-	constructor(x, y){
-		super(x, y);
-		this.range = 3;
-		this.damage = 4;
-		this.speed = 3;
+	static initializeClass(){
+		let classRef = this;
+		classRef.animationFrames = [Art.noSprite0, Art.noSprite1];
+		classRef.unitName = "Arrow Tower";
+		classRef.description = "Arrow tower";
+		classRef.range = 3;
+		classRef.damage = 4;
+		classRef.speed = 3;
+		classRef.price = 100;
 	}
 
 	shoot(){

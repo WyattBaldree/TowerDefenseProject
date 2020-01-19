@@ -3,14 +3,43 @@ var towerList = new Array(); // holds all tower objects.
 var towerArray; // a 2d array which holds all towers.
 
 class Tower extends Unit{
+
+	static initializeClass(){
+		let classRef = this;
+		classRef.animationFrames = [Art.noSprite0, Art.noSprite1];
+		classRef.unitName = "Tower";
+		classRef.description = "Default tower class";
+		classRef.range = 3;
+		classRef.damage = 5;
+		classRef.speed = 5;
+		classRef.price = 100;
+	}
+
 	constructor(x, y){
 		super(x, y);
-		this.range = 3;
-		this.damage = 5;
-		this.speed = 5;
+		this.range = this.getBaseRange();
+		this.damage = this.getBaseDamage();
+		this.speed = this.getBaseSpeed();
+
 		this.cooldown = 0;
 		towerList.push(this);
 		towerArray[this.getXGrid()][this.getYGrid()] = this;
+	}
+
+	getBaseRange(){
+		return this.constructor.range;
+	}
+
+	getBaseDamage(){
+		return this.constructor.damage;
+	}
+
+	getBaseSpeed(){
+		return this.constructor.speed;
+	}
+
+	getBasePrice(){
+		return this.constructor.price;
 	}
 
 	update(){

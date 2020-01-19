@@ -1,21 +1,54 @@
 var enemyList = new Array(); // holds all enemy objects.
 
 class Enemy extends Unit{
+	static initializeClass(){
+		let classRef = this;
+		classRef.animationFrames = [Art.noSprite0, Art.noSprite1];
+		classRef.unitName = "Enemy";
+		classRef.description = "Default enemy class";
+		classRef.maxHealth = 100;
+		classRef.armor = 0;
+		classRef.speed = 2;
+		classRef.damage = 1;
+		classRef.moneyValue = 10;
+	}
+
+	getBaseMaxHealth(){
+		return this.constructor.maxHealth;
+	}
+
+	getBaseArmor(){
+		return this.constructor.armor;
+	}
+
+	getBaseSpeed(){
+		return this.constructor.speed;
+	}
+
+	getBaseDamage(){
+		return this.constructor.damage;
+	}
+
+	getBaseMoneyValue(){
+		return this.constructor.moneyValue;
+	}
+
 	constructor(x,y,pathID){
 		super(x,y);
-		this.health = 100;
-		this.armor = 0;
-		this.speed = 2;
-		this.damage = 1;
+		this.maxHealth = this.getBaseMaxHealth();
+		this.armor = this.getBaseArmor();
+		this.speed = this.getBaseSpeed();
+		this.damage = this.getBaseDamage();
+		this.moneyValue = this.getBaseMoneyValue();
+
+
+		this.health = this.maxHealth;
 		this.pathID = pathID;
-		this.moneyValue = 10;
 		this.currentIndex = 0;
 		this.untargetable = false;
 		this.currentDistanceOnPath = 0;
 		
 		enemyList.push(this);
-
-		this.debug = color('green');
 	}
 
 	update(){
@@ -36,9 +69,6 @@ class Enemy extends Unit{
 		if(this.health <= 0 && preDamageHealth > 0){
 			this.die();
 		}
-
-		let temp = 'rgb(' + int(random(255)) + ',' + int(random(255)) + ',' + int(random(255)) + ')';
-		this.debug = color(temp);
 	}
 
 	move(spd){
@@ -82,14 +112,8 @@ class Enemy extends Unit{
 			//this.angle = Math.atan2(velocityY, velocityX) * 180 / Math.PI;
 			this.flipX = Math.sign(-velocityX) <= 0;
 
-			//console.log(distance)
-			//console.log(velocityX)
 			this.x += velocityX;
 			this.y += velocityY;
-
-			
-			console.log(this.currentDistanceOnPath)
-			
 		}
 	}
 

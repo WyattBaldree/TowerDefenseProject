@@ -3,17 +3,26 @@ var toBeRemovedList = new Array(); //holds all objects which are waiting to be r
 
 class Unit{
 
+	static initializeClass(){
+		let classRef = this;
+		classRef.animationFrames = [Art.noSprite0, Art.noSprite1];
+		classRef.unitName = "Unit";
+		classRef.description = "Default unit class";
+	}
 
 	constructor(x, y){
 		this.setXGrid(x);
 		this.setYGrid(y);
 		this.deleted = false;
 
+		this.unitName = this.getUnitName();
+		this.description = this.getDescription();
+		this.animationFrames = this.getAnimationFrames();
+
 		//Things that control the sprite drawing.
 		this.angle = 0;
 		this.tint = color("white");
 		this.opacity = 255;
-		this.animationFrames = [Art.noSprite0, Art.noSprite1];
 		this.texture = this.animationFrames[0];
 		this.animationTime = 0;
 		this.animationSpeed = .1;
@@ -21,6 +30,18 @@ class Unit{
 		this.flipY = 0;
 
 		unitList.push(this);
+	}
+
+	getUnitName(){
+		return this.constructor.unitName;
+	}
+
+	getDescription(){
+		return this.constructor.description;
+	}
+
+	getAnimationFrames(){
+		return this.constructor.animationFrames;
 	}
 
 	drawSelf(){

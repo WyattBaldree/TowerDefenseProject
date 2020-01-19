@@ -1,10 +1,13 @@
 class RegularEnemy extends Enemy{
-	constructor(x,y,pathID){
-		super(x,y,pathID);
-		this.health = 20;
-		this.armor = 0;
-		this.speed = 2;
-		this.moneyValue = 10;
-		this.animationFrames = [Art.orc0, Art.orc1];
+	static initializeClass(){
+		let classRef = this;
+		classRef.animationFrames = [Art.orc0, Art.orc1];
+		classRef.unitName = "Regular Dude";
+		classRef.description = "Regular dude";
+		classRef.maxHealth = 20;
+		classRef.armor = 0;
+		classRef.speed = 2;
+		classRef.damage = 1;
+		classRef.moneyValue = 10;
 	}
 }
