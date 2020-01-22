@@ -1,6 +1,6 @@
 class Player{
 	constructor(startingGold){
-		this.gold = startingGold;
+		this.setGold(startingGold);
 	}
 
 	setGold(gold){

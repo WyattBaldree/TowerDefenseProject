@@ -11,7 +11,7 @@ var FPS = 60;
 
 var currentLevel;
 
-var player = new Player(1000);
+var player;
 
 var selectedUnit = null;
 
@@ -24,6 +24,8 @@ let gameState = 0; //0 - main menu, 1 - level select, 2 - inGame;
 let levelPlay = false; //Is the level currently playing or paused.
 let controlMode = 0; //How we are currently controlling the game. 0 - normal, 1 - placing tower
 let placeTowerID = 0; // Which tower we are currently trying to place.
+
+let solidBlockArray;
 
 let fontKenny;
 let fontKennyThin;
@@ -44,6 +46,7 @@ function preload(){
 function setup() {
 
 	towerArray = createArray(playAreaGridWidth, playAreaGridHeight);
+	solidBlockArray = createArray(playAreaGridWidth, playAreaGridHeight);
 
 
 	frameRate = 60;
@@ -176,9 +179,18 @@ function startLevel(){
 	Timeline.currentSpawn = 0
 	Timeline.levelTimer = 0;
 
+	player = new Player(1000);
+
 	for(var u of unitList){
 		if(u.deleted) continue;
   		u.markForRemoval();
+	}
+
+	for(let arr of solidBlockArray){
+		arr = []
+	}
+	for(let pair of currentLevel.levelData.solid){
+		solidBlockArray[pair[0]][pair[1]] = 1;
 	}
 
 	new ArrowTowerLevel1(6, 7);
@@ -287,6 +299,8 @@ function getSelectionSquareY(){
 }
 
 function drawGrid(x, y, gridWidth, gridHeight){
+	strokeWeight(1);
+	stroke(color("black"));
 	for(let i = 0 ; i <= gridWidth/gridScale ; i++){
 		line(x + i * gridScale, y, x + i * gridScale, y + gridHeight);
 	}
@@ -296,6 +310,8 @@ function drawGrid(x, y, gridWidth, gridHeight){
 }
 
 function drawFilledGridSpace(x, y){
+	strokeWeight(1);
+	stroke(color("black"));
 	rect(x * gridScale, y * gridScale, gridScale, gridScale);
 }
 
@@ -310,10 +326,10 @@ function drawTowerPlacementGrid(){
 	for(let i = 0 ; i < playAreaGridWidth ; i++){
 		for(let j = 0 ; j < playAreaGridHeight ; j++){
 			if(canPlaceTowerHere(i, j)){
-				fill(color('rgba(0, 255, 0, .6)'));
+				fill(color('rgba(0, 200, 0, .5)'));
 			}
 			else{
-				fill(color('rgba(255, 0, 0, .6)'));
+				fill(color('rgba(200, 0, 0, .5)'));
 			}
 			drawFilledGridSpace(i, j);
 		}
@@ -321,7 +337,7 @@ function drawTowerPlacementGrid(){
 }
 
 function canPlaceTowerHere(x, y){
-	return (towerArray[x][y] == null); 
+	return (towerArray[x][y] == null && solidBlockArray[x][y] == null); 
 }
 
 function spawn(_enemyID, _pathID){

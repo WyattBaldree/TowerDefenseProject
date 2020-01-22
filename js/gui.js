@@ -345,6 +345,7 @@ class Button extends NineSlice{
 
 			if(this.hovered){
 				fill(color("rgba(255,255,255,.15)"));
+				noStroke();
 				rect(this.x, this.y, this.w, this.h);
 			}
 		}
@@ -384,6 +385,7 @@ class TowerSelectButton extends Button{
 				let tex = this.towerClass.animationFrames[0];
 				let centerWidth = this.w - this.leftMargin - this.rightMargin;
 				fill(color("rgba(0,0,0,.3)"));
+				noStroke();
 				rect(this.x + this.leftMargin, this.costComponent.y + (this.fontSize+2)/2, centerWidth, this.fontSize-4);
 				image(tex, this.x + this.leftMargin, this.y + this.topMargin, centerWidth, centerWidth);
 			}
