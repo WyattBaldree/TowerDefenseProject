@@ -49,6 +49,7 @@ function setup() {
 	frameRate = 60;
 	createCanvas(screenWidth, screenHeight);
 	noFill();
+	noSmooth();
 
 	//Initialize all unit classes
 	Unit.initializeClass();

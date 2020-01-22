@@ -6,6 +6,22 @@ class Art{
 		Art.blueButtonIn = loadImage('img/blue_button01.png');
 		Art.blueButton2Out = loadImage('img/blue_button09.png');
 		Art.blueButton2In = loadImage('img/blue_button10.png');
+
+		Art.greenButtonOut = loadImage('img/green_button00.png');
+		Art.greenButtonIn = loadImage('img/green_button01.png');
+		Art.greenButton2Out = loadImage('img/green_button09.png');
+		Art.greenButton2In = loadImage('img/green_button10.png');
+
+		Art.redButtonOut = loadImage('img/red_button11.png');
+		Art.redButtonIn = loadImage('img/red_button12.png');
+		Art.redButton2Out = loadImage('img/red_button06.png');
+		Art.redButton2In = loadImage('img/red_button07.png');
+
+		Art.yellowButtonOut = loadImage('img/yellow_button00.png');
+		Art.yellowButtonIn = loadImage('img/yellow_button01.png');
+		Art.yellowButton2Out = loadImage('img/yellow_button09.png');
+		Art.yellowButton2In = loadImage('img/yellow_button10.png');
+
 		Art.grayBackground = loadImage('img/grey_panel.png');
 		Art.noSprite0 = loadImage('img/noSprite0.png');
 		Art.noSprite1 = loadImage('img/noSprite1.png');
@@ -29,5 +45,9 @@ class Art{
 		Art.engineer1 = loadImage('img/engineer1.png');
 		Art.warrior0 = loadImage('img/warrior0.png');
 		Art.warrior1 = loadImage('img/warrior1.png');
+
+		//items
+		Art.goldCoin = loadImage('img/goldCoin.png');
+		Art.goldCoinStack = loadImage('img/goldCoinStack.png');
 	}
 }

@@ -25,7 +25,7 @@ class Unit{
 		this.opacity = 255;
 		this.texture = this.animationFrames[0];
 		this.animationTime = 0;
-		this.animationSpeed = .1;
+		this.animationSpeed = .05;
 		this.flipX = 0;
 		this.flipY = 0;
 

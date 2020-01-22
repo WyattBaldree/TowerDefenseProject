@@ -28,19 +28,19 @@ function makeMainMenu(){
 }
 
 function openMainMenu(){
-	mainMenuBackground.active = true;
-	mainMenuPlate.active = true;
-	mainMenuLogo.active = true;
-	mainMenuLevelSelectButton.active = true;
-	mainMenuOptionsButton.active = true;
+	mainMenuBackground.setActive(true);
+	mainMenuPlate.setActive(true);
+	mainMenuLogo.setActive(true);
+	mainMenuLevelSelectButton.setActive(true);
+	mainMenuOptionsButton.setActive(true);
 }
 
 function closeMainMenu(){
-	mainMenuBackground.active = false;
-	mainMenuPlate.active = false;
-	mainMenuLogo.active = false;
-	mainMenuLevelSelectButton.active = false;
-	mainMenuOptionsButton.active = false;
+	mainMenuBackground.setActive(false);
+	mainMenuPlate.setActive(false);
+	mainMenuLogo.setActive(false);
+	mainMenuLevelSelectButton.setActive(false);
+	mainMenuOptionsButton.setActive(false);
 }
 
 ////////////////////////////LEVEL SELECT SCREEN
@@ -71,15 +71,15 @@ function makeLevelSelectMenu(){
 }
 
 function openLevelSelectMenu(){
-	levelSelectBackground.active = true;
-	level1Button.active = true;
-	level2Button.active = true;
+	levelSelectBackground.setActive(true);
+	level1Button.setActive(true);
+	level2Button.setActive(true);
 }
 
 function closeLevelSelectMenu(){
-	levelSelectBackground.active = false;
-	level1Button.active = false;
-	level2Button.active = false;
+	levelSelectBackground.setActive(false);
+	level1Button.setActive(false);
+	level2Button.setActive(false);
 }
 
 ////////////////////////////// LEVEL GUI (main game gui)
@@ -89,6 +89,8 @@ let returnToMainMenuButton;
 let towerSelectionBackground;
 let arrowTowerButton;
 let beamTowerButton;
+let earthquakeTowerButton;
+let bombTowerButton;
 function makeLevelGUI(){
 	restartLevelButton = new Button(0, 0, 60, 30, 5, 5, 5, 5, 1);
 	restartLevelButton.setInTexture(Art.blueButtonIn);
@@ -106,35 +108,45 @@ function makeLevelGUI(){
 
 	towerSelectionBackground = new NineSlice(playAreaWidth, 0, screenWidth - playAreaWidth, screenHeight, 8, 8, 8, 8, 0, Art.grayBackground);
 
-	arrowTowerButton = new TowerSelectButton(playAreaWidth + 20, 20, screenWidth - playAreaWidth - 40, 30, 5, 5, 5, 5, 1);
-	arrowTowerButton.setInTexture(Art.blueButtonIn);
-	arrowTowerButton.setOutTexture(Art.blueButtonOut);
-	arrowTowerButton.text = "Arrow Tower";
-	arrowTowerButton.fontSize = 15;
+	arrowTowerButton = new TowerSelectButton(playAreaWidth + 20, 20, 1);
+	arrowTowerButton.setInTexture(Art.greenButton2In);
+	arrowTowerButton.setOutTexture(Art.greenButton2Out);
 	arrowTowerButton.setTowerClass(ArrowTowerLevel1);
 
-	beamTowerButton = new TowerSelectButton(playAreaWidth + 20, 70, screenWidth - playAreaWidth - 40, 30, 5, 5, 5, 5, 1);
-	beamTowerButton.setInTexture(Art.blueButtonIn);
-	beamTowerButton.setOutTexture(Art.blueButtonOut);
-	beamTowerButton.text = "Beam Tower";
-	beamTowerButton.fontSize = 15;
+	beamTowerButton = new TowerSelectButton(playAreaWidth + 20, 150, 1);
+	beamTowerButton.setInTexture(Art.blueButton2In);
+	beamTowerButton.setOutTexture(Art.blueButton2Out);
 	beamTowerButton.setTowerClass(BeamTowerLevel1);
+
+	earthquakeTowerButton = new TowerSelectButton(playAreaWidth + 110, 20, 1);
+	earthquakeTowerButton.setInTexture(Art.redButton2In);
+	earthquakeTowerButton.setOutTexture(Art.redButton2Out);
+	earthquakeTowerButton.setTowerClass(EarthquakeTowerLevel1);
+
+	bombTowerButton = new TowerSelectButton(playAreaWidth + 110, 150, 1);
+	bombTowerButton.setInTexture(Art.yellowButton2In);
+	bombTowerButton.setOutTexture(Art.yellowButton2Out);
+	bombTowerButton.setTowerClass(BombTowerLevel1);
 }
 
 function openLeveLGUI(){
-	restartLevelButton.active = true;
-	returnToMainMenuButton.active = true;
-	towerSelectionBackground.active = true;
-	arrowTowerButton.active = true;
-	beamTowerButton.active = true;
+	restartLevelButton.setActive(true);
+	returnToMainMenuButton.setActive(true);
+	towerSelectionBackground.setActive(true);
+	arrowTowerButton.setActive(true);
+	beamTowerButton.setActive(true);
+	earthquakeTowerButton.setActive(true);
+	bombTowerButton.setActive(true);
 }
 
 function closeLevelGUI(){
-	restartLevelButton.active = false;
-	returnToMainMenuButton.active = false;
-	towerSelectionBackground.active = false;
-	arrowTowerButton.active = false;
-	beamTowerButton.active = false;
+	restartLevelButton.setActive(false);
+	returnToMainMenuButton.setActive(false);
+	towerSelectionBackground.setActive(false);
+	arrowTowerButton.setActive(false);
+	beamTowerButton.setActive(false);
+	earthquakeTowerButton.setActive(false);
+	bombTowerButton.setActive(false);
 }
 
 //Classes
@@ -158,6 +170,10 @@ class GuiComponent{
 	removeFromGame(){
 		let removeIndex = guiList.indexOf(this);
 		if(removeIndex >= 0) guiList.splice(removeIndex, 1);
+	}
+
+	setActive(active){
+		this.active = active;
 	}
 
 	press(){
@@ -305,7 +321,7 @@ class Button extends NineSlice{
 	}
 
 	drawSelf(){
-		if(this.hovered) tint(color("yellow"));
+		//if(this.hovered) tint(color("yellow"));
 		super.drawSelf();
 		if(this.active){
 			fill(255);
@@ -313,29 +329,74 @@ class Button extends NineSlice{
 	 		textSize(this.fontSize);
 	  		textAlign(CENTER, CENTER);
 			text(this.text, this.x + this.w/2, this.y + this.h/2);
+
+			if(this.hovered){
+				fill(color("rgba(255,255,255,.15)"));
+				rect(this.x, this.y, this.w, this.h);
+			}
 		}
-		tint(color("white"));
+		//tint(color("white"));
 	}
 }
 
 
 class TowerSelectButton extends Button{
-	constructor(x, y, w, h, leftMargin = 0, rightMargin = 0, topMargin = 0, bottomMargin = 0, z = 0){
-		super(x, y, w, h, leftMargin, rightMargin, topMargin, bottomMargin, z);
+	constructor(x, y, z = 0){
+		super(x, y, 64, 96, 7, 7, 7, 7, z);
+		this.costComponent = new SpriteAndText(x + this.leftMargin - 15, y + 50, 50, 50, z + 1, Art.goldCoin, "???");
+		this.costComponent.fontSize = 17;
+		this.costComponent.textSeparation = -15;
+		this.costComponent.fontColor = color("yellow");
 	}
 
 	setTowerClass(_towerClass){
 		this.towerClass = _towerClass;
-		this.onClickFunction = function(){
-			beginTowerPlacement(this.towerClass);
+		if(this.towerClass){
+			this.onClickFunction = function(){
+				beginTowerPlacement(this.towerClass);
+			}
+			this.costComponent.text = this.towerClass.price;
 		}
+	}
+
+	setActive(active){
+		super.setActive(active);
+		this.costComponent.setActive(active);
 	}
 
 	drawSelf(){
 		super.drawSelf();
-		if(this.towerClass){
-			let tex = this.towerClass.animationFrames[0];
-			image(tex, this.x, this.y, tex.w, tex.h);
+		if(this.active){
+			if(this.towerClass){
+				let tex = this.towerClass.animationFrames[0];
+				let centerWidth = this.w - this.leftMargin - this.rightMargin;
+				fill(color("rgba(0,0,0,.3)"));
+				rect(this.x + this.leftMargin, this.costComponent.y + (this.fontSize+2)/2, centerWidth, this.fontSize-4);
+				image(tex, this.x + this.leftMargin, this.y + this.topMargin, centerWidth, centerWidth);
+			}
 		}
 	}
 }
+
+class SpriteAndText extends GuiComponent{
+	constructor(x, y, w, h, z = 0, tex = null, text = ""){
+		super(x, y, w, h, z, tex);
+		this.text = text;
+
+		this.fontSize = 25;
+		this.fontColor = color("white");
+		this.textSeparation = 0;
+	}
+
+	drawSelf(){
+		super.drawSelf();
+		if(this.active){
+			fill(255);
+			//textFont(fontKennyThin);
+	 		textSize(this.fontSize);
+	  		textAlign(LEFT, CENTER);
+	  		fill(this.fontColor);
+			text(this.text, this.x + this.w + this.textSeparation, this.y + this.h/2);
+		}
+	}
+}  
