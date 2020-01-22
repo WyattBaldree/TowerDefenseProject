@@ -28,6 +28,8 @@ class Unit{
 		this.animationSpeed = .05;
 		this.flipX = 0;
 		this.flipY = 0;
+		this.drawOffsetX = 0;
+		this.drawOffsetY = 0;
 
 		unitList.push(this);
 	}
@@ -54,7 +56,7 @@ class Unit{
 			translate(this.x + gridScale/2, this.y + gridScale/2);
 			rotate(this.angle);
 			scale(1 - 2 * this.flipX,1 - 2 * this.flipY);
-			image(this.texture, -gridScale/2, -gridScale/2, gridScale, gridScale);
+			image(this.texture, -gridScale/2 + this.drawOffsetX, -gridScale/2 + this.drawOffsetY, gridScale, gridScale);
 			pop();
 		}
 		else{
@@ -72,6 +74,9 @@ class Unit{
 
 	update(){
 		this.updateAnimation();
+
+		this.drawOffsetX = this.drawOffsetX/2;
+		this.drawOffsetY = this.drawOffsetY/2;
 	}
 
 	drawHovered(){

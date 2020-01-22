@@ -1,5 +1,10 @@
 class Player{
-	constructor(startingMoney){
-		this.money = startingMoney;
+	constructor(startingGold){
+		this.gold = startingGold;
+	}
+
+	setGold(gold){
+		this.gold = gold;
+		playerGoldDisplay.text = this.gold;
 	}
 }

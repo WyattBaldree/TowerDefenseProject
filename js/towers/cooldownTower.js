@@ -31,6 +31,14 @@ class CooldownTower extends Tower{
 		if(this.target == null){
 			this.findTarget();
 		}
+		else{
+			if(this.target.x > this.x){
+				this.flipX = 1;
+			}
+			else{
+				this.flipX = 0;
+			}
+		}
 
 		// if we have a target, try to shoot at it.
 		if(this.target != null && this.cooldown <= 0){
@@ -54,9 +62,5 @@ class CooldownTower extends Tower{
 		}
 
 		this.target = finalTarget;
-	}
-
-	drawSelf(){
-		super.drawSelf();
 	}
 }

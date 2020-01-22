@@ -1,8 +1,8 @@
-var gridScale = 30;
+var gridScale = 32;
 var screenWidth = 960;
 var screenHeight = 540;
-var playAreaWidth = 660;
-var playAreaHeight = 540;
+var playAreaWidth = 768;
+var playAreaHeight = 512;
 var playAreaGridWidth = playAreaWidth/gridScale;
 var playAreaGridHeight = playAreaHeight/gridScale;
 
@@ -142,6 +142,14 @@ function drawStep(){
 			break;
 		case 1:
 			drawTowerPlacementGrid();
+
+			// draw the tower we intend to place
+			image(placeTowerClass.animationFrames[0], mouseX - mouseX%gridScale, mouseY - mouseY%gridScale, gridScale, gridScale);
+
+			// draw the range of the tower.
+			stroke(color('rgba(255,255,51, 1)'));
+			fill(color('rgba(255,255,51,.2)'));
+			ellipse(mouseX - mouseX%gridScale + gridScale/2, mouseY - mouseY%gridScale + gridScale/2, placeTowerClass.range * 2 * gridScale);
 			break;
 	}
 	noStroke();
@@ -354,8 +362,8 @@ function spawnInPath(_enemyID, _pathID, pathprogress){
 function placeTower(x, y, towerClass){
 	let cost = towerClass.price;
 
-	if(player.money >= cost && canPlaceTowerHere(x, y)){
-		player.money -= cost;
+	if(player.gold >= cost && canPlaceTowerHere(x, y)){
+		player.setGold(player.gold - cost);
 		new towerClass(x, y);
 	}
 

@@ -65,7 +65,11 @@ class Enemy extends Unit{
 		if(finalDamage < 0){
 			finalDamage = 0;
 		}
-		this.health = preDamageHealth - finalDamage;//this is wrong
+		else{
+			this.drawOffsetX = Math.random()*12 - 6;
+			this.drawOffsetY = Math.random()*12 - 6;
+		}
+		this.health = preDamageHealth - finalDamage;
 		if(this.health <= 0 && preDamageHealth > 0){
 			this.die();
 		}

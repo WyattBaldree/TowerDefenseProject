@@ -87,10 +87,13 @@ function closeLevelSelectMenu(){
 let restartLevelButton;
 let returnToMainMenuButton;
 let towerSelectionBackground;
+let detailsPanelBackground;
 let arrowTowerButton;
 let beamTowerButton;
 let earthquakeTowerButton;
 let bombTowerButton;
+let playerGoldDisplay;
+
 function makeLevelGUI(){
 	restartLevelButton = new Button(0, 0, 60, 30, 5, 5, 5, 5, 1);
 	restartLevelButton.setInTexture(Art.blueButtonIn);
@@ -106,47 +109,57 @@ function makeLevelGUI(){
 	returnToMainMenuButton.fontSize = 15;
 	returnToMainMenuButton.onClickFunction = function(){ setGameState(0) }
 
-	towerSelectionBackground = new NineSlice(playAreaWidth, 0, screenWidth - playAreaWidth, screenHeight, 8, 8, 8, 8, 0, Art.grayBackground);
+	towerSelectionBackground = new NineSlice(playAreaWidth, 280, screenWidth - playAreaWidth, playAreaHeight - 280, 8, 8, 8, 8, 0, Art.grayBackground);
+	detailsPanelBackground = new NineSlice(playAreaWidth, 98, screenWidth - playAreaWidth, playAreaHeight - 98 - (playAreaHeight - 280), 8, 8, 8, 8, 0, Art.grayBackground);
 
-	arrowTowerButton = new TowerSelectButton(playAreaWidth + 20, 20, 1);
+	arrowTowerButton = new TowerSelectButton(playAreaWidth + 20, 300, 1);
 	arrowTowerButton.setInTexture(Art.greenButton2In);
 	arrowTowerButton.setOutTexture(Art.greenButton2Out);
 	arrowTowerButton.setTowerClass(ArrowTowerLevel1);
 
-	beamTowerButton = new TowerSelectButton(playAreaWidth + 20, 150, 1);
+	beamTowerButton = new TowerSelectButton(playAreaWidth + 20, 404, 1);
 	beamTowerButton.setInTexture(Art.blueButton2In);
 	beamTowerButton.setOutTexture(Art.blueButton2Out);
 	beamTowerButton.setTowerClass(BeamTowerLevel1);
 
-	earthquakeTowerButton = new TowerSelectButton(playAreaWidth + 110, 20, 1);
+	earthquakeTowerButton = new TowerSelectButton(playAreaWidth + 110, 300, 1);
 	earthquakeTowerButton.setInTexture(Art.redButton2In);
 	earthquakeTowerButton.setOutTexture(Art.redButton2Out);
 	earthquakeTowerButton.setTowerClass(EarthquakeTowerLevel1);
 
-	bombTowerButton = new TowerSelectButton(playAreaWidth + 110, 150, 1);
+	bombTowerButton = new TowerSelectButton(playAreaWidth + 110, 404, 1);
 	bombTowerButton.setInTexture(Art.yellowButton2In);
 	bombTowerButton.setOutTexture(Art.yellowButton2Out);
 	bombTowerButton.setTowerClass(BombTowerLevel1);
+
+	playerGoldDisplay = new SpriteAndText(playAreaWidth, 20, 50, 50, 1, Art.goldCoin, "???");
+	playerGoldDisplay.fontSize = 17;
+	playerGoldDisplay.textSeparation = -15;
+	playerGoldDisplay.fontColor = color("yellow");
 }
 
 function openLeveLGUI(){
 	restartLevelButton.setActive(true);
 	returnToMainMenuButton.setActive(true);
 	towerSelectionBackground.setActive(true);
+	detailsPanelBackground.setActive(true);
 	arrowTowerButton.setActive(true);
 	beamTowerButton.setActive(true);
 	earthquakeTowerButton.setActive(true);
 	bombTowerButton.setActive(true);
+	playerGoldDisplay.setActive(true);
 }
 
 function closeLevelGUI(){
 	restartLevelButton.setActive(false);
 	returnToMainMenuButton.setActive(false);
 	towerSelectionBackground.setActive(false);
+	detailsPanelBackground.setActive(false);
 	arrowTowerButton.setActive(false);
 	beamTowerButton.setActive(false);
 	earthquakeTowerButton.setActive(false);
 	bombTowerButton.setActive(false);
+	playerGoldDisplay.setActive(false);
 }
 
 //Classes
@@ -342,8 +355,8 @@ class Button extends NineSlice{
 
 class TowerSelectButton extends Button{
 	constructor(x, y, z = 0){
-		super(x, y, 64, 96, 7, 7, 7, 7, z);
-		this.costComponent = new SpriteAndText(x + this.leftMargin - 15, y + 50, 50, 50, z + 1, Art.goldCoin, "???");
+		super(x, y, 64, 90, 7, 7, 7, 7, z);
+		this.costComponent = new SpriteAndText(x + this.leftMargin - 15, y +45, 50, 50, z + 1, Art.goldCoin, "???");
 		this.costComponent.fontSize = 17;
 		this.costComponent.textSeparation = -15;
 		this.costComponent.fontColor = color("yellow");
