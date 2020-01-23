@@ -218,10 +218,6 @@ class GuiGroup{
 			gui.setActive(active);
 		}
 	}
-
-	drawSelf(){
-		//don't do anything.
-	}
 }
 
 class GuiComponent{
@@ -466,45 +462,6 @@ class TowerSelectButton extends GuiGroup{
 		}
 	}
 }
-
-/*class TowerSelectButton extends Button{
-	constructor(x, y, z = 0){
-		super(x, y, 64, 90, 7, 7, 7, 7, z);
-		this.costComponent = new SpriteAndText(x + this.leftMargin - 15, y +45, 50, 50, z + 1, Art.goldCoin, "???");
-		this.costComponent.fontSize = 17;
-		this.costComponent.textSeparation = -15;
-		this.costComponent.fontColor = color("yellow");
-	}
-
-	setTowerClass(_towerClass){
-		this.towerClass = _towerClass;
-		if(this.towerClass){
-			this.onClickFunction = function(){
-				beginTowerPlacement(this.towerClass);
-			}
-			this.costComponent.text = this.towerClass.price;
-		}
-	}
-
-	setActive(active){
-		super.setActive(active);
-		this.costComponent.setActive(active);
-	}
-
-	drawSelf(){
-		super.drawSelf();
-		if(this.active){
-			if(this.towerClass){
-				let tex = this.towerClass.animationFrames[0];
-				let centerWidth = this.w - this.leftMargin - this.rightMargin;
-				fill(color("rgba(0,0,0,.3)"));
-				noStroke();
-				rect(this.x + this.leftMargin, this.costComponent.y + (this.fontSize+2)/2, centerWidth, this.fontSize-4);
-				image(tex, this.x + this.leftMargin, this.y + this.topMargin, centerWidth, centerWidth);
-			}
-		}
-	}
-}*/
 
 class SpriteAndText extends GuiComponent{
 	constructor(x, y, w, h, z = 0, tex = null, text = ""){
