@@ -23,6 +23,7 @@ class Art{
 		Art.yellowButton2In = loadImage('img/yellow_button10.png');
 
 		Art.grayBackground = loadImage('img/grey_panel.png');
+		Art.yellowBackground = loadImage('img/yellow_panel.png');
 		Art.noSprite0 = loadImage('img/noSprite0.png');
 		Art.noSprite1 = loadImage('img/noSprite1.png');
 
@@ -48,6 +49,10 @@ class Art{
 
 		//items
 		Art.goldCoin = loadImage('img/goldCoin.png');
+		Art.goldCoinBig = loadImage('img/goldCoinBig.png');
 		Art.goldCoinStack = loadImage('img/goldCoinStack.png');
+		Art.sword = loadImage('img/sword.png');
+		Art.glasses = loadImage('img/glasses.png');
+		Art.rabbit = loadImage('img/rabbit.png');
 	}
 }

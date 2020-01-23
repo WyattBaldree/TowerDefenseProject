@@ -94,7 +94,7 @@ let towerSelectPanelGuigroup;
 let restartLevelButton;
 let returnToMainMenuButton;
 let towerSelectionBackground;
-let detailsPanelBackground;
+let towerDetailsPanel;
 let arrowTowerButton;
 let beamTowerButton;
 let earthquakeTowerButton;
@@ -125,8 +125,10 @@ function makeLevelGUI(){
 	/////////////Details Panel
 	detailsPanelGuiGroup = new GuiGroup(playAreaWidth, 98);
 
-	detailsPanelBackground = new NineSlice(detailsPanelGuiGroup.x, detailsPanelGuiGroup.y, screenWidth - detailsPanelGuiGroup.x, playAreaHeight - 98 - (playAreaHeight - 280), 8, 8, 8, 8, 0, Art.grayBackground);
-	detailsPanelGuiGroup.addGui(detailsPanelBackground);
+	towerDetailsPanel = new TowerDisplayPanel(detailsPanelGuiGroup.x, detailsPanelGuiGroup.y);
+	towerDetailsPanel.setTowerClass(ArrowTowerLevel1);
+
+	detailsPanelGuiGroup.addGui(towerDetailsPanel);
 
 	/////////////TOWER SELECT PANEL
 	towerSelectPanelGuigroup = new GuiGroup(playAreaWidth, 280);
@@ -476,12 +478,84 @@ class SpriteAndText extends GuiComponent{
 	drawSelf(){
 		super.drawSelf();
 		if(this.active){
-			fill(255);
-			//textFont(fontKennyThin);
+			noStroke();
 	 		textSize(this.fontSize);
 	  		textAlign(LEFT, CENTER);
 	  		fill(this.fontColor);
-			text(this.text, this.x + this.w + this.textSeparation, this.y + this.h/2);
+			text(this.text, this.x + this.w + this.textSeparation, this.y + (this.h + 4)/2);
 		}
 	}
 }  
+
+class TowerDisplayPanel extends GuiGroup{
+	constructor(x, y, z = 0){
+		super(x, y);
+
+		this.towerClass = null;
+
+		let panelWidth = screenWidth - playAreaWidth;
+		let panelHeight = 160;
+
+		let spriteSize = gridScale*2;
+		let textSpriteSize = gridScale;
+
+		let leftMargin = 10;
+		let topMargin = 10;
+		let listYStart = topMargin + spriteSize + 10;
+		let verticalSeparation = 30;
+		let fontColor = color("black");
+		let fontSize = 25;
+
+		this.backgroundComponent = new NineSlice(this.x, this.y, panelWidth, panelHeight, 5, 5, 5, 5, z);
+		this.backgroundComponent.texture = Art.yellowBackground;
+		this.addGui(this.backgroundComponent);
+
+		this.spriteComponent = new GuiComponent(this.x + leftMargin, this.y + topMargin, spriteSize, spriteSize, z + 1);
+		this.addGui(this.spriteComponent);
+
+		this.costComponent = new SpriteAndText(this.x + leftMargin, this.y + listYStart, textSpriteSize, textSpriteSize, z + 2, Art.goldCoinStack, "???");
+		this.costComponent.fontSize = fontSize;
+		this.costComponent.textSeparation = 5;
+		this.costComponent.fontColor = fontColor;
+		this.addGui(this.costComponent);
+
+		this.damageComponent = new SpriteAndText(this.x + leftMargin, this.y + listYStart + verticalSeparation, textSpriteSize, textSpriteSize, z + 2, Art.sword, "???");
+		this.damageComponent.fontSize = fontSize;
+		this.damageComponent.textSeparation = 5;
+		this.damageComponent.fontColor = fontColor;
+		this.addGui(this.damageComponent);
+
+		this.rangeComponent = new SpriteAndText(this.x + panelWidth/2, this.y + listYStart, textSpriteSize, textSpriteSize, z + 2, Art.glasses, "???");
+		this.rangeComponent.fontSize = fontSize;
+		this.rangeComponent.textSeparation = 5;
+		this.rangeComponent.fontColor = fontColor;
+		this.addGui(this.rangeComponent);
+
+		this.speedComponent = new SpriteAndText(this.x + panelWidth/2, this.y + listYStart + verticalSeparation, textSpriteSize, textSpriteSize, z + 2, Art.rabbit, "???");
+		this.speedComponent.fontSize = fontSize;
+		this.speedComponent.textSeparation = 5;
+		this.speedComponent.fontColor = fontColor;
+		this.addGui(this.speedComponent);
+	}
+
+	setOutTexture(tex){
+		this.buttonComponent.outTexture = tex;
+		this.buttonComponent.updateTexture();
+	}
+
+	setInTexture(tex){
+		this.buttonComponent.inTexture = tex;
+		this.buttonComponent.updateTexture();
+	}
+
+	setTowerClass(_towerClass){
+		this.towerClass = _towerClass;
+		if(this.towerClass){
+			this.spriteComponent.texture = this.towerClass.animationFrames[0];
+			this.costComponent.text = this.towerClass.price;
+			this.damageComponent.text = this.towerClass.damage;
+			this.rangeComponent.text = this.towerClass.range;
+			this.speedComponent.text = this.towerClass.speed;
+		}
+	}
+}
