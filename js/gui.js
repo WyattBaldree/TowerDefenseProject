@@ -1,55 +1,59 @@
 ////////////////////////////// MAIN MENU
 
+let mainMenuGuiGroup;
 let mainMenuBackground;
 let mainMenuPlate;
 let mainMenuLogo;
 let mainMenuLevelSelectButton;
 let mainMenuOptionsButton;
 function makeMainMenu(){
+	mainMenuGuiGroup = new GuiGroup(0, 0);
+
 	let bgScale = 1.8;
 	mainMenuBackground = new GuiComponent(0, 0, Art.castleBackground.width * bgScale, Art.castleBackground.height * bgScale, 0, Art.castleBackground);
+	mainMenuGuiGroup.addGui(mainMenuBackground);
 
 	mainMenuPlate = new NineSlice(screenWidth/2 - 120, screenHeight/2 - 70, 240, 260, 8, 8, 8, 8, 1, Art.grayBackground);
+	mainMenuGuiGroup.addGui(mainMenuPlate);
 
 	let logoScale = 1;
 	mainMenuLogo = new GuiComponent(screenWidth/2 - Art.logo.width * logoScale/2, screenHeight/2 - Art.logo.height * logoScale/2 - 100, Art.logo.width * logoScale, Art.logo.height * logoScale, 2, Art.logo);
+	mainMenuGuiGroup.addGui(mainMenuLogo);
 
 	mainMenuLevelSelectButton = new Button(screenWidth/2 - 90, screenHeight/2 + 30, 180, 60, 5, 5, 5, 5, 2);
 	mainMenuLevelSelectButton.setInTexture(Art.blueButtonIn);
 	mainMenuLevelSelectButton.setOutTexture(Art.blueButtonOut);
 	mainMenuLevelSelectButton.text = "Level Select"
 	mainMenuLevelSelectButton.onClickFunction = function(){ setGameState(1); }
+	mainMenuGuiGroup.addGui(mainMenuLevelSelectButton);
 
 	mainMenuOptionsButton = new Button(screenWidth/2 - 90, screenHeight/2 + 100, 180, 60, 5, 5, 5, 5, 2);
 	mainMenuOptionsButton.setInTexture(Art.blueButtonIn);
 	mainMenuOptionsButton.setOutTexture(Art.blueButtonOut);
 	mainMenuOptionsButton.text = "Options"
 	mainMenuOptionsButton.onClickFunction = function(){  }
+	mainMenuGuiGroup.addGui(mainMenuOptionsButton);
 }
 
 function openMainMenu(){
-	mainMenuBackground.setActive(true);
-	mainMenuPlate.setActive(true);
-	mainMenuLogo.setActive(true);
-	mainMenuLevelSelectButton.setActive(true);
-	mainMenuOptionsButton.setActive(true);
+	mainMenuGuiGroup.setActive(true);
 }
 
 function closeMainMenu(){
-	mainMenuBackground.setActive(false);
-	mainMenuPlate.setActive(false);
-	mainMenuLogo.setActive(false);
-	mainMenuLevelSelectButton.setActive(false);
-	mainMenuOptionsButton.setActive(false);
+	mainMenuGuiGroup.setActive(false);
 }
 
 ////////////////////////////LEVEL SELECT SCREEN
 
+let levelSelectGuiGroup;
 let levelSelectBackground;
 let level1Button;
 let level2Button;
 function makeLevelSelectMenu(){
+	levelSelectGuiGroup = new GuiGroup(0, 0);
+
 	levelSelectBackground = new NineSlice(0, 0, screenWidth, screenHeight, 8, 8, 8, 8, 0, Art.grayBackground);
+	levelSelectGuiGroup.addGui(levelSelectBackground);
 
 	level1Button = new Button(90, 90, 60, 60, 5, 5, 5, 5, 1);
 	level1Button.setInTexture(Art.blueButton2In);
@@ -59,6 +63,7 @@ function makeLevelSelectMenu(){
 		setLevel(0);
 		setGameState(2);
 	}
+	levelSelectGuiGroup.addGui(level1Button);
 
 	level2Button = new Button(180, 90, 60, 60, 5, 5, 5, 5, 1);
 	level2Button.setInTexture(Art.blueButton2In);
@@ -68,21 +73,23 @@ function makeLevelSelectMenu(){
 		setLevel(1);
 		setGameState(2);
 	}
+	levelSelectGuiGroup.addGui(level2Button);
 }
 
 function openLevelSelectMenu(){
-	levelSelectBackground.setActive(true);
-	level1Button.setActive(true);
-	level2Button.setActive(true);
+	levelSelectGuiGroup.setActive(true);
 }
 
 function closeLevelSelectMenu(){
-	levelSelectBackground.setActive(false);
-	level1Button.setActive(false);
-	level2Button.setActive(false);
+	levelSelectGuiGroup.setActive(false);
 }
 
 ////////////////////////////// LEVEL GUI (main game gui)
+
+//Groups
+let menuButtonsGuiGroup;
+let detailsPanelGuiGroup;
+let towerSelectPanelGuigroup;
 
 let restartLevelButton;
 let returnToMainMenuButton;
@@ -95,76 +102,127 @@ let bombTowerButton;
 let playerGoldDisplay;
 
 function makeLevelGUI(){
-	restartLevelButton = new Button(0, 0, 60, 30, 5, 5, 5, 5, 1);
+
+	/////////////MENU BUTTONS
+	menuButtonsGuiGroup = new GuiGroup(0, 0);
+
+	restartLevelButton = new Button(menuButtonsGuiGroup.x + 10, menuButtonsGuiGroup.y + 10, 60, 30, 5, 5, 5, 5, 1);
 	restartLevelButton.setInTexture(Art.blueButtonIn);
 	restartLevelButton.setOutTexture(Art.blueButtonOut);
 	restartLevelButton.text = "Restart";
 	restartLevelButton.fontSize = 15;
 	restartLevelButton.onClickFunction = function(){ startLevel() }
+	menuButtonsGuiGroup.addGui(restartLevelButton);
 
-	returnToMainMenuButton = new Button(90, 0, 60, 30, 5, 5, 5, 5, 1);
+	returnToMainMenuButton = new Button(menuButtonsGuiGroup.x + 100, menuButtonsGuiGroup.y + 10, 60, 30, 5, 5, 5, 5, 1);
 	returnToMainMenuButton.setInTexture(Art.blueButtonIn);
 	returnToMainMenuButton.setOutTexture(Art.blueButtonOut);
 	returnToMainMenuButton.text = "Main";
 	returnToMainMenuButton.fontSize = 15;
 	returnToMainMenuButton.onClickFunction = function(){ setGameState(0) }
+	menuButtonsGuiGroup.addGui(returnToMainMenuButton);
 
-	towerSelectionBackground = new NineSlice(playAreaWidth, 280, screenWidth - playAreaWidth, playAreaHeight - 280, 8, 8, 8, 8, 0, Art.grayBackground);
-	detailsPanelBackground = new NineSlice(playAreaWidth, 98, screenWidth - playAreaWidth, playAreaHeight - 98 - (playAreaHeight - 280), 8, 8, 8, 8, 0, Art.grayBackground);
+	/////////////Details Panel
+	detailsPanelGuiGroup = new GuiGroup(playAreaWidth, 98);
 
-	arrowTowerButton = new TowerSelectButton(playAreaWidth + 20, 300, 1);
+	detailsPanelBackground = new NineSlice(detailsPanelGuiGroup.x, detailsPanelGuiGroup.y, screenWidth - detailsPanelGuiGroup.x, playAreaHeight - 98 - (playAreaHeight - 280), 8, 8, 8, 8, 0, Art.grayBackground);
+	detailsPanelGuiGroup.addGui(detailsPanelBackground);
+
+	/////////////TOWER SELECT PANEL
+	towerSelectPanelGuigroup = new GuiGroup(playAreaWidth, 280);
+
+	towerSelectionBackground = new NineSlice(towerSelectPanelGuigroup.x, towerSelectPanelGuigroup.y, screenWidth - towerSelectPanelGuigroup.x, playAreaHeight - 280, 8, 8, 8, 8, 0, Art.grayBackground);
+	towerSelectPanelGuigroup.addGui(towerSelectionBackground);
+
+	arrowTowerButton = new TowerSelectButton(towerSelectPanelGuigroup.x + 20, towerSelectPanelGuigroup.y + 20, 1);
 	arrowTowerButton.setInTexture(Art.greenButton2In);
 	arrowTowerButton.setOutTexture(Art.greenButton2Out);
 	arrowTowerButton.setTowerClass(ArrowTowerLevel1);
+	towerSelectPanelGuigroup.addGui(arrowTowerButton);
 
-	beamTowerButton = new TowerSelectButton(playAreaWidth + 20, 404, 1);
+	beamTowerButton = new TowerSelectButton(towerSelectPanelGuigroup.x + 20, towerSelectPanelGuigroup.y + 124, 1);
 	beamTowerButton.setInTexture(Art.blueButton2In);
 	beamTowerButton.setOutTexture(Art.blueButton2Out);
 	beamTowerButton.setTowerClass(BeamTowerLevel1);
+	towerSelectPanelGuigroup.addGui(beamTowerButton);
 
-	earthquakeTowerButton = new TowerSelectButton(playAreaWidth + 110, 300, 1);
+	earthquakeTowerButton = new TowerSelectButton(towerSelectPanelGuigroup.x + 110, towerSelectPanelGuigroup.y + 20, 1);
 	earthquakeTowerButton.setInTexture(Art.redButton2In);
 	earthquakeTowerButton.setOutTexture(Art.redButton2Out);
 	earthquakeTowerButton.setTowerClass(EarthquakeTowerLevel1);
+	towerSelectPanelGuigroup.addGui(earthquakeTowerButton);
 
-	bombTowerButton = new TowerSelectButton(playAreaWidth + 110, 404, 1);
+	bombTowerButton = new TowerSelectButton(towerSelectPanelGuigroup.x + 110, towerSelectPanelGuigroup.y + 124, 1);
 	bombTowerButton.setInTexture(Art.yellowButton2In);
 	bombTowerButton.setOutTexture(Art.yellowButton2Out);
 	bombTowerButton.setTowerClass(BombTowerLevel1);
+	towerSelectPanelGuigroup.addGui(bombTowerButton);
 
 	playerGoldDisplay = new SpriteAndText(playAreaWidth, 20, 50, 50, 1, Art.goldCoin, "???");
 	playerGoldDisplay.fontSize = 17;
 	playerGoldDisplay.textSeparation = -15;
 	playerGoldDisplay.fontColor = color("yellow");
+	towerSelectPanelGuigroup.addGui(playerGoldDisplay);
 }
 
 function openLeveLGUI(){
-	restartLevelButton.setActive(true);
-	returnToMainMenuButton.setActive(true);
-	towerSelectionBackground.setActive(true);
-	detailsPanelBackground.setActive(true);
-	arrowTowerButton.setActive(true);
-	beamTowerButton.setActive(true);
-	earthquakeTowerButton.setActive(true);
-	bombTowerButton.setActive(true);
-	playerGoldDisplay.setActive(true);
+	menuButtonsGuiGroup.setActive(true);
+	detailsPanelGuiGroup.setActive(true);
+	towerSelectPanelGuigroup.setActive(true);
 }
 
 function closeLevelGUI(){
-	restartLevelButton.setActive(false);
-	returnToMainMenuButton.setActive(false);
-	towerSelectionBackground.setActive(false);
-	detailsPanelBackground.setActive(false);
-	arrowTowerButton.setActive(false);
-	beamTowerButton.setActive(false);
-	earthquakeTowerButton.setActive(false);
-	bombTowerButton.setActive(false);
-	playerGoldDisplay.setActive(false);
+	menuButtonsGuiGroup.setActive(false);
+	detailsPanelGuiGroup.setActive(false);
+	towerSelectPanelGuigroup.setActive(false);
 }
 
 //Classes
 
 var guiList = new Array(); //holds all guis
+
+
+
+class GuiGroup{
+	constructor(x, y){
+		this.x = x;
+		this.y = y;
+		this.guiList = [];
+	}
+
+	addGui(gui){
+		this.guiList.push(gui);
+		gui.parent = this;
+	}
+
+	setX(x){
+		let deltaX = x - this.x;
+		this.x = x;
+
+		for(let gui of this.guiList){
+			gui.setX(gui.x + deltaX);
+		}
+	}
+
+	setY(y){
+		let deltaY = y - this.y;
+		this.y = y;
+
+		for(let gui of this.guiList){
+			gui.setY(gui.y + deltaY);
+		}
+	}
+
+	setActive(active){
+		for(let gui of this.guiList){
+			gui.setActive(active);
+		}
+	}
+
+	drawSelf(){
+		//don't do anything.
+	}
+}
 
 class GuiComponent{
 	constructor(x, y, w, h, z = 0, tex = null){
@@ -176,17 +234,27 @@ class GuiComponent{
 		this.texture = tex;
 		this.hovered = false;
 		this.active = true;
+		this.drawColor = color("black");
+		this.parent = null;
 		guiList.push(this);
 		guiList.sort((a, b) => (a.z > b.z) ? 1 : -1);
+	}
+
+	setX(x){
+		this.x = x;
+	}
+
+	setY(y){
+		this.y = y;
+	}
+
+	setActive(active){
+		this.active = active;
 	}
 
 	removeFromGame(){
 		let removeIndex = guiList.indexOf(this);
 		if(removeIndex >= 0) guiList.splice(removeIndex, 1);
-	}
-
-	setActive(active){
-		this.active = active;
 	}
 
 	press(){
@@ -212,9 +280,8 @@ class GuiComponent{
 			image(this.texture, this.x, this.y, this.w, this.h);
 		}
 		else{
-			noFill();
-			strokeWeight(1);
-			stroke(color("black"));
+			noStroke();
+			fill(this.drawColor);
 			rect(this.x, this.y, this.w, this.h);
 		}
 	}
@@ -353,8 +420,54 @@ class Button extends NineSlice{
 	}
 }
 
+class TowerSelectButton extends GuiGroup{
+	constructor(x, y, z = 0){
+		super(x, y);
 
-class TowerSelectButton extends Button{
+		this.towerClass = null;
+
+		this.buttonComponent = new Button(x, y, 64, 90, 7, 7, 7, 7, z);
+		this.addGui(this.buttonComponent);
+
+		let centerWidth = this.buttonComponent.w - this.buttonComponent.leftMargin - this.buttonComponent.rightMargin;
+
+		this.spriteComponent = new GuiComponent(this.buttonComponent.x + this.buttonComponent.leftMargin, this.buttonComponent.y + this.buttonComponent.topMargin, centerWidth, centerWidth, z + 1);
+		this.addGui(this.spriteComponent);
+
+		this.costComponent = new SpriteAndText(x + this.buttonComponent.leftMargin - 15, y +45, 50, 50, z + 2, Art.goldCoin, "???");
+		this.costComponent.fontSize = 17;
+		this.costComponent.textSeparation = -15;
+		this.costComponent.fontColor = color("yellow");
+		this.addGui(this.costComponent);
+
+		this.spriteTextBackgroundComponent = new GuiComponent(this.buttonComponent.x + this.buttonComponent.leftMargin, this.costComponent.y + (this.buttonComponent.fontSize+2)/2, centerWidth, this.buttonComponent.fontSize-4, z + 1);
+		this.spriteTextBackgroundComponent.drawColor = color("rgba(0,0,0,.3)");
+		this.addGui(this.spriteTextBackgroundComponent);
+	}
+
+	setOutTexture(tex){
+		this.buttonComponent.outTexture = tex;
+		this.buttonComponent.updateTexture();
+	}
+
+	setInTexture(tex){
+		this.buttonComponent.inTexture = tex;
+		this.buttonComponent.updateTexture();
+	}
+
+	setTowerClass(_towerClass){
+		this.towerClass = _towerClass;
+		if(this.towerClass){
+			this.buttonComponent.onClickFunction = function(){
+				beginTowerPlacement(this.parent.towerClass);
+			}
+			this.costComponent.text = this.towerClass.price;
+			this.spriteComponent.texture = this.towerClass.animationFrames[0];
+		}
+	}
+}
+
+/*class TowerSelectButton extends Button{
 	constructor(x, y, z = 0){
 		super(x, y, 64, 90, 7, 7, 7, 7, z);
 		this.costComponent = new SpriteAndText(x + this.leftMargin - 15, y +45, 50, 50, z + 1, Art.goldCoin, "???");
@@ -391,7 +504,7 @@ class TowerSelectButton extends Button{
 			}
 		}
 	}
-}
+}*/
 
 class SpriteAndText extends GuiComponent{
 	constructor(x, y, w, h, z = 0, tex = null, text = ""){
