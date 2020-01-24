@@ -29,6 +29,8 @@ let solidBlockArray;
 
 let fontKenny;
 let fontKennyThin;
+let fontVCR;
+let fontMinecraft;
 
 // load all artwork and json data before the game begins.
 function preload(){
@@ -38,6 +40,8 @@ function preload(){
 
 	fontKenny = loadFont('font/kenvector_future.ttf');
 	fontKennyThin = loadFont('font/kenvector_future_thin.ttf');
+	fontVCR = loadFont('font/VCR_OSD_MONO_1.001.ttf');
+	fontMinecraft = loadFont('font/Minecraft.ttf');
 
 	Art.loadArt();
 }
@@ -254,6 +258,7 @@ function mousePressed(event) {
 				// When we click a grid space with a tower, selectedUnit is set to that tower. Else selectedUnit becomes null;
 				if(hoveredTower != null){
 					selectedUnit = hoveredTower;
+					towerDetailsPanel.setTowerClass(selectedUnit.getClass());
 				}
 				else{
 					selectedUnit = null;
@@ -389,6 +394,7 @@ function placeTower(x, y, towerClass){
 function beginTowerPlacement(towerClass){
 	controlMode = 1; //How we are currently controlling the game. 0 - normal, 1 - placing tower
 	placeTowerClass = towerClass; // Which tower we are currently trying to place.
+	towerDetailsPanel.setTowerClass(towerClass);
 }
 
 function setLevel(i){

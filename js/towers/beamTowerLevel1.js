@@ -2,7 +2,7 @@ class BeamTowerLevel1 extends CooldownTower{
 	static initializeClass(){
 		let classRef = this;
 		classRef.animationFrames = [Art.mage0, Art.mage1];
-		classRef.unitName = "Beam Tower";
+		classRef.unitName = "Mage LV.1";
 		classRef.description = "Beam Tower";
 		classRef.range = 4;
 		classRef.damage = 1;

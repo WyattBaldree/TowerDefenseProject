@@ -46,6 +46,10 @@ class Unit{
 		return this.constructor.animationFrames;
 	}
 
+	getClass(){
+		return this.constructor;
+	}
+
 	drawSelf(){
 		if(this.texture){
 			push();

@@ -2,7 +2,7 @@ class BombTowerLevel1 extends CooldownTower{
 	static initializeClass(){
 		let classRef = this;
 		classRef.animationFrames = [Art.engineer0, Art.engineer1];
-		classRef.unitName = "Bomb Tower";
+		classRef.unitName = "Engineer LV.1";
 		classRef.description = "Bomb Tower";
 		classRef.range = 3;
 		classRef.damage = 4;
