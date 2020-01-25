@@ -123,7 +123,7 @@ function makeLevelGUI(){
 	menuButtonsGuiGroup.addGui(returnToMainMenuButton);
 
 	/////////////Details Panel
-	detailsPanelGuiGroup = new GuiGroup(playAreaWidth, 98);
+	detailsPanelGuiGroup = new GuiGroup(playAreaWidth, 120);
 
 	towerDetailsPanel = new TowerDisplayPanel(detailsPanelGuiGroup.x, detailsPanelGuiGroup.y);
 	towerDetailsPanel.setTowerClass(ArrowTowerLevel1);
