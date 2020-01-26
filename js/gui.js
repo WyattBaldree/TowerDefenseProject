@@ -101,6 +101,8 @@ let earthquakeTowerButton;
 let bombTowerButton;
 let playerGoldDisplay;
 
+let sampleTextBox;
+
 function makeLevelGUI(){
 
 	/////////////MENU BUTTONS
@@ -165,6 +167,7 @@ function makeLevelGUI(){
 	playerGoldDisplay.textSeparation = -15;
 	playerGoldDisplay.fontColor = color("yellow");
 	towerSelectPanelGuigroup.addGui(playerGoldDisplay);
+
 }
 
 function openLeveLGUI(){
@@ -588,6 +591,11 @@ class TowerDisplayPanel extends GuiGroup{
 		this.speedComponentBackground = new GuiComponent(this.x + panelWidth/2 + sideMargin, this.y + listYStart + verticalSeparation + (textSpriteSize - textBackgroundSize)/2, panelWidth/2 - sideMargin*2, textBackgroundSize, z + 2);
 		this.speedComponentBackground.drawColor = textBackgroundColor;
 		this.addGui(this.speedComponentBackground);
+
+		this.descriptionTextBox = new TextBox(this.x + sideMargin, this.y + topMargin + spriteSize, panelWidth - 2*sideMargin, 100, "", 1);
+		this.descriptionTextBox.fontSize = 14;
+		this.descriptionTextBox.fontColor = color("black");
+		this.addGui(this.descriptionTextBox);
 	}
 
 	setOutTexture(tex){
@@ -609,6 +617,63 @@ class TowerDisplayPanel extends GuiGroup{
 			this.rangeComponent.text = this.towerClass.range;
 			this.speedComponent.text = this.towerClass.speed;
 			this.titleComponent.text = this.towerClass.unitName;
+			this.descriptionTextBox.setText(this.towerClass.description);
+		}
+	}
+}
+
+class TextBox extends GuiComponent{
+	constructor(x, y, w, h, text = "", z = 0){
+		super(x, y, w, h, z, null);
+		this.textLines = [];
+		this.font = fontMinecraft;
+		this.fontSize = 25;
+		this.fontColor = color("white");
+		this.setText(text);
+	}
+
+	setText(text){
+		this.textLines = [];
+		let currentLineIndex = 0;
+		let currentLine = "";
+		let thisLineHasSpace = false;
+		for(let i = 0 ; i < text.length ; i++){
+			thisLineHasSpace = (thisLineHasSpace || text[i] == " ");
+			let potentialNewString = currentLine + text[i];
+			let potentialNewStringBB = this.font.textBounds(potentialNewString, 0, 0, this.fontSize);
+			if(potentialNewStringBB.w > this.w){
+				//save what we've got and go to the next line
+				this.textLines[currentLineIndex] = currentLine;
+				if(text[i] != " " && thisLineHasSpace){
+					while(i > 0 && text[i] != " "){
+						i--;
+						this.textLines[currentLineIndex] = this.textLines[currentLineIndex].slice(0, this.textLines[currentLineIndex].length - 1);
+					}
+				}
+				currentLine = "";
+				currentLineIndex++;
+				thisLineHasSpace = false;
+			}
+			else{
+				//add to our current line
+				currentLine += text[i];
+			}
+		}
+
+		this.textLines[currentLineIndex] = currentLine;
+		
+	}
+
+	drawSelf(){
+		if(this.active){
+			textFont(this.font);
+			textSize(this.fontSize);
+			noStroke();
+			fill(this.fontColor);
+	  		textAlign(LEFT, TOP);
+			for(let i = 0 ; i < this.textLines.length ; i++){
+				text(this.textLines[i], this.x, this.y + i*this.fontSize);
+			}
 		}
 	}
 }

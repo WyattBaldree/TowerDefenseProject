@@ -3,7 +3,7 @@ class ArrowTowerLevel1 extends CooldownTower{
 		let classRef = this;
 		classRef.animationFrames = [Art.archer0, Art.archer1];
 		classRef.unitName = "Archer LV.1";
-		classRef.description = "Arrow tower";
+		classRef.description = "This is an arrow tower. This is an arrow tower. This is an arrow tower. This is an arrow tower. This is an arrow tower. ";
 		classRef.range = 3;
 		classRef.damage = 4;
 		classRef.speed = 3;
