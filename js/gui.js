@@ -528,7 +528,7 @@ class TowerDisplayPanel extends GuiGroup{
 		let fontColor = color("white");
 		let textBackgroundColor = color("rgba(0,0,0,.3)");
 		let textBoxHeight = 60;
-		let textBoxFontSize = 14;
+		let textBoxFontSize = 13;
 		let innerMargin = 4;
 
 		let statBoxesYStart = topMargin + spriteSize + 2*innerMargin + textBoxHeight + 2*innerMargin;
