@@ -596,7 +596,7 @@ class TowerDisplayPanel extends GuiGroup{
 		this.damageComponentBackground.drawColor = textBackgroundColor;
 		this.addGui(this.damageComponentBackground);
 
-		this.rangeComponent = new SpriteAndText(this.x + panelWidth/2 + innerMargin, this.y + statBoxesYStart + statBoxOffset, textSpriteSize, textSpriteSize, z + 2, Art.glasses, "???");
+		this.rangeComponent = new SpriteAndText(this.x + panelWidth/2 + innerMargin, this.y + statBoxesYStart + statBoxOffset, textSpriteSize, textSpriteSize, z + 2, Art.eyeball, "???");
 		this.rangeComponent.fontSize = fontSize;
 		this.rangeComponent.textSeparation = innerMargin;
 		this.rangeComponent.fontColor = fontColor;
@@ -606,7 +606,7 @@ class TowerDisplayPanel extends GuiGroup{
 		this.rangeComponentBackground.drawColor = textBackgroundColor;
 		this.addGui(this.rangeComponentBackground);
 
-		this.speedComponent = new SpriteAndText(this.x + panelWidth/2 + innerMargin, this.y + statBoxesYStart + textBackgroundSize + innerMargin + statBoxOffset, textSpriteSize, textSpriteSize, z + 2, Art.rabbit, "???");
+		this.speedComponent = new SpriteAndText(this.x + panelWidth/2 + innerMargin, this.y + statBoxesYStart + textBackgroundSize + innerMargin + statBoxOffset, textSpriteSize, textSpriteSize, z + 2, Art.ninjaStar, "???");
 		this.speedComponent.fontSize = fontSize;
 		this.speedComponent.textSeparation = innerMargin;
 		this.speedComponent.fontColor = fontColor;
