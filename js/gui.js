@@ -125,7 +125,7 @@ function makeLevelGUI(){
 	menuButtonsGuiGroup.addGui(returnToMainMenuButton);
 
 	/////////////Details Panel
-	detailsPanelGuiGroup = new GuiGroup(playAreaWidth, 120);
+	detailsPanelGuiGroup = new GuiGroup(playAreaWidth, 100);
 
 	towerDetailsPanel = new TowerDisplayPanel(detailsPanelGuiGroup.x, detailsPanelGuiGroup.y);
 	towerDetailsPanel.setTowerClass(ArrowTowerLevel1);
@@ -518,19 +518,23 @@ class TowerDisplayPanel extends GuiGroup{
 		this.towerClass = null;
 
 		let panelWidth = screenWidth - playAreaWidth;
-		let panelHeight = 160;
+		let panelHeight = 180;
 
 		let spriteSize = gridScale;
 		let textSpriteSize = gridScale;
 
 		let sideMargin = 10;
 		let topMargin = 10;
-		let listYStart = topMargin + spriteSize + 46;
 		let verticalSeparation = 32;
 		let fontColor = color("white");
 		let fontSize = 16;
 		let textBackgroundColor = color("rgba(0,0,0,.3)");
 		let textBackgroundSize = textSpriteSize - 4;
+		let textBoxHeight = 50;
+		let textBoxFontSize = 14;
+
+
+		let statBoxesYStart = topMargin + spriteSize + topMargin+ textBoxHeight + topMargin;
 
 		this.backgroundComponent = new NineSlice(this.x, this.y, panelWidth, panelHeight, 5, 5, 5, 5, z);
 		this.backgroundComponent.texture = Art.yellowBackground;
@@ -552,49 +556,49 @@ class TowerDisplayPanel extends GuiGroup{
 		this.spriteComponentBackground.drawColor = textBackgroundColor;
 		this.addGui(this.spriteComponentBackground);
 
-		this.costComponent = new SpriteAndText(this.x + sideMargin, this.y + listYStart, textSpriteSize, textSpriteSize, z + 2, Art.goldCoinStack, "???");
+		this.costComponent = new SpriteAndText(this.x + sideMargin, this.y + statBoxesYStart, textSpriteSize, textSpriteSize, z + 2, Art.goldCoinStack, "???");
 		this.costComponent.fontSize = fontSize;
 		this.costComponent.textSeparation = 3;
 		this.costComponent.fontColor = fontColor;
 		this.addGui(this.costComponent);
 
-		this.costComponentBackground = new GuiComponent(this.x + sideMargin, this.y + listYStart + (textSpriteSize - textBackgroundSize)/2, panelWidth/2 - sideMargin*2, textBackgroundSize, z + 2);
+		this.costComponentBackground = new GuiComponent(this.x + sideMargin, this.y + statBoxesYStart + (textSpriteSize - textBackgroundSize)/2, panelWidth/2 - sideMargin*2, textBackgroundSize, z + 2);
 		this.costComponentBackground.drawColor = textBackgroundColor;
 		this.addGui(this.costComponentBackground);
 
-		this.damageComponent = new SpriteAndText(this.x + sideMargin, this.y + listYStart + verticalSeparation, textSpriteSize, textSpriteSize, z + 2, Art.sword, "???");
+		this.damageComponent = new SpriteAndText(this.x + sideMargin, this.y + statBoxesYStart + verticalSeparation, textSpriteSize, textSpriteSize, z + 2, Art.sword, "???");
 		this.damageComponent.fontSize = fontSize;
 		this.damageComponent.textSeparation = 3;
 		this.damageComponent.fontColor = fontColor;
 		this.addGui(this.damageComponent);
 
-		this.damageComponentBackground = new GuiComponent(this.x + sideMargin, this.y + listYStart + verticalSeparation + (textSpriteSize - textBackgroundSize)/2, panelWidth/2 - sideMargin*2, textBackgroundSize, z + 2);
+		this.damageComponentBackground = new GuiComponent(this.x + sideMargin, this.y + statBoxesYStart + verticalSeparation + (textSpriteSize - textBackgroundSize)/2, panelWidth/2 - sideMargin*2, textBackgroundSize, z + 2);
 		this.damageComponentBackground.drawColor = textBackgroundColor;
 		this.addGui(this.damageComponentBackground);
 
-		this.rangeComponent = new SpriteAndText(this.x + panelWidth/2 + sideMargin, this.y + listYStart, textSpriteSize, textSpriteSize, z + 2, Art.glasses, "???");
+		this.rangeComponent = new SpriteAndText(this.x + panelWidth/2 + sideMargin, this.y + statBoxesYStart, textSpriteSize, textSpriteSize, z + 2, Art.glasses, "???");
 		this.rangeComponent.fontSize = fontSize;
 		this.rangeComponent.textSeparation = 3;
 		this.rangeComponent.fontColor = fontColor;
 		this.addGui(this.rangeComponent);
 
-		this.rangeComponentBackground = new GuiComponent(this.x + panelWidth/2 + sideMargin, this.y + listYStart + (textSpriteSize - textBackgroundSize)/2, panelWidth/2 - sideMargin*2, textBackgroundSize, z + 2);
+		this.rangeComponentBackground = new GuiComponent(this.x + panelWidth/2 + sideMargin, this.y + statBoxesYStart + (textSpriteSize - textBackgroundSize)/2, panelWidth/2 - sideMargin*2, textBackgroundSize, z + 2);
 		this.rangeComponentBackground.drawColor = textBackgroundColor;
 		this.addGui(this.rangeComponentBackground);
 
-		this.speedComponent = new SpriteAndText(this.x + panelWidth/2 + sideMargin, this.y + listYStart + verticalSeparation, textSpriteSize, textSpriteSize, z + 2, Art.rabbit, "???");
+		this.speedComponent = new SpriteAndText(this.x + panelWidth/2 + sideMargin, this.y + statBoxesYStart + verticalSeparation, textSpriteSize, textSpriteSize, z + 2, Art.rabbit, "???");
 		this.speedComponent.fontSize = fontSize;
 		this.speedComponent.textSeparation = 3;
 		this.speedComponent.fontColor = fontColor;
 		this.addGui(this.speedComponent);
 
-		this.speedComponentBackground = new GuiComponent(this.x + panelWidth/2 + sideMargin, this.y + listYStart + verticalSeparation + (textSpriteSize - textBackgroundSize)/2, panelWidth/2 - sideMargin*2, textBackgroundSize, z + 2);
+		this.speedComponentBackground = new GuiComponent(this.x + panelWidth/2 + sideMargin, this.y + statBoxesYStart + verticalSeparation + (textSpriteSize - textBackgroundSize)/2, panelWidth/2 - sideMargin*2, textBackgroundSize, z + 2);
 		this.speedComponentBackground.drawColor = textBackgroundColor;
 		this.addGui(this.speedComponentBackground);
 
-		this.descriptionTextBox = new TextBox(this.x + sideMargin, this.y + topMargin + spriteSize, panelWidth - 2*sideMargin, 100, "", 1);
-		this.descriptionTextBox.fontSize = 14;
-		this.descriptionTextBox.fontColor = color("black");
+		this.descriptionTextBox = new TextBox(this.x + sideMargin, this.y + topMargin + spriteSize + topMargin, panelWidth - 2*sideMargin, textBoxHeight, "", 1);
+		this.descriptionTextBox.fontSize = textBoxFontSize;
+		this.descriptionTextBox.fontColor = fontColor;
 		this.addGui(this.descriptionTextBox);
 	}
 
@@ -666,14 +670,19 @@ class TextBox extends GuiComponent{
 
 	drawSelf(){
 		if(this.active){
-			textFont(this.font);
-			textSize(this.fontSize);
-			noStroke();
-			fill(this.fontColor);
-	  		textAlign(LEFT, TOP);
+			let pg = createGraphics(this.w, this.h);
+			pg.textFont(this.font);
+			pg.textSize(this.fontSize);
+			pg.noStroke();
+			pg.fill(this.fontColor);
+	  		pg.textAlign(LEFT, TOP);
+
+
 			for(let i = 0 ; i < this.textLines.length ; i++){
-				text(this.textLines[i], this.x, this.y + i*this.fontSize);
+				pg.text(this.textLines[i], 0, 0 + i*this.fontSize);
 			}
+
+			image(pg, this.x, this.y);
 		}
 	}
 }
