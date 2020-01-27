@@ -525,81 +525,96 @@ class TowerDisplayPanel extends GuiGroup{
 
 		let sideMargin = 10;
 		let topMargin = 10;
-		let verticalSeparation = 32;
 		let fontColor = color("white");
-		let fontSize = 16;
 		let textBackgroundColor = color("rgba(0,0,0,.3)");
-		let textBackgroundSize = textSpriteSize - 4;
-		let textBoxHeight = 50;
+		let textBoxHeight = 60;
 		let textBoxFontSize = 14;
+		let innerMargin = 4;
 
+		let statBoxesYStart = topMargin + spriteSize + 2*innerMargin + textBoxHeight + 2*innerMargin;
+		let statBoxesVerticalSeparation = 32;
+		let statBoxOffset = -4;
+		let fontSize = 16;
+		let textBackgroundSize = 25;
 
-		let statBoxesYStart = topMargin + spriteSize + topMargin+ textBoxHeight + topMargin;
+		//background
 
 		this.backgroundComponent = new NineSlice(this.x, this.y, panelWidth, panelHeight, 5, 5, 5, 5, z);
 		this.backgroundComponent.texture = Art.yellowBackground;
 		this.addGui(this.backgroundComponent);
 
+		//sprite
+
 		this.spriteComponent = new GuiComponent(this.x + sideMargin, this.y + topMargin, spriteSize, spriteSize, z + 1);
 		this.addGui(this.spriteComponent);
-
-		this.titleComponent = new TextComponent(this.x + sideMargin*2 + spriteSize+5, this.y + topMargin + 7, z + 2, "title");
-		this.titleComponent.fontSize = fontSize;
-		this.titleComponent.fontColor = fontColor;
-		this.addGui(this.titleComponent);
-
-		this.titleComponentBackground = new GuiComponent(this.x + sideMargin*2 + spriteSize, this.y + topMargin, panelWidth - sideMargin*3 - spriteSize, textBackgroundSize, z + 1);
-		this.titleComponentBackground.drawColor = textBackgroundColor;
-		this.addGui(this.titleComponentBackground);
 
 		this.spriteComponentBackground = new GuiComponent(this.x + sideMargin, this.y + topMargin, spriteSize, spriteSize, z + 1);
 		this.spriteComponentBackground.drawColor = textBackgroundColor;
 		this.addGui(this.spriteComponentBackground);
 
-		this.costComponent = new SpriteAndText(this.x + sideMargin, this.y + statBoxesYStart, textSpriteSize, textSpriteSize, z + 2, Art.goldCoinStack, "???");
-		this.costComponent.fontSize = fontSize;
-		this.costComponent.textSeparation = 3;
-		this.costComponent.fontColor = fontColor;
-		this.addGui(this.costComponent);
+		//title
 
-		this.costComponentBackground = new GuiComponent(this.x + sideMargin, this.y + statBoxesYStart + (textSpriteSize - textBackgroundSize)/2, panelWidth/2 - sideMargin*2, textBackgroundSize, z + 2);
-		this.costComponentBackground.drawColor = textBackgroundColor;
-		this.addGui(this.costComponentBackground);
+		this.titleComponent = new TextComponent(this.x + sideMargin + spriteSize + innerMargin*2, this.y + topMargin + innerMargin, z + 2, "title");
+		this.titleComponent.fontSize = fontSize;
+		this.titleComponent.fontColor = fontColor;
+		this.addGui(this.titleComponent);
 
-		this.damageComponent = new SpriteAndText(this.x + sideMargin, this.y + statBoxesYStart + verticalSeparation, textSpriteSize, textSpriteSize, z + 2, Art.sword, "???");
-		this.damageComponent.fontSize = fontSize;
-		this.damageComponent.textSeparation = 3;
-		this.damageComponent.fontColor = fontColor;
-		this.addGui(this.damageComponent);
+		this.titleComponentBackground = new GuiComponent(this.x + sideMargin + spriteSize + innerMargin, this.y + topMargin, panelWidth - sideMargin*2 - innerMargin - spriteSize, fontSize + innerMargin, z + 1);
+		this.titleComponentBackground.drawColor = textBackgroundColor;
+		this.addGui(this.titleComponentBackground);
 
-		this.damageComponentBackground = new GuiComponent(this.x + sideMargin, this.y + statBoxesYStart + verticalSeparation + (textSpriteSize - textBackgroundSize)/2, panelWidth/2 - sideMargin*2, textBackgroundSize, z + 2);
-		this.damageComponentBackground.drawColor = textBackgroundColor;
-		this.addGui(this.damageComponentBackground);
+		//description
 
-		this.rangeComponent = new SpriteAndText(this.x + panelWidth/2 + sideMargin, this.y + statBoxesYStart, textSpriteSize, textSpriteSize, z + 2, Art.glasses, "???");
-		this.rangeComponent.fontSize = fontSize;
-		this.rangeComponent.textSeparation = 3;
-		this.rangeComponent.fontColor = fontColor;
-		this.addGui(this.rangeComponent);
-
-		this.rangeComponentBackground = new GuiComponent(this.x + panelWidth/2 + sideMargin, this.y + statBoxesYStart + (textSpriteSize - textBackgroundSize)/2, panelWidth/2 - sideMargin*2, textBackgroundSize, z + 2);
-		this.rangeComponentBackground.drawColor = textBackgroundColor;
-		this.addGui(this.rangeComponentBackground);
-
-		this.speedComponent = new SpriteAndText(this.x + panelWidth/2 + sideMargin, this.y + statBoxesYStart + verticalSeparation, textSpriteSize, textSpriteSize, z + 2, Art.rabbit, "???");
-		this.speedComponent.fontSize = fontSize;
-		this.speedComponent.textSeparation = 3;
-		this.speedComponent.fontColor = fontColor;
-		this.addGui(this.speedComponent);
-
-		this.speedComponentBackground = new GuiComponent(this.x + panelWidth/2 + sideMargin, this.y + statBoxesYStart + verticalSeparation + (textSpriteSize - textBackgroundSize)/2, panelWidth/2 - sideMargin*2, textBackgroundSize, z + 2);
-		this.speedComponentBackground.drawColor = textBackgroundColor;
-		this.addGui(this.speedComponentBackground);
-
-		this.descriptionTextBox = new TextBox(this.x + sideMargin, this.y + topMargin + spriteSize + topMargin, panelWidth - 2*sideMargin, textBoxHeight, "", 1);
+		this.descriptionTextBox = new TextBox(this.x + sideMargin + innerMargin, this.y + topMargin + spriteSize + 2*innerMargin, panelWidth - 2*sideMargin - innerMargin, textBoxHeight, "", z+2);
 		this.descriptionTextBox.fontSize = textBoxFontSize;
 		this.descriptionTextBox.fontColor = fontColor;
 		this.addGui(this.descriptionTextBox);
+
+		this.descriptionTextBoxBackground = new GuiComponent(this.x + sideMargin, this.y + topMargin + spriteSize + innerMargin, panelWidth - 2*sideMargin, textBoxHeight + 2*innerMargin, z + 1);
+		this.descriptionTextBoxBackground.drawColor = textBackgroundColor;
+		this.addGui(this.descriptionTextBoxBackground);
+
+		//stat boxes
+
+		this.costComponent = new SpriteAndText(this.x + sideMargin, this.y + statBoxesYStart + statBoxOffset, textSpriteSize, textSpriteSize, z + 2, Art.goldCoinStack, "???");
+		this.costComponent.fontSize = fontSize;
+		this.costComponent.textSeparation = innerMargin;
+		this.costComponent.fontColor = fontColor;
+		this.addGui(this.costComponent);
+
+		this.costComponentBackground = new GuiComponent(this.x + sideMargin + textSpriteSize, this.y + statBoxesYStart, panelWidth/2 - sideMargin*2 - textSpriteSize, textBackgroundSize, z + 2);
+		this.costComponentBackground.drawColor = textBackgroundColor;
+		this.addGui(this.costComponentBackground);
+
+		this.damageComponent = new SpriteAndText(this.x + sideMargin, this.y + statBoxesYStart + textBackgroundSize + innerMargin + statBoxOffset, textSpriteSize, textSpriteSize, z + 2, Art.sword, "???");
+		this.damageComponent.fontSize = fontSize;
+		this.damageComponent.textSeparation = innerMargin;
+		this.damageComponent.fontColor = fontColor;
+		this.addGui(this.damageComponent);
+
+		this.damageComponentBackground = new GuiComponent(this.x + sideMargin + textSpriteSize, this.y + statBoxesYStart + textBackgroundSize + innerMargin, panelWidth/2 - sideMargin*2 - textSpriteSize, textBackgroundSize, z + 2);
+		this.damageComponentBackground.drawColor = textBackgroundColor;
+		this.addGui(this.damageComponentBackground);
+
+		this.rangeComponent = new SpriteAndText(this.x + panelWidth/2 + innerMargin, this.y + statBoxesYStart + statBoxOffset, textSpriteSize, textSpriteSize, z + 2, Art.glasses, "???");
+		this.rangeComponent.fontSize = fontSize;
+		this.rangeComponent.textSeparation = innerMargin;
+		this.rangeComponent.fontColor = fontColor;
+		this.addGui(this.rangeComponent);
+
+		this.rangeComponentBackground = new GuiComponent(this.x + panelWidth/2 + innerMargin + textSpriteSize, this.y + statBoxesYStart, panelWidth/2 - sideMargin - innerMargin - textSpriteSize, textBackgroundSize, z + 2);
+		this.rangeComponentBackground.drawColor = textBackgroundColor;
+		this.addGui(this.rangeComponentBackground);
+
+		this.speedComponent = new SpriteAndText(this.x + panelWidth/2 + innerMargin, this.y + statBoxesYStart + textBackgroundSize + innerMargin + statBoxOffset, textSpriteSize, textSpriteSize, z + 2, Art.rabbit, "???");
+		this.speedComponent.fontSize = fontSize;
+		this.speedComponent.textSeparation = innerMargin;
+		this.speedComponent.fontColor = fontColor;
+		this.addGui(this.speedComponent);
+
+		this.speedComponentBackground = new GuiComponent(this.x + panelWidth/2 + innerMargin + textSpriteSize, this.y + statBoxesYStart + textBackgroundSize + innerMargin, panelWidth/2 - sideMargin - innerMargin - textSpriteSize, textBackgroundSize, z + 2);
+		this.speedComponentBackground.drawColor = textBackgroundColor;
+		this.addGui(this.speedComponentBackground);
 	}
 
 	setOutTexture(tex){
