@@ -125,7 +125,7 @@ function makeLevelGUI(){
 	menuButtonsGuiGroup.addGui(returnToMainMenuButton);
 
 	/////////////Details Panel
-	detailsPanelGuiGroup = new GuiGroup(playAreaWidth, 100);
+	detailsPanelGuiGroup = new GuiGroup(playAreaWidth, 108);
 
 	towerDetailsPanel = new TowerDisplayPanel(detailsPanelGuiGroup.x, detailsPanelGuiGroup.y);
 	towerDetailsPanel.setTowerClass(ArrowTowerLevel1);
@@ -518,7 +518,7 @@ class TowerDisplayPanel extends GuiGroup{
 		this.towerClass = null;
 
 		let panelWidth = screenWidth - playAreaWidth;
-		let panelHeight = 180;
+		let panelHeight = 172;
 
 		let spriteSize = gridScale;
 		let textSpriteSize = gridScale;
@@ -532,10 +532,9 @@ class TowerDisplayPanel extends GuiGroup{
 		let innerMargin = 4;
 
 		let statBoxesYStart = topMargin + spriteSize + 2*innerMargin + textBoxHeight + 2*innerMargin;
-		let statBoxesVerticalSeparation = 32;
-		let statBoxOffset = -4;
+		let statBoxOffset = -6;
 		let fontSize = 16;
-		let textBackgroundSize = 25;
+		let textBackgroundSize = 20;
 
 		//background
 
