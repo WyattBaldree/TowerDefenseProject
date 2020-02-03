@@ -5,6 +5,6 @@ class Player{
 
 	setGold(gold){
 		this.gold = gold;
-		playerGoldDisplay.text = this.gold;
+		playerDisplayPanel.goldComponent.text = this.gold;
 	}
 }

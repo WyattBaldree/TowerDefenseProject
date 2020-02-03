@@ -106,6 +106,7 @@ function updateStep(){
 
 	for(let gui of guiList){
   		if(!gui.active) continue;
+  		gui.update();
   		if(mouseX >= gui.x && mouseX < gui.x + gui.w && mouseY >= gui.y && mouseY < gui.y + gui.h){
   			if(!gui.hovered) gui.beginHover();
   		}

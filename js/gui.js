@@ -90,9 +90,13 @@ function closeLevelSelectMenu(){
 let menuButtonsGuiGroup;
 let detailsPanelGuiGroup;
 let towerSelectPanelGuigroup;
+let playerInfoGuiGroup;
+let timelineGuiGroup;
 
 let restartLevelButton;
 let returnToMainMenuButton;
+let playButton;
+let speedButton;
 let towerSelectionBackground;
 let towerDetailsPanel;
 let arrowTowerButton;
@@ -100,15 +104,18 @@ let beamTowerButton;
 let earthquakeTowerButton;
 let bombTowerButton;
 let playerGoldDisplay;
+let playerDisplayPanel;
 
 let sampleTextBox;
 
 function makeLevelGUI(){
+	let panelAreaWidth = screenWidth - playAreaWidth;
+	let panelAreaHeight = screenHeight - playAreaHeight;
 
 	/////////////MENU BUTTONS
-	menuButtonsGuiGroup = new GuiGroup(0, 0);
+	menuButtonsGuiGroup = new GuiGroup(playAreaWidth, 0);
 
-	restartLevelButton = new Button(menuButtonsGuiGroup.x + 10, menuButtonsGuiGroup.y + 10, 60, 30, 5, 5, 5, 5, 1);
+	restartLevelButton = new Button(menuButtonsGuiGroup.x, menuButtonsGuiGroup.y, panelAreaWidth/2, 32, 5, 5, 5, 5, 1);
 	restartLevelButton.setInTexture(Art.blueButtonIn);
 	restartLevelButton.setOutTexture(Art.blueButtonOut);
 	restartLevelButton.text = "Restart";
@@ -116,7 +123,7 @@ function makeLevelGUI(){
 	restartLevelButton.onClickFunction = function(){ startLevel() }
 	menuButtonsGuiGroup.addGui(restartLevelButton);
 
-	returnToMainMenuButton = new Button(menuButtonsGuiGroup.x + 100, menuButtonsGuiGroup.y + 10, 60, 30, 5, 5, 5, 5, 1);
+	returnToMainMenuButton = new Button(menuButtonsGuiGroup.x + panelAreaWidth/2, menuButtonsGuiGroup.y, panelAreaWidth/2, 32, 5, 5, 5, 5, 1);
 	returnToMainMenuButton.setInTexture(Art.blueButtonIn);
 	returnToMainMenuButton.setOutTexture(Art.blueButtonOut);
 	returnToMainMenuButton.text = "Main";
@@ -124,6 +131,31 @@ function makeLevelGUI(){
 	returnToMainMenuButton.onClickFunction = function(){ setGameState(0) }
 	menuButtonsGuiGroup.addGui(returnToMainMenuButton);
 
+	////////////Timeline Group
+
+	timelineGuiGroup = new GuiGroup(0, playAreaHeight);
+
+	playButton = new Button(timelineGuiGroup.x + playAreaWidth, timelineGuiGroup.y, panelAreaWidth/2, panelAreaHeight, 5, 5, 5, 5, 1);
+	playButton.setInTexture(Art.blueButtonIn);
+	playButton.setOutTexture(Art.blueButtonOut);
+	playButton.text = "Play";
+	playButton.fontSize = 15;
+	playButton.onClickFunction = function(){ startLevel() }
+	timelineGuiGroup.addGui(restartLevelButton);
+
+	speedButton = new Button(timelineGuiGroup.x + playAreaWidth + panelAreaWidth/2, timelineGuiGroup.y, panelAreaWidth/2, panelAreaHeight, 5, 5, 5, 5, 1);
+	speedButton.setInTexture(Art.blueButtonIn);
+	speedButton.setOutTexture(Art.blueButtonOut);
+	speedButton.text = "Speed";
+	speedButton.fontSize = 15;
+	speedButton.onClickFunction = function(){ setGameState(0) }
+	timelineGuiGroup.addGui(returnToMainMenuButton);
+
+	/////////////Player Display Panel
+	playerInfoGuiGroup = new GuiGroup(playAreaWidth, 32)
+	playerDisplayPanel = new PlayerDisplayPanel(playerInfoGuiGroup.x, playerInfoGuiGroup.y);
+
+	playerInfoGuiGroup.addGui(playerDisplayPanel);
 	/////////////Details Panel
 	detailsPanelGuiGroup = new GuiGroup(playAreaWidth, 108);
 
@@ -162,24 +194,22 @@ function makeLevelGUI(){
 	bombTowerButton.setTowerClass(BombTowerLevel1);
 	towerSelectPanelGuigroup.addGui(bombTowerButton);
 
-	playerGoldDisplay = new SpriteAndText(playAreaWidth, 20, 50, 50, 1, Art.goldCoin, "???");
-	playerGoldDisplay.fontSize = 17;
-	playerGoldDisplay.textSeparation = -15;
-	playerGoldDisplay.fontColor = color("yellow");
-	towerSelectPanelGuigroup.addGui(playerGoldDisplay);
-
 }
 
 function openLeveLGUI(){
 	menuButtonsGuiGroup.setActive(true);
 	detailsPanelGuiGroup.setActive(true);
 	towerSelectPanelGuigroup.setActive(true);
+	playerInfoGuiGroup.setActive(true);
+	timelineGuiGroup.setActive(true);
 }
 
 function closeLevelGUI(){
 	menuButtonsGuiGroup.setActive(false);
 	detailsPanelGuiGroup.setActive(false);
 	towerSelectPanelGuigroup.setActive(false);
+	playerInfoGuiGroup.setActive(false);
+	timelineGuiGroup.setActive(false);
 }
 
 //Classes
@@ -239,6 +269,10 @@ class GuiComponent{
 		this.parent = null;
 		guiList.push(this);
 		guiList.sort((a, b) => (a.z > b.z) ? 1 : -1);
+	}
+
+	update(){
+
 	}
 
 	setX(x){
@@ -539,12 +573,12 @@ class TowerDisplayPanel extends GuiGroup{
 		//background
 
 		this.backgroundComponent = new NineSlice(this.x, this.y, panelWidth, panelHeight, 5, 5, 5, 5, z);
-		this.backgroundComponent.texture = Art.yellowBackground;
+		this.backgroundComponent.texture = Art.grayBackground;
 		this.addGui(this.backgroundComponent);
 
 		//sprite
 
-		this.spriteComponent = new GuiComponent(this.x + sideMargin, this.y + topMargin, spriteSize, spriteSize, z + 1);
+		this.spriteComponent = new GuiComponent(this.x + sideMargin, this.y + topMargin, spriteSize, spriteSize, z + 2);
 		this.addGui(this.spriteComponent);
 
 		this.spriteComponentBackground = new GuiComponent(this.x + sideMargin, this.y + topMargin, spriteSize, spriteSize, z + 1);
@@ -581,7 +615,7 @@ class TowerDisplayPanel extends GuiGroup{
 		this.costComponent.fontColor = fontColor;
 		this.addGui(this.costComponent);
 
-		this.costComponentBackground = new GuiComponent(this.x + sideMargin + textSpriteSize, this.y + statBoxesYStart, panelWidth/2 - sideMargin*2 - textSpriteSize, textBackgroundSize, z + 2);
+		this.costComponentBackground = new GuiComponent(this.x + sideMargin + textSpriteSize, this.y + statBoxesYStart, panelWidth/2 - sideMargin*2 - textSpriteSize, textBackgroundSize, z + 1);
 		this.costComponentBackground.drawColor = textBackgroundColor;
 		this.addGui(this.costComponentBackground);
 
@@ -591,7 +625,7 @@ class TowerDisplayPanel extends GuiGroup{
 		this.damageComponent.fontColor = fontColor;
 		this.addGui(this.damageComponent);
 
-		this.damageComponentBackground = new GuiComponent(this.x + sideMargin + textSpriteSize, this.y + statBoxesYStart + textBackgroundSize + innerMargin, panelWidth/2 - sideMargin*2 - textSpriteSize, textBackgroundSize, z + 2);
+		this.damageComponentBackground = new GuiComponent(this.x + sideMargin + textSpriteSize, this.y + statBoxesYStart + textBackgroundSize + innerMargin, panelWidth/2 - sideMargin*2 - textSpriteSize, textBackgroundSize, z + 1);
 		this.damageComponentBackground.drawColor = textBackgroundColor;
 		this.addGui(this.damageComponentBackground);
 
@@ -601,7 +635,7 @@ class TowerDisplayPanel extends GuiGroup{
 		this.rangeComponent.fontColor = fontColor;
 		this.addGui(this.rangeComponent);
 
-		this.rangeComponentBackground = new GuiComponent(this.x + panelWidth/2 + innerMargin + textSpriteSize, this.y + statBoxesYStart, panelWidth/2 - sideMargin - innerMargin - textSpriteSize, textBackgroundSize, z + 2);
+		this.rangeComponentBackground = new GuiComponent(this.x + panelWidth/2 + innerMargin + textSpriteSize, this.y + statBoxesYStart, panelWidth/2 - sideMargin - innerMargin - textSpriteSize, textBackgroundSize, z + 1);
 		this.rangeComponentBackground.drawColor = textBackgroundColor;
 		this.addGui(this.rangeComponentBackground);
 
@@ -611,7 +645,7 @@ class TowerDisplayPanel extends GuiGroup{
 		this.speedComponent.fontColor = fontColor;
 		this.addGui(this.speedComponent);
 
-		this.speedComponentBackground = new GuiComponent(this.x + panelWidth/2 + innerMargin + textSpriteSize, this.y + statBoxesYStart + textBackgroundSize + innerMargin, panelWidth/2 - sideMargin - innerMargin - textSpriteSize, textBackgroundSize, z + 2);
+		this.speedComponentBackground = new GuiComponent(this.x + panelWidth/2 + innerMargin + textSpriteSize, this.y + statBoxesYStart + textBackgroundSize + innerMargin, panelWidth/2 - sideMargin - innerMargin - textSpriteSize, textBackgroundSize, z + 1);
 		this.speedComponentBackground.drawColor = textBackgroundColor;
 		this.addGui(this.speedComponentBackground);
 	}
@@ -647,10 +681,23 @@ class TextBox extends GuiComponent{
 		this.font = fontMinecraft;
 		this.fontSize = 25;
 		this.fontColor = color("white");
+		this.textHeight = 0;
 		this.setText(text);
+
+		this.autoScroll = true;
+		this.scrollSpeed = .15;
+		this.scrollPause = 120;
+		this.scrollPauseCurrent = this.scrollPause;
+		this.scrollAmount = 0;
+		this.autoScrollDirection = 1;
+
+
+		this.textCanvas = createGraphics(this.w, this.h);
 	}
 
 	setText(text){
+		this.scrollAmount = 0;
+		this.autoScrollDirection = 1;
 		this.textLines = [];
 		let currentLineIndex = 0;
 		let currentLine = "";
@@ -677,26 +724,92 @@ class TextBox extends GuiComponent{
 				currentLine += text[i];
 			}
 		}
-
 		this.textLines[currentLineIndex] = currentLine;
-		
+	}
+
+	update(){
+		if(this.scrollPauseCurrent <= 0){
+			//scroll
+			if(this.autoScrollDirection){
+				this.scrollAmount += this.scrollSpeed;
+				if(this.scrollAmount >= (this.textLines.length * this.fontSize) - this.h){
+					this.scrollPauseCurrent = this.scrollPause
+					this.autoScrollDirection = 0;
+				}
+			}
+			else{
+				this.scrollAmount -= this.scrollSpeed*4;
+				if(this.scrollAmount <= 0){
+					this.scrollPauseCurrent = this.scrollPause
+					this.autoScrollDirection = 1;
+				}
+			}
+		}
+		this.scrollPauseCurrent--;
 	}
 
 	drawSelf(){
 		if(this.active){
-			let pg = createGraphics(this.w, this.h);
-			pg.textFont(this.font);
-			pg.textSize(this.fontSize);
-			pg.noStroke();
-			pg.fill(this.fontColor);
-	  		pg.textAlign(LEFT, TOP);
+			this.textCanvas.clear();
+			this.textCanvas.textFont(this.font);
+			this.textCanvas.textSize(this.fontSize);
+			this.textCanvas.noStroke();
+			this.textCanvas.fill(this.fontColor);
+	  		this.textCanvas.textAlign(LEFT, TOP);
 
 
 			for(let i = 0 ; i < this.textLines.length ; i++){
-				pg.text(this.textLines[i], 0, 0 + i*this.fontSize);
+				this.textCanvas.text(this.textLines[i], 0, 0 + i*this.fontSize - this.scrollAmount);
 			}
 
-			image(pg, this.x, this.y);
+			image(this.textCanvas, this.x, this.y);
 		}
+	}
+}
+
+class PlayerDisplayPanel extends GuiGroup{
+	constructor(x, y, z = 0){
+		super(x, y);
+
+		let panelWidth = screenWidth - playAreaWidth;
+		let panelHeight = 77;
+
+		let sideMargin = 10;
+		let topMargin = 10;
+		let innerMargin = 4;
+
+		let fontColor = color("white");
+		let fontSize = 16;
+		let textBackgroundColor = color("rgba(0,0,0,.3)");
+		let textBackgroundSize = 20;
+
+		let statBoxOffset = 6;
+		let verticalSeparation = 8;
+
+		//background
+
+		this.backgroundComponent = new NineSlice(this.x, this.y, panelWidth, panelHeight, 5, 5, 5, 5, z);
+		this.backgroundComponent.texture = Art.grayBackground;
+		this.addGui(this.backgroundComponent);
+
+		this.goldComponent = new SpriteAndText(this.x + sideMargin, this.y + topMargin, gridScale, gridScale, z + 2, Art.goldCoinStack, "???");
+		this.goldComponent.fontSize = fontSize;
+		this.goldComponent.textSeparation = innerMargin;
+		this.goldComponent.fontColor = fontColor;
+		this.addGui(this.goldComponent);
+
+		this.goldComponentBackground = new GuiComponent(this.x + sideMargin + gridScale, this.y + topMargin + statBoxOffset, panelWidth - sideMargin*2 - gridScale, textBackgroundSize, z + 2);
+		this.goldComponentBackground.drawColor = textBackgroundColor;
+		this.addGui(this.goldComponentBackground);
+
+		this.healthComponent = new SpriteAndText(this.x + sideMargin, this.y + topMargin + verticalSeparation + textBackgroundSize, gridScale, gridScale, z + 2, Art.heart, "???");
+		this.healthComponent.fontSize = fontSize;
+		this.healthComponent.textSeparation = innerMargin;
+		this.healthComponent.fontColor = fontColor;
+		this.addGui(this.healthComponent);
+
+		this.healthComponentBackground = new GuiComponent(this.x + sideMargin + gridScale, this.y + topMargin + statBoxOffset + verticalSeparation + textBackgroundSize, panelWidth - sideMargin*2 - gridScale, textBackgroundSize, z + 2);
+		this.healthComponentBackground.drawColor = textBackgroundColor;
+		this.addGui(this.healthComponentBackground);
 	}
 }

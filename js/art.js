@@ -56,5 +56,6 @@ class Art{
 		Art.rabbit = loadImage('img/rabbit.png');
 		Art.ninjaStar = loadImage('img/ninjaStar.png');
 		Art.eyeball = loadImage('img/eyeball.png');
+		Art.heart = loadImage('img/heart.png');
 	}
 }
