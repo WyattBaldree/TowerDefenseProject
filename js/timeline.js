@@ -27,5 +27,8 @@ class Timeline{
 	}
 	static totalSpawns(){ //getTimelineTotalSpawns
 		return currentLevel.levelData.timeline.length;
+	}
+	static spawns(){ //getTimelineTotalSpawns
+		return currentLevel.levelData.timeline;
 	} 
 }

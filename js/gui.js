@@ -105,6 +105,7 @@ let earthquakeTowerButton;
 let bombTowerButton;
 let playerGoldDisplay;
 let playerDisplayPanel;
+let timelineDisplay;
 
 let sampleTextBox;
 
@@ -134,6 +135,9 @@ function makeLevelGUI(){
 	////////////Timeline Group
 
 	timelineGuiGroup = new GuiGroup(0, playAreaHeight);
+
+	timelineDisplay = new TimelineDisplay(timelineGuiGroup.x, timelineGuiGroup.y, 1);
+	timelineGuiGroup.addGui(timelineDisplay);
 
 	playButton = new Button(timelineGuiGroup.x + playAreaWidth, timelineGuiGroup.y, panelAreaWidth/2, panelAreaHeight, 5, 5, 5, 5, 1);
 	playButton.setInTexture(Art.blueButtonIn);
@@ -216,45 +220,6 @@ function closeLevelGUI(){
 
 var guiList = new Array(); //holds all guis
 
-
-
-class GuiGroup{
-	constructor(x, y){
-		this.x = x;
-		this.y = y;
-		this.guiList = [];
-	}
-
-	addGui(gui){
-		this.guiList.push(gui);
-		gui.parent = this;
-	}
-
-	setX(x){
-		let deltaX = x - this.x;
-		this.x = x;
-
-		for(let gui of this.guiList){
-			gui.setX(gui.x + deltaX);
-		}
-	}
-
-	setY(y){
-		let deltaY = y - this.y;
-		this.y = y;
-
-		for(let gui of this.guiList){
-			gui.setY(gui.y + deltaY);
-		}
-	}
-
-	setActive(active){
-		for(let gui of this.guiList){
-			gui.setActive(active);
-		}
-	}
-}
-
 class GuiComponent{
 	constructor(x, y, w, h, z = 0, tex = null){
 		this.x = x;
@@ -318,6 +283,45 @@ class GuiComponent{
 			noStroke();
 			fill(this.drawColor);
 			rect(this.x, this.y, this.w, this.h);
+		}
+	}
+}
+
+class GuiGroup extends GuiComponent{
+	constructor(x, y){
+		super(x, y, 0, 0)
+		this.x = x;
+		this.y = y;
+		this.guiList = [];
+	}
+
+	addGui(gui){
+		this.guiList.push(gui);
+		gui.parent = this;
+	}
+
+	setX(x){
+		let deltaX = x - this.x;
+		this.x = x;
+
+		for(let gui of this.guiList){
+			gui.setX(gui.x + deltaX);
+		}
+	}
+
+	setY(y){
+		let deltaY = y - this.y;
+		this.y = y;
+
+		for(let gui of this.guiList){
+			gui.setY(gui.y + deltaY);
+		}
+	}
+
+	setActive(active){
+		this.active = active;
+		for(let gui of this.guiList){
+			gui.setActive(active);
 		}
 	}
 }
@@ -698,6 +702,7 @@ class TextBox extends GuiComponent{
 	setText(text){
 		this.scrollAmount = 0;
 		this.autoScrollDirection = 1;
+		this.scrollPauseCurrent = this.scrollPause;
 		this.textLines = [];
 		let currentLineIndex = 0;
 		let currentLine = "";
@@ -798,7 +803,7 @@ class PlayerDisplayPanel extends GuiGroup{
 		this.goldComponent.fontColor = fontColor;
 		this.addGui(this.goldComponent);
 
-		this.goldComponentBackground = new GuiComponent(this.x + sideMargin + gridScale, this.y + topMargin + statBoxOffset, panelWidth - sideMargin*2 - gridScale, textBackgroundSize, z + 2);
+		this.goldComponentBackground = new GuiComponent(this.x + sideMargin + gridScale, this.y + topMargin + statBoxOffset, panelWidth - sideMargin*2 - gridScale, textBackgroundSize, z + 1);
 		this.goldComponentBackground.drawColor = textBackgroundColor;
 		this.addGui(this.goldComponentBackground);
 
@@ -808,8 +813,56 @@ class PlayerDisplayPanel extends GuiGroup{
 		this.healthComponent.fontColor = fontColor;
 		this.addGui(this.healthComponent);
 
-		this.healthComponentBackground = new GuiComponent(this.x + sideMargin + gridScale, this.y + topMargin + statBoxOffset + verticalSeparation + textBackgroundSize, panelWidth - sideMargin*2 - gridScale, textBackgroundSize, z + 2);
+		this.healthComponentBackground = new GuiComponent(this.x + sideMargin + gridScale, this.y + topMargin + statBoxOffset + verticalSeparation + textBackgroundSize, panelWidth - sideMargin*2 - gridScale, textBackgroundSize, z + 1);
 		this.healthComponentBackground.drawColor = textBackgroundColor;
 		this.addGui(this.healthComponentBackground);
+	}
+}
+
+class TimelineDisplay extends GuiGroup{
+	constructor(x, y, z = 0){
+		super(x, y);
+
+		let panelWidth = playAreaWidth;
+		let panelHeight = screenHeight - playAreaHeight;
+
+		this.timelineTimeLength = 2000;
+		this.spriteSize = 16;
+		this.sideMargin = 10;
+
+		this.backgroundComponent = new NineSlice(this.x, this.y, panelWidth, panelHeight, 5, 5, 5, 5, z-1);
+		this.backgroundComponent.texture = Art.grayBackground;
+		this.addGui(this.backgroundComponent);
+	}
+
+	drawSelf(){
+		super.drawSelf();
+		if(this.active){
+			let width = this.backgroundComponent.w;
+			let height = this.backgroundComponent.h;
+			let lineWidth = width - (this.sideMargin * 2);
+
+			strokeWeight(1);
+			stroke(color("black"));
+			line(this.x + this.sideMargin, this.y + height/2, this.x + width - this.sideMargin, this.y + height/2);
+
+			let spawns = Timeline.spawns();
+
+
+
+			for(let i = 0 ; i < Timeline.totalSpawns() ; i++){
+				let time = Timeline.time(i);
+				if(time > Timeline.levelTimer && time < Timeline.levelTimer + this.timelineTimeLength){
+					let ratio = (time - Timeline.levelTimer)/this.timelineTimeLength;
+					let enemyClass = getClassFromEnemyID(Timeline.enemyID(i));
+					push()
+					translate(this.x + width - this.sideMargin - (lineWidth * ratio), this.y + height/2);
+					scale(-1,1);
+					image(enemyClass.animationFrames[0], -this.spriteSize/2, -this.spriteSize/2, this.spriteSize, this.spriteSize);
+					//image(enemyClass.animationFrames[0], this.x + width - this.sideMargin - (lineWidth * ratio) - this.spriteSize/2, this.y + height/2 - this.spriteSize/2, this.spriteSize, this.spriteSize);
+					pop()
+				}
+			}
+		}
 	}
 }
