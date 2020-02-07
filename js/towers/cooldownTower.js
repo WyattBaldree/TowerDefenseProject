@@ -6,7 +6,7 @@ class CooldownTower extends Tower{
 		classRef.description = "Default cooldown tower class";
 		classRef.range = 3;
 		classRef.damage = 5;
-		classRef.speed = 5;
+		classRef.speed = 10;
 		classRef.price = 100;
 	}
 
@@ -15,8 +15,8 @@ class CooldownTower extends Tower{
 		this.target = null;
 	}
 
-	update(){
-		super.update();
+	update(dTime){
+		super.update(dTime);
 
 		// check if our current target is still valid
 		if(this.target != null){
@@ -45,7 +45,7 @@ class CooldownTower extends Tower{
 			this.shoot();
 		}
 
-		this.cooldown -= this.speed;
+		if(this.cooldown > 0) this.cooldown -= this.speed*dTime;
 	}
 
 	findTarget(){

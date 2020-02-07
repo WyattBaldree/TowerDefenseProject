@@ -236,7 +236,7 @@ class GuiComponent{
 		guiList.sort((a, b) => (a.z > b.z) ? 1 : -1);
 	}
 
-	update(){
+	update(dTime){
 
 	}
 
@@ -732,25 +732,25 @@ class TextBox extends GuiComponent{
 		this.textLines[currentLineIndex] = currentLine;
 	}
 
-	update(){
+	update(dTime){
 		if(this.scrollPauseCurrent <= 0){
 			//scroll
 			if(this.autoScrollDirection){
-				this.scrollAmount += this.scrollSpeed;
+				this.scrollAmount += this.scrollSpeed*dTime;
 				if(this.scrollAmount >= (this.textLines.length * this.fontSize) - this.h){
 					this.scrollPauseCurrent = this.scrollPause
 					this.autoScrollDirection = 0;
 				}
 			}
 			else{
-				this.scrollAmount -= this.scrollSpeed*4;
+				this.scrollAmount -= this.scrollSpeed*4*dTime;
 				if(this.scrollAmount <= 0){
 					this.scrollPauseCurrent = this.scrollPause
 					this.autoScrollDirection = 1;
 				}
 			}
 		}
-		this.scrollPauseCurrent--;
+		this.scrollPauseCurrent -= dTime;
 	}
 
 	drawSelf(){
@@ -826,7 +826,7 @@ class TimelineDisplay extends GuiGroup{
 		let panelWidth = playAreaWidth;
 		let panelHeight = screenHeight - playAreaHeight;
 
-		this.timelineTimeLength = 2000;
+		this.timelineTimeLength = 500;
 		this.spriteSize = 16;
 		this.sideMargin = 10;
 
@@ -859,7 +859,6 @@ class TimelineDisplay extends GuiGroup{
 					translate(this.x + width - this.sideMargin - (lineWidth * ratio), this.y + height/2);
 					scale(-1,1);
 					image(enemyClass.animationFrames[0], -this.spriteSize/2, -this.spriteSize/2, this.spriteSize, this.spriteSize);
-					//image(enemyClass.animationFrames[0], this.x + width - this.sideMargin - (lineWidth * ratio) - this.spriteSize/2, this.y + height/2 - this.spriteSize/2, this.spriteSize, this.spriteSize);
 					pop()
 				}
 			}

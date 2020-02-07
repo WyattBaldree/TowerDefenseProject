@@ -6,7 +6,7 @@ class ArmoredEnemy extends Enemy{
 		classRef.description = "Armored dude";
 		classRef.maxHealth = 30;
 		classRef.armor = 1;
-		classRef.speed = 1;
+		classRef.speed = 3;
 		classRef.damage = 1;
 		classRef.moneyValue = 10;
 	}

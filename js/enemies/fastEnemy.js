@@ -6,7 +6,7 @@ class FastEnemy extends Enemy{
 		classRef.description = "Fast dude";
 		classRef.maxHealth = 10;
 		classRef.armor = 0;
-		classRef.speed = 3;
+		classRef.speed = 8;
 		classRef.damage = 1;
 		classRef.moneyValue = 10;
 	}	

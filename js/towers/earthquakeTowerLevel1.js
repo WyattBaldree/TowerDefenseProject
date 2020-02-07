@@ -4,9 +4,9 @@ class EarthquakeTowerLevel1 extends CooldownTower{
 		classRef.animationFrames = [Art.warrior0, Art.warrior1];
 		classRef.unitName = "Warrior LV.1";
 		classRef.description = "Earthquake Tower";
-		classRef.range = 4;
+		classRef.range = 2;
 		classRef.damage = 3;
-		classRef.speed = 1;
+		classRef.speed = 8;
 		classRef.price = 100;
 	}
 

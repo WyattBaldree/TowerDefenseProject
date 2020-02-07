@@ -25,7 +25,7 @@ class Unit{
 		this.opacity = 255;
 		this.texture = this.animationFrames[0];
 		this.animationTime = 0;
-		this.animationSpeed = .05;
+		this.animationSpeed = .08;
 		this.flipX = 0;
 		this.flipY = 0;
 		this.drawOffsetX = 0;
@@ -71,16 +71,20 @@ class Unit{
 		}		
 	}
 
-	updateAnimation(){
-		this.texture = this.animationFrames[Math.floor(this.animationTime) % this.animationFrames.length];
-		this.animationTime += this.animationSpeed;
+	getAnimationSpeed(){
+		return this.animationSpeed;
 	}
 
-	update(){
-		this.updateAnimation();
+	updateAnimation(dTime){
+		this.texture = this.animationFrames[Math.floor(this.animationTime) % this.animationFrames.length];
+		this.animationTime += (this.getAnimationSpeed())*dTime;
+	}
 
-		this.drawOffsetX = this.drawOffsetX/2;
-		this.drawOffsetY = this.drawOffsetY/2;
+	update(dTime){
+		this.updateAnimation(dTime);
+
+		this.drawOffsetX -= this.drawOffsetX - this.drawOffsetX/2*dTime;
+		this.drawOffsetY -= this.drawOffsetY - this.drawOffsetY/2*dTime;
 	}
 
 	drawHovered(){

@@ -6,7 +6,7 @@ class BeamTowerLevel1 extends CooldownTower{
 		classRef.description = "Beam Tower";
 		classRef.range = 4;
 		classRef.damage = 1;
-		classRef.speed = 15;
+		classRef.speed = 30;
 		classRef.price = 100;
 	}
 

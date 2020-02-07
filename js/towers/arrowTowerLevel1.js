@@ -6,7 +6,7 @@ class ArrowTowerLevel1 extends CooldownTower{
 		classRef.description = "This is an arrow tower. This tower has average shooting speed, average damage, and average range. In fact, this tower is all around average. This is an arrow tower. This tower has average shooting speed, average damage, and average range. In fact, this tower is all around average.";
 		classRef.range = 3;
 		classRef.damage = 4;
-		classRef.speed = 3;
+		classRef.speed = 6;
 		classRef.price = 100;
 	}
 

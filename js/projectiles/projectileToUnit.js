@@ -4,13 +4,13 @@ class ProjectileToUnit extends Projectile{
 		this.target = unit;
 	}
 
-	update(){
-		super.update();
+	update(dTime){
+		super.update(dTime);
 		if(this.target.deleted){
 			this.die();
 			return;
 		}
-		this.moveTowardsPoint(this.target.getXGridCenter(), this.target.getYGridCenter());
+		this.moveTowardsPoint(dTime, this.target.getXGridCenter(), this.target.getYGridCenter());
 	}
 
 	onHit(){

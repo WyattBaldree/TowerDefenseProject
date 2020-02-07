@@ -2,8 +2,8 @@ class Timeline{
 	static levelTimer = 0;
 	static currentSpawn = 0;
 
-	static advanceTimeline(){
-		Timeline.levelTimer++;
+	static advanceTimeline(dTime){
+		Timeline.levelTimer+=dTime;
 		if (Timeline.currentSpawn < Timeline.totalSpawns()){
 			
 			while (Timeline.levelTimer > Timeline.time(Timeline.currentSpawn)){

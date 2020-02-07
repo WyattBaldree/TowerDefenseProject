@@ -6,7 +6,7 @@ class UntargetableEnemy extends Enemy{
 		classRef.description = "Untargetable dude";
 		classRef.maxHealth = 20;
 		classRef.armor = 0;
-		classRef.speed = 2;
+		classRef.speed = 4;
 		classRef.damage = 1;
 		classRef.moneyValue = 10;
 	}	
@@ -23,15 +23,15 @@ class UntargetableEnemy extends Enemy{
 		this.untargetableTimeCurrent = this.untargetableTime;
 	}
 
-	becomeTargetable(){
-		this.untargetableTimeCurrent--;
+	becomeTargetable(dTime){
+		this.untargetableTimeCurrent-=dTime;
 		if (this.untargetable == true && this.untargetableTimeCurrent <= 0){
 			this.untargetable = false;
 		}
 	}
 
-	update(){
-		this.becomeTargetable();
+	update(dTime){
+		this.becomeTargetable(dTime);
 
 		if(this.untargetable == true){
 			this.opacity = 128;
@@ -40,6 +40,6 @@ class UntargetableEnemy extends Enemy{
 			this.opacity = 255;
 		}
 
-		super.update();
+		super.update(dTime);
 	}
 }

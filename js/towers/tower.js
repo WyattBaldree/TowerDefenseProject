@@ -21,6 +21,8 @@ class Tower extends Unit{
 		this.damage = this.getBaseDamage();
 		this.speed = this.getBaseSpeed();
 
+		this.animationSpeed = .15;
+
 		this.cooldown = 0;
 		towerList.push(this);
 		towerArray[this.getXGrid()][this.getYGrid()] = this;
@@ -42,12 +44,12 @@ class Tower extends Unit{
 		return this.constructor.price;
 	}
 
-	update(){
-		super.update();
+	update(dTime){
+		super.update(dTime);
 	}
 
 	shoot(){
-		this.cooldown = 100;
+		this.cooldown += 100;
 	}
 
 	die(){

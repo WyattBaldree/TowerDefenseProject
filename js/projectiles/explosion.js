@@ -10,10 +10,10 @@ class Explosion extends Projectile{
 		dealDamageInArea(this.x, this.y, this.range, this.damage);
 	}
 	
-	update(){
-		super.update();
+	update(dTime){
+		super.update(dTime);
 		if(this.numberOfFrames <= 0) this.die();
-		this.numberOfFrames--;
+		this.numberOfFrames -= dTime;
 	}
 
 	drawSelf(){

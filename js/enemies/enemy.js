@@ -51,12 +51,16 @@ class Enemy extends Unit{
 		enemyList.push(this);
 	}
 
-	update(){
-		super.update();
+	update(dTime){
+		super.update(dTime);
 
 		this.currentDistanceOnPath = this.getCurrentDistanceOfPath();
 
-		this.move(this.speed);
+		this.move(this.speed*dTime);
+	}
+
+	getAnimationSpeed(){
+		return this.animationSpeed + this.speed/20;
 	}
 
 	takeDamage(damage){
@@ -105,6 +109,7 @@ class Enemy extends Unit{
 					distance = Math.sqrt(Math.pow(deltaX,2) + Math.pow(deltaY,2));
 				}
 				else{
+					this.attackPlayer();
 					return;
 				}
 			}
@@ -119,6 +124,11 @@ class Enemy extends Unit{
 			this.x += velocityX;
 			this.y += velocityY;
 		}
+	}
+
+	attackPlayer(){
+		player.setHealth(player.health - this.damage);
+		this.markForRemoval();
 	}
 
 	getDistanceToEndOfPath(){

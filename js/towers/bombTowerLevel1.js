@@ -6,7 +6,7 @@ class BombTowerLevel1 extends CooldownTower{
 		classRef.description = "Bomb Tower";
 		classRef.range = 3;
 		classRef.damage = 4;
-		classRef.speed = 3;
+		classRef.speed = 6;
 		classRef.price = 100;
 	}
 

@@ -6,7 +6,7 @@ class RegularEnemy extends Enemy{
 		classRef.description = "Regular dude";
 		classRef.maxHealth = 20;
 		classRef.armor = 0;
-		classRef.speed = 2;
+		classRef.speed = 4;
 		classRef.damage = 1;
 		classRef.moneyValue = 10;
 	}

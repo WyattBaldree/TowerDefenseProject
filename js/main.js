@@ -6,7 +6,8 @@ var playAreaHeight = 512;
 var playAreaGridWidth = playAreaWidth/gridScale;
 var playAreaGridHeight = playAreaHeight/gridScale;
 
-var FPS = 60;
+var FPS = 30;
+var gameSpeed = 2;
 
 
 var currentLevel;
@@ -53,7 +54,7 @@ function setup() {
 	solidBlockArray = createArray(playAreaGridWidth, playAreaGridHeight);
 
 
-	frameRate = 60;
+	frameRate = FPS;
 	createCanvas(screenWidth, screenHeight);
 	noFill();
 	noSmooth();
@@ -82,31 +83,31 @@ function setup() {
 // This is our main loop.
 function draw() {
 	
-	updateStep();
+	updateStep(deltaTime/100);
 	cleanUp();
 	drawStep();
 	//debugCoordinates();
 }
 
 // Update the game state in this loop.
-function updateStep(){
+function updateStep(dTime){
 	//Get the mouse coordinates in the grid.
 
 	mouseGridX = getSelectionSquareX();
 	mouseGridY = getSelectionSquareY();
 
 	if(levelPlay){
-		Timeline.advanceTimeline();
+		Timeline.advanceTimeline(dTime*gameSpeed);
 
 		for(var u of unitList){
 			if(u.deleted) continue;
-	  		u.update();
+	  		u.update(dTime*gameSpeed);
 		}
 	}
 
 	for(let gui of guiList){
   		if(!gui.active) continue;
-  		gui.update();
+  		gui.update(dTime);
   		if(mouseX >= gui.x && mouseX < gui.x + gui.w && mouseY >= gui.y && mouseY < gui.y + gui.h){
   			if(!gui.hovered) gui.beginHover();
   		}
