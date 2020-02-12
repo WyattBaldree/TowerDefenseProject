@@ -123,7 +123,7 @@ function drawStep(){
 	stroke(color('black'));
 	fill(color('lightBlue'));
 	
-	background(200);
+	background(150);
 	strokeWeight(2);
 
 	drawGrid(0, 0, playAreaWidth, playAreaHeight);
@@ -288,7 +288,12 @@ function mouseReleased(event) {
   	for(let gui of guiList){
   		if(!gui.active) continue;
   		if(mouseX >= gui.x && mouseX < gui.x + gui.w && mouseY >= gui.y && mouseY < gui.y + gui.h){
-  			gui.release();
+  			if(gui instanceof Button){
+  				if(!gui.lockIn) gui.release();
+  			}
+  			else{
+  				gui.release();
+  			}
   		}
   	}
 }
@@ -327,6 +332,10 @@ function drawSelectionSquare(){
 	let y = getSelectionSquareY();
 
 	drawFilledGridSpace(x, y);
+}
+
+function setGameSpeed(newSpeed){
+	gameSpeed = newSpeed;
 }
 
 function drawTowerPlacementGrid(){

@@ -95,8 +95,6 @@ let timelineGuiGroup;
 
 let restartLevelButton;
 let returnToMainMenuButton;
-let playButton;
-let speedButton;
 let towerSelectionBackground;
 let towerDetailsPanel;
 let arrowTowerButton;
@@ -106,6 +104,7 @@ let bombTowerButton;
 let playerGoldDisplay;
 let playerDisplayPanel;
 let timelineDisplay;
+let speedButtonGroup;
 
 let sampleTextBox;
 
@@ -139,21 +138,25 @@ function makeLevelGUI(){
 	timelineDisplay = new TimelineDisplay(timelineGuiGroup.x, timelineGuiGroup.y, 1);
 	timelineGuiGroup.addGui(timelineDisplay);
 
-	playButton = new Button(timelineGuiGroup.x + playAreaWidth, timelineGuiGroup.y, panelAreaWidth/2, panelAreaHeight, 5, 5, 5, 5, 1);
-	playButton.setInTexture(Art.blueButtonIn);
-	playButton.setOutTexture(Art.blueButtonOut);
-	playButton.text = "Play";
-	playButton.fontSize = 15;
-	playButton.onClickFunction = function(){ startLevel() }
-	timelineGuiGroup.addGui(restartLevelButton);
+	speedButtonGroup = new RadioButtonGroup(timelineGuiGroup.x + playAreaWidth, timelineGuiGroup.y, panelAreaWidth, panelAreaHeight, 5, 5, 5, 5, 1, 4, true);
+	speedButtonGroup.buttonList[0].text = "ll";
+	speedButtonGroup.buttonList[0].fontSize = 15;
+	speedButtonGroup.buttonList[0].onClickFunction = function(){gameSpeed = 0;}
+	speedButtonGroup.buttonList[1].text = ">";
+	speedButtonGroup.buttonList[1].fontSize = 15;
+	speedButtonGroup.buttonList[1].onClickFunction = function(){gameSpeed = .5;}
+	speedButtonGroup.buttonList[2].text = ">>";
+	speedButtonGroup.buttonList[2].fontSize = 15;
+	speedButtonGroup.buttonList[2].onClickFunction = function(){gameSpeed = 1;}
+	speedButtonGroup.buttonList[3].text = ">>>";
+	speedButtonGroup.buttonList[3].fontSize = 15;
+	speedButtonGroup.buttonList[3].onClickFunction = function(){gameSpeed = 3;}
 
-	speedButton = new Button(timelineGuiGroup.x + playAreaWidth + panelAreaWidth/2, timelineGuiGroup.y, panelAreaWidth/2, panelAreaHeight, 5, 5, 5, 5, 1);
-	speedButton.setInTexture(Art.blueButtonIn);
-	speedButton.setOutTexture(Art.blueButtonOut);
-	speedButton.text = "Speed";
-	speedButton.fontSize = 15;
-	speedButton.onClickFunction = function(){ setGameState(0) }
-	timelineGuiGroup.addGui(returnToMainMenuButton);
+	speedButtonGroup.buttonList[2].press();
+
+	timelineGuiGroup.addGui(speedButtonGroup);
+
+	//speedButton.onClickFunction = function(){ setGameState(0) }
 
 	/////////////Player Display Panel
 	playerInfoGuiGroup = new GuiGroup(playAreaWidth, 32)
@@ -288,8 +291,8 @@ class GuiComponent{
 }
 
 class GuiGroup extends GuiComponent{
-	constructor(x, y){
-		super(x, y, 0, 0)
+	constructor(x, y, z = 0){
+		super(x, y, 0, 0, z)
 		this.x = x;
 		this.y = y;
 		this.guiList = [];
@@ -399,6 +402,11 @@ class Button extends NineSlice{
 		this.inTexture = null;
 		this.text = "";
 		this.fontSize = 25;
+		this.travelDistance = 4;
+		this.lockIn = false;
+
+		this.buttonDownCallback = null;
+		this.buttonUpCallback = null;
 	}
 
 	setOutTexture(tex){
@@ -422,21 +430,26 @@ class Button extends NineSlice{
 
 	endHover(){
 		super.endHover();
-		if(this.pressed) this.release();
+		if(this.pressed && !this.lockIn) this.release();
 	}
 
 	press(){
+		if(this.buttonDownCallback) this.buttonDownCallback();
+
 		this.pressed = true;
 		this.texture = this.inTexture;
 		if(this.onClickFunction) this.onClickFunction();
+
 
 		let handled = true;
 		return handled;
 	}
 
 	release(){
+		if(this.buttonUpCallback) this.buttonUpCallback();
 		this.pressed = false;
 		this.texture = this.outTexture;
+
 	}
 
 	drawSelf(){
@@ -447,7 +460,8 @@ class Button extends NineSlice{
 			textFont(fontMinecraft);
 	 		textSize(this.fontSize);
 	  		textAlign(CENTER, CENTER);
-			text(this.text, this.x + this.w/2, this.y + this.h/2);
+	  		let verticalOffset = this.pressed ? this.travelDistance : 0;
+			text(this.text, this.x + this.w/2, this.y + this.h/2 + verticalOffset);
 
 			if(this.hovered){
 				fill(color("rgba(255,255,255,.15)"));
@@ -455,7 +469,60 @@ class Button extends NineSlice{
 				rect(this.x, this.y, this.w, this.h);
 			}
 		}
-		//tint(color("white"));
+	}
+}
+
+class RadioButtonGroup extends GuiGroup{
+	constructor(x, y, w, h, leftMargin = 0, rightMargin = 0, topMargin = 0, bottomMargin = 0, z = 0, numButtons = 1, horizontal = true){
+		super(x, y, z);
+		this.buttonList = [];
+
+		if(horizontal){
+			let individualWidth = w/numButtons;
+			for(let i = 0 ; i < numButtons ; i++){
+				this.buttonComponent = new Button(x + individualWidth*i, y, individualWidth, h, leftMargin, rightMargin, topMargin, bottomMargin, z);
+				this.addGui(this.buttonComponent);
+				this.buttonComponent.lockIn = true;
+				this.buttonList.push(this.buttonComponent);
+			}
+		}
+		else{
+			let individualHeight = h/numButtons;
+			for(let i = 0 ; i < numButtons ; i++){
+				this.buttonComponent = new Button(x, y + individualHeight*i, w, individualHeight, leftMargin, rightMargin, topMargin, bottomMargin, z);
+				this.addGui(this.buttonComponent);
+				this.buttonList.push(this.buttonComponent);
+			}
+		}
+
+		for(let button of this.buttonList){
+			button.setOutTexture(Art.blueButton2Out);
+			button.setInTexture(Art.blueButton2In);
+
+			button.buttonDownCallback = this.popOutAll.bind(this);
+		}
+	}
+
+	popOutAll(){
+		for(let button of this.buttonList){
+			button.release();
+		}
+	}
+}
+
+class imageButton extends GuiGroup{
+	constructor(x, y, w, h, leftMargin = 0, rightMargin = 0, topMargin = 0, bottomMargin = 0, z = 0, onClickFunction = null, image = null){
+		super(x, y, z);
+
+		this.buttonComponent = new Button(x, y, w, h, leftMargin, rightMargin, topMargin, bottomMargin, z, onClickFunction);
+		this.addGui(this.buttonComponent);
+
+		this.spriteWidth = 32;
+		this.spriteHeight = 32;
+
+		this.spriteComponent = new GuiComponent(this.buttonComponent.x + this.buttonComponent.w/2 - this.spriteWidth/2, this.buttonComponent.y + this.buttonComponent.h/2 - this.spriteHeight/2, spriteWidth, spriteHeight, z + 1);
+		this.spriteComponent.texture = image;
+		this.addGui(this.spriteComponent);
 	}
 }
 
@@ -482,6 +549,21 @@ class TowerSelectButton extends GuiGroup{
 		this.spriteTextBackgroundComponent = new GuiComponent(this.buttonComponent.x + this.buttonComponent.leftMargin, this.costComponent.y + (this.buttonComponent.fontSize+2)/2, centerWidth, this.buttonComponent.fontSize-4, z + 1);
 		this.spriteTextBackgroundComponent.drawColor = color("rgba(0,0,0,.3)");
 		this.addGui(this.spriteTextBackgroundComponent);
+
+		this.buttonComponent.buttonDownCallback = this.press.bind(this);
+		this.buttonComponent.buttonUpCallback = this.release.bind(this);
+	}
+
+	press(){
+		this.costComponent.setY(this.costComponent.y + this.buttonComponent.travelDistance);
+		this.spriteTextBackgroundComponent.setY(this.spriteTextBackgroundComponent.y + this.buttonComponent.travelDistance);
+		this.spriteComponent.setY(this.spriteComponent.y + this.buttonComponent.travelDistance);
+	}
+
+	release(){
+		this.costComponent.setY(this.costComponent.y - this.buttonComponent.travelDistance);
+		this.spriteTextBackgroundComponent.setY(this.spriteTextBackgroundComponent.y - this.buttonComponent.travelDistance);
+		this.spriteComponent.setY(this.spriteComponent.y - this.buttonComponent.travelDistance);
 	}
 
 	setOutTexture(tex){
@@ -821,7 +903,7 @@ class PlayerDisplayPanel extends GuiGroup{
 
 class TimelineDisplay extends GuiGroup{
 	constructor(x, y, z = 0){
-		super(x, y);
+		super(x, y, z);
 
 		let panelWidth = playAreaWidth;
 		let panelHeight = screenHeight - playAreaHeight;
@@ -847,8 +929,6 @@ class TimelineDisplay extends GuiGroup{
 			line(this.x + this.sideMargin, this.y + height/2, this.x + width - this.sideMargin, this.y + height/2);
 
 			let spawns = Timeline.spawns();
-
-
 
 			for(let i = 0 ; i < Timeline.totalSpawns() ; i++){
 				let time = Timeline.time(i);

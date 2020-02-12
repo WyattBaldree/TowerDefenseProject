@@ -159,7 +159,7 @@ class Enemy extends Unit{
 	{
 		// award gold/xp then remove from the game
 		super.die();
-		player.money += this.moneyValue;
+		player.setGold(player.gold + this.moneyValue);
 	}
 
 	removeFromGame(){
