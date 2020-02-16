@@ -89,7 +89,8 @@ function closeLevelSelectMenu(){
 //Groups
 let menuButtonsGuiGroup;
 let detailsPanelGuiGroup;
-let towerSelectPanelGuigroup;
+let towerSelectPanel;
+let towerUpgradePanel;
 let playerInfoGuiGroup;
 let timelineGuiGroup;
 
@@ -97,10 +98,6 @@ let restartLevelButton;
 let returnToMainMenuButton;
 let towerSelectionBackground;
 let towerDetailsPanel;
-let arrowTowerButton;
-let beamTowerButton;
-let earthquakeTowerButton;
-let bombTowerButton;
 let playerGoldDisplay;
 let playerDisplayPanel;
 let timelineDisplay;
@@ -172,41 +169,15 @@ function makeLevelGUI(){
 	detailsPanelGuiGroup.addGui(towerDetailsPanel);
 
 	/////////////TOWER SELECT PANEL
-	towerSelectPanelGuigroup = new GuiGroup(playAreaWidth, 280);
-
-	towerSelectionBackground = new NineSlice(towerSelectPanelGuigroup.x, towerSelectPanelGuigroup.y, screenWidth - towerSelectPanelGuigroup.x, playAreaHeight - 280, 8, 8, 8, 8, 0, Art.grayBackground);
-	towerSelectPanelGuigroup.addGui(towerSelectionBackground);
-
-	arrowTowerButton = new TowerSelectButton(towerSelectPanelGuigroup.x + 20, towerSelectPanelGuigroup.y + 20, 1);
-	arrowTowerButton.setInTexture(Art.greenButton2In);
-	arrowTowerButton.setOutTexture(Art.greenButton2Out);
-	arrowTowerButton.setTowerClass(ArrowTowerLevel1);
-	towerSelectPanelGuigroup.addGui(arrowTowerButton);
-
-	beamTowerButton = new TowerSelectButton(towerSelectPanelGuigroup.x + 20, towerSelectPanelGuigroup.y + 124, 1);
-	beamTowerButton.setInTexture(Art.blueButton2In);
-	beamTowerButton.setOutTexture(Art.blueButton2Out);
-	beamTowerButton.setTowerClass(BeamTowerLevel1);
-	towerSelectPanelGuigroup.addGui(beamTowerButton);
-
-	earthquakeTowerButton = new TowerSelectButton(towerSelectPanelGuigroup.x + 110, towerSelectPanelGuigroup.y + 20, 1);
-	earthquakeTowerButton.setInTexture(Art.redButton2In);
-	earthquakeTowerButton.setOutTexture(Art.redButton2Out);
-	earthquakeTowerButton.setTowerClass(EarthquakeTowerLevel1);
-	towerSelectPanelGuigroup.addGui(earthquakeTowerButton);
-
-	bombTowerButton = new TowerSelectButton(towerSelectPanelGuigroup.x + 110, towerSelectPanelGuigroup.y + 124, 1);
-	bombTowerButton.setInTexture(Art.yellowButton2In);
-	bombTowerButton.setOutTexture(Art.yellowButton2Out);
-	bombTowerButton.setTowerClass(BombTowerLevel1);
-	towerSelectPanelGuigroup.addGui(bombTowerButton);
-
+	towerSelectPanel = new TowerSelectPanel(playAreaWidth, 280);
+	towerUpgradePanel = new TowerUpgradePanel(playAreaWidth, 280);
 }
 
 function openLeveLGUI(){
 	menuButtonsGuiGroup.setActive(true);
 	detailsPanelGuiGroup.setActive(true);
-	towerSelectPanelGuigroup.setActive(true);
+	towerSelectPanel.setActive(true);
+	towerUpgradePanel.setActive(false);
 	playerInfoGuiGroup.setActive(true);
 	timelineGuiGroup.setActive(true);
 }
@@ -214,7 +185,8 @@ function openLeveLGUI(){
 function closeLevelGUI(){
 	menuButtonsGuiGroup.setActive(false);
 	detailsPanelGuiGroup.setActive(false);
-	towerSelectPanelGuigroup.setActive(false);
+	towerSelectPanel.setActive(false);
+	towerUpgradePanel.setActive(false);
 	playerInfoGuiGroup.setActive(false);
 	timelineGuiGroup.setActive(false);
 }
@@ -526,7 +498,7 @@ class imageButton extends GuiGroup{
 	}
 }
 
-class TowerSelectButton extends GuiGroup{
+class TowerButton extends GuiGroup{
 	constructor(x, y, z = 0){
 		super(x, y);
 
@@ -576,11 +548,28 @@ class TowerSelectButton extends GuiGroup{
 		this.buttonComponent.updateTexture();
 	}
 
+	setTowerClass(_towerClass){	}
+}
+
+class TowerSelectButton extends TowerButton{
 	setTowerClass(_towerClass){
 		this.towerClass = _towerClass;
 		if(this.towerClass){
 			this.buttonComponent.onClickFunction = function(){
 				beginTowerPlacement(this.parent.towerClass);
+			}
+			this.costComponent.text = this.towerClass.price;
+			this.spriteComponent.texture = this.towerClass.animationFrames[0];
+		}
+	}
+}
+
+class TowerUpgradeButton extends TowerButton{
+	setTowerClass(_towerClass){
+		this.towerClass = _towerClass;
+		if(this.towerClass){
+			this.buttonComponent.onClickFunction = function(){
+				upgradeSelectedTower(this.parent.towerClass);
 			}
 			this.costComponent.text = this.towerClass.price;
 			this.spriteComponent.texture = this.towerClass.animationFrames[0];
@@ -945,3 +934,88 @@ class TimelineDisplay extends GuiGroup{
 		}
 	}
 }
+
+class TowerSelectPanel extends GuiGroup{
+	constructor(x, y, z = 0){
+		super(x, y, z);
+		let panelWidth = screenWidth - playAreaWidth;
+
+		this.panelBackground = new NineSlice(this.x, this.y, panelWidth, playAreaHeight - 280, 8, 8, 8, 8, 0, Art.grayBackground);
+		this.addGui(this.panelBackground);
+
+		this.arrowTowerButton = new TowerSelectButton(this.x + 20, this.y + 20, 1);
+		this.arrowTowerButton.setInTexture(Art.greenButton2In);
+		this.arrowTowerButton.setOutTexture(Art.greenButton2Out);
+		this.arrowTowerButton.setTowerClass(ArrowTowerLevel1);
+		this.addGui(this.arrowTowerButton);
+
+		this.beamTowerButton = new TowerSelectButton(this.x + 20, this.y + 124, 1);
+		this.beamTowerButton.setInTexture(Art.blueButton2In);
+		this.beamTowerButton.setOutTexture(Art.blueButton2Out);
+		this.beamTowerButton.setTowerClass(BeamTowerLevel1);
+		this.addGui(this.beamTowerButton);
+
+		this.earthquakeTowerButton = new TowerSelectButton(this.x + 110, this.y + 20, 1);
+		this.earthquakeTowerButton.setInTexture(Art.redButton2In);
+		this.earthquakeTowerButton.setOutTexture(Art.redButton2Out);
+		this.earthquakeTowerButton.setTowerClass(EarthquakeTowerLevel1);
+		this.addGui(this.earthquakeTowerButton);
+
+		this.bombTowerButton = new TowerSelectButton(this.x + 110, this.y + 124, 1);
+		this.bombTowerButton.setInTexture(Art.yellowButton2In);
+		this.bombTowerButton.setOutTexture(Art.yellowButton2Out);
+		this.bombTowerButton.setTowerClass(BombTowerLevel1);
+		this.addGui(this.bombTowerButton);
+	}
+}
+
+class TowerUpgradePanel extends GuiGroup{
+	constructor(x, y, z = 0){
+		super(x, y, z);
+		let panelWidth = screenWidth - playAreaWidth;
+		this.towerButtonList = [];
+
+		this.panelBackground = new NineSlice(this.x, this.y, panelWidth, playAreaHeight - 280, 8, 8, 8, 8, 0, Art.grayBackground);
+		this.addGui(this.panelBackground);
+
+		this.towerButton1 = new TowerUpgradeButton(this.x + 20, this.y + 20, 1);
+		this.towerButton1.setInTexture(Art.greenButton2In);
+		this.towerButton1.setOutTexture(Art.greenButton2Out);
+		this.towerButton1.setTowerClass(ArrowTowerLevel1);
+		this.addGui(this.towerButton1);
+		this.towerButtonList.push(this.towerButton1);
+
+		this.towerButton2 = new TowerUpgradeButton(this.x + 20, this.y + 124, 1);
+		this.towerButton2.setInTexture(Art.blueButton2In);
+		this.towerButton2.setOutTexture(Art.blueButton2Out);
+		this.towerButton2.setTowerClass(BeamTowerLevel1);
+		this.addGui(this.towerButton2);
+		this.towerButtonList.push(this.towerButton2);
+
+		this.towerButton3 = new TowerUpgradeButton(this.x + 110, this.y + 20, 1);
+		this.towerButton3.setInTexture(Art.redButton2In);
+		this.towerButton3.setOutTexture(Art.redButton2Out);
+		this.towerButton3.setTowerClass(EarthquakeTowerLevel1);
+		this.addGui(this.towerButton3);
+		this.towerButtonList.push(this.towerButton3);
+
+		/*this.sellButton = new TowerSelectButton(this.x + 110, this.y + 124, 1);
+		this.sellButton.setInTexture(Art.yellowButton2In);
+		this.sellButton.setOutTexture(Art.yellowButton2Out);
+		this.sellButton.setTowerClass(BombTowerLevel1);
+		this.addGui(this.sellButton);*/
+	}
+
+	setTowerClass(towerInstance){
+		let upgradeList = towerInstance.getUpgrades();
+		for(let i = 0 ; i < this.towerButtonList.length ; i++){
+			if(i < upgradeList.length){
+				this.towerButtonList[i].setActive(true);
+				this.towerButtonList[i].setTowerClass(upgradeList[i]);
+			}
+			else{
+				this.towerButtonList[i].setActive(false);
+			}
+		}
+	}
+} 

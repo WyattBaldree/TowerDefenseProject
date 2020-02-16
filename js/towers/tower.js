@@ -13,6 +13,7 @@ class Tower extends Unit{
 		classRef.damage = 5;
 		classRef.speed = 5;
 		classRef.price = 100;
+		classRef.upgrades = [];
 	}
 
 	constructor(x, y){
@@ -42,6 +43,10 @@ class Tower extends Unit{
 
 	getBasePrice(){
 		return this.constructor.price;
+	}
+
+	getUpgrades(){
+		return this.constructor.upgrades;
 	}
 
 	update(dTime){

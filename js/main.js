@@ -70,6 +70,7 @@ function setup() {
 	CooldownTower.initializeClass();
 	ArrowTowerLevel1.initializeClass();
 	BeamTowerLevel1.initializeClass();
+	BeamTowerLevel2.initializeClass();
 	BombTowerLevel1.initializeClass();
 	EarthquakeTowerLevel1.initializeClass();
 
@@ -132,38 +133,40 @@ function drawStep(){
   		u.drawSelf();
 	}
 
-	switch(controlMode){
-		case 0:
-			if(selectedUnit != null){
-				selectedUnit.drawSelected();
-			}
+	if(gameState == 2){
+		switch(controlMode){
+			case 0:
+				if(selectedUnit != null){
+					selectedUnit.drawSelected();
+				}
 
-			//Do stuff based off of the position of the mouse in the grid only if the mouse is in the grid.
-			if(mouseGridX != -1 && mouseGridY != -1){
-				let hoveredTower = towerArray[mouseGridX][mouseGridY];
-				if(hoveredTower != null){
-					if(hoveredTower != selectedUnit){
-						hoveredTower.drawHovered();
+				//Do stuff based off of the position of the mouse in the grid only if the mouse is in the grid.
+				if(mouseGridX != -1 && mouseGridY != -1){
+					let hoveredTower = towerArray[mouseGridX][mouseGridY];
+					if(hoveredTower != null){
+						if(hoveredTower != selectedUnit){
+							hoveredTower.drawHovered();
+						}
 					}
 				}
-			}
-			Path.draw();
-			break;
-		case 1:
-			drawTowerPlacementGrid();
+				Path.draw();
+				break;
+			case 1:
+				drawTowerPlacementGrid();
 
-			// draw the tower we intend to place
-			image(placeTowerClass.animationFrames[0], mouseX - mouseX%gridScale, mouseY - mouseY%gridScale, gridScale, gridScale);
+				// draw the tower we intend to place
+				image(placeTowerClass.animationFrames[0], mouseX - mouseX%gridScale, mouseY - mouseY%gridScale, gridScale, gridScale);
 
-			// draw the range of the tower.
-			stroke(color('rgba(255,255,51, 1)'));
-			fill(color('rgba(255,255,51,.2)'));
-			ellipse(mouseX - mouseX%gridScale + gridScale/2, mouseY - mouseY%gridScale + gridScale/2, placeTowerClass.range * 2 * gridScale);
-			break;
+				// draw the range of the tower.
+				stroke(color('rgba(255,255,51, 1)'));
+				fill(color('rgba(255,255,51,.2)'));
+				ellipse(mouseX - mouseX%gridScale + gridScale/2, mouseY - mouseY%gridScale + gridScale/2, placeTowerClass.range * 2 * gridScale);
+				break;
+		}
+		noStroke();
+		fill(color('rgba(255, 127, 0, .5)'));
+		drawSelectionSquare();
 	}
-	noStroke();
-	fill(color('rgba(255, 127, 0, .5)'));
-	drawSelectionSquare();
 
 	for(var gui of guiList){
   		gui.drawSelf();
@@ -252,33 +255,34 @@ function mousePressed(event) {
   		}
   	}
 
-  	switch(controlMode){
-  		case 0:
-  			//Do stuff based off of the position of the mouse in the grid only if the mouse is in the grid.
-			if(mouseGridX != -1 && mouseGridY != -1){
-				let hoveredTower = towerArray[mouseGridX][mouseGridY];
-				// When we click a grid space with a tower, selectedUnit is set to that tower. Else selectedUnit becomes null;
-				if(hoveredTower != null){
-					selectedUnit = hoveredTower;
-					towerDetailsPanel.setTowerClass(selectedUnit.getClass());
+  	if(gameState == 2){
+	  	switch(controlMode){
+	  		case 0:
+	  			//Do stuff based off of the position of the mouse in the grid only if the mouse is in the grid.
+				if(mouseGridX != -1 && mouseGridY != -1){
+					let hoveredTower = towerArray[mouseGridX][mouseGridY];
+					// When we click a grid space with a tower, selectedUnit is set to that tower. Else selectedUnit becomes null;
+					if(hoveredTower != null){
+						setSelectedUnit(hoveredTower);
+					}
+					else{
+						setSelectedUnit(null);
+					}
 				}
-				else{
-					selectedUnit = null;
+	  			break;
+	  		case 1:
+	  			if(mouseGridX != -1 && mouseGridY != -1){
+					let hoveredTower = towerArray[mouseGridX][mouseGridY];
+					// When we click a grid space with a tower, selectedUnit is set to that tower. Else selectedUnit becomes null;
+					if(hoveredTower != null){
+						controlMode = 0;
+					}
+					else{
+						placeTower(mouseGridX, mouseGridY, placeTowerClass);
+					}
 				}
-			}
-  			break;
-  		case 1:
-  			if(mouseGridX != -1 && mouseGridY != -1){
-				let hoveredTower = towerArray[mouseGridX][mouseGridY];
-				// When we click a grid space with a tower, selectedUnit is set to that tower. Else selectedUnit becomes null;
-				if(hoveredTower != null){
-					controlMode = 0;
-				}
-				else{
-					placeTower(mouseGridX, mouseGridY, placeTowerClass);
-				}
-			}
-  			break;
+	  			break;
+	  	}
   	}
 }
 
@@ -391,21 +395,51 @@ function spawnInPath(_enemyID, _pathID, pathprogress){
 	enemy.move(pathprogress);	
 }
 
-function placeTower(x, y, towerClass){
+function placeTower(x, y, towerClass, force = false){
 	let cost = towerClass.price;
 
-	if(player.gold >= cost && canPlaceTowerHere(x, y)){
+	let newTower = null;
+	if(player.gold >= cost && (canPlaceTowerHere(x, y) || force)){
 		player.setGold(player.gold - cost);
-		new towerClass(x, y);
+		newTower = new towerClass(x, y);
 	}
-
 	controlMode = 0;
+	if(newTower) setSelectedUnit(newTower);
+	return newTower;
+}
+
+function replaceTower(towerToReplace, newTowerClass){
+	towerToReplace.markForRemoval();
+	return placeTower(towerToReplace.getXGrid(), towerToReplace.getYGrid(), newTowerClass, true);
 }
 
 function beginTowerPlacement(towerClass){
 	controlMode = 1; //How we are currently controlling the game. 0 - normal, 1 - placing tower
 	placeTowerClass = towerClass; // Which tower we are currently trying to place.
 	towerDetailsPanel.setTowerClass(towerClass);
+}
+
+function upgradeSelectedTower(towerClass){
+	console.log("Upgrading from " + selectedUnit.getUnitName() + " to " + towerClass.unitName + ".");
+	let cost = towerClass.price;
+	if(player.gold >= cost){
+		replaceTower(selectedUnit, towerClass);
+	}
+}
+
+function setSelectedUnit(unit){
+	selectedUnit = unit;
+
+	if(selectedUnit == null){
+		towerSelectPanel.setActive(true);
+		towerUpgradePanel.setActive(false);
+	}
+	else if(selectedUnit instanceof Tower){
+		towerSelectPanel.setActive(false);
+		towerUpgradePanel.setActive(true);
+		towerUpgradePanel.setTowerClass(selectedUnit);
+		towerDetailsPanel.setTowerClass(selectedUnit.getClass());
+	}
 }
 
 function setLevel(i){

@@ -8,6 +8,7 @@ class CooldownTower extends Tower{
 		classRef.damage = 5;
 		classRef.speed = 10;
 		classRef.price = 100;
+		classRef.upgrades = [];
 	}
 
 	constructor(x, y){
