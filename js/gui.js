@@ -237,6 +237,10 @@ class GuiComponent{
 		return handled;
 	}
 
+	pressAnywhere(){
+
+	}
+
 	release(){
 		
 	}
@@ -369,6 +373,7 @@ class Button extends NineSlice{
 	constructor(x, y, w, h, leftMargin = 0, rightMargin = 0, topMargin = 0, bottomMargin = 0, z = 0, onClickFunction = null){
 		super(x, y, w, h, leftMargin, rightMargin, topMargin, bottomMargin, z);
 		this.onClickFunction = onClickFunction;
+		this.onClickOffFunction = null;
 		this.pressed = false;
 		this.outTexture = null;
 		this.inTexture = null;
@@ -415,6 +420,10 @@ class Button extends NineSlice{
 
 		let handled = true;
 		return handled;
+	}
+
+	pressAnywhere(){
+		if(this.onClickOffFunction) this.onClickOffFunction();
 	}
 
 	release(){
@@ -565,15 +574,73 @@ class TowerSelectButton extends TowerButton{
 }
 
 class TowerUpgradeButton extends TowerButton{
+	constructor(x, y, z = 0){
+		super(x, y, z);
+		this.confirm = false;
+			
+		this.buttonComponent.onClickOffFunction = function(){
+			this.parent.reset();
+		}
+	}
+
 	setTowerClass(_towerClass){
 		this.towerClass = _towerClass;
 		if(this.towerClass){
 			this.buttonComponent.onClickFunction = function(){
-				upgradeSelectedTower(this.parent.towerClass);
+				if(this.parent.confirm){
+					upgradeSelectedTower(this.parent.towerClass);
+					this.parent.confirm = false;
+				}
+				else{
+					this.parent.confirm = true;
+					this.parent.spriteComponent.texture = Art.checkMark;
+					towerDetailsPanel.setTowerClass(this.parent.towerClass);
+				}
 			}
 			this.costComponent.text = this.towerClass.price;
 			this.spriteComponent.texture = this.towerClass.animationFrames[0];
 		}
+	}
+
+	reset(){
+		this.spriteComponent.texture = this.towerClass.animationFrames[0];
+		this.confirm = false;
+	}
+}
+
+class TowerSellButton extends TowerButton{
+	constructor(x, y, z = 0){
+		super(x, y, z)
+		this.confirm = false;
+
+		this.buttonComponent.onClickOffFunction = function(){
+			this.parent.reset();
+		}
+	}
+
+	setTowerClass(_towerClass){
+		this.towerClass = _towerClass;
+		if(this.towerClass){
+			let sellPrice = this.towerClass.price;
+			this.buttonComponent.onClickFunction = function(){
+				if(this.parent.confirm){
+					sellSelectedTower(sellPrice);
+					this.parent.confirm = false;
+				}
+				else{
+					this.parent.confirm = true;
+					this.parent.spriteComponent.texture = Art.checkMark;
+					towerDetailsPanel.setTowerClass(this.parent.towerClass);
+				}
+			}
+			this.costComponent.text = this.towerClass.price;
+			this.spriteComponent.texture = Art.goldCoinStack;
+		}
+	}
+
+	reset(){
+		this.spriteComponent.texture = Art.goldCoinStack;
+		this.confirm = false;
 	}
 }
 
@@ -981,29 +1048,25 @@ class TowerUpgradePanel extends GuiGroup{
 		this.towerButton1 = new TowerUpgradeButton(this.x + 20, this.y + 20, 1);
 		this.towerButton1.setInTexture(Art.greenButton2In);
 		this.towerButton1.setOutTexture(Art.greenButton2Out);
-		this.towerButton1.setTowerClass(ArrowTowerLevel1);
 		this.addGui(this.towerButton1);
 		this.towerButtonList.push(this.towerButton1);
 
 		this.towerButton2 = new TowerUpgradeButton(this.x + 20, this.y + 124, 1);
 		this.towerButton2.setInTexture(Art.blueButton2In);
 		this.towerButton2.setOutTexture(Art.blueButton2Out);
-		this.towerButton2.setTowerClass(BeamTowerLevel1);
 		this.addGui(this.towerButton2);
 		this.towerButtonList.push(this.towerButton2);
 
 		this.towerButton3 = new TowerUpgradeButton(this.x + 110, this.y + 20, 1);
 		this.towerButton3.setInTexture(Art.redButton2In);
 		this.towerButton3.setOutTexture(Art.redButton2Out);
-		this.towerButton3.setTowerClass(EarthquakeTowerLevel1);
 		this.addGui(this.towerButton3);
 		this.towerButtonList.push(this.towerButton3);
 
-		/*this.sellButton = new TowerSelectButton(this.x + 110, this.y + 124, 1);
+		this.sellButton = new TowerSellButton(this.x + 110, this.y + 124, 1);
 		this.sellButton.setInTexture(Art.yellowButton2In);
 		this.sellButton.setOutTexture(Art.yellowButton2Out);
-		this.sellButton.setTowerClass(BombTowerLevel1);
-		this.addGui(this.sellButton);*/
+		this.addGui(this.sellButton);
 	}
 
 	setTowerClass(towerInstance){
@@ -1017,5 +1080,7 @@ class TowerUpgradePanel extends GuiGroup{
 				this.towerButtonList[i].setActive(false);
 			}
 		}
+		this.sellButton.setActive(true)
+		this.sellButton.setTowerClass(towerInstance.getClass());
 	}
 } 

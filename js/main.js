@@ -248,10 +248,14 @@ function setGameState(state){
 function mousePressed(event) {
   	console.log(event);
 
+  	let handled = false;
   	for(let gui of guiList){
   		if(!gui.active) continue;
-  		if(mouseX >= gui.x && mouseX < gui.x + gui.w && mouseY >= gui.y && mouseY < gui.y + gui.h){
-  			if (gui.press()) break;
+  		if(!handled && mouseX >= gui.x && mouseX < gui.x + gui.w && mouseY >= gui.y && mouseY < gui.y + gui.h){
+  			handled = gui.press();
+  		}
+  		else{
+  			gui.pressAnywhere();
   		}
   	}
 
@@ -293,7 +297,7 @@ function mouseReleased(event) {
   		if(!gui.active) continue;
   		if(mouseX >= gui.x && mouseX < gui.x + gui.w && mouseY >= gui.y && mouseY < gui.y + gui.h){
   			if(gui instanceof Button){
-  				if(!gui.lockIn) gui.release();
+  				if(!gui.lockIn && gui.pressed) gui.release();
   			}
   			else{
   				gui.release();
@@ -420,11 +424,16 @@ function beginTowerPlacement(towerClass){
 }
 
 function upgradeSelectedTower(towerClass){
-	console.log("Upgrading from " + selectedUnit.getUnitName() + " to " + towerClass.unitName + ".");
 	let cost = towerClass.price;
 	if(player.gold >= cost){
 		replaceTower(selectedUnit, towerClass);
 	}
+}
+
+function sellSelectedTower(sellAmount){
+	selectedUnit.markForRemoval();
+	player.setGold(player.gold + sellAmount);
+	setSelectedUnit(null);
 }
 
 function setSelectedUnit(unit){

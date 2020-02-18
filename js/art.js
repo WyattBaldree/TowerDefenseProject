@@ -59,5 +59,7 @@ class Art{
 		Art.ninjaStar = loadImage('img/ninjaStar.png');
 		Art.eyeball = loadImage('img/eyeball.png');
 		Art.heart = loadImage('img/heart.png');
+		Art.thumbUp = loadImage('img/thumbUp.png');
+		Art.checkMark = loadImage('img/checkMark.png');
 	}
 }
