@@ -84,6 +84,121 @@ function closeLevelSelectMenu(){
 	levelSelectGuiGroup.setActive(false);
 }
 
+////////////////////////////Level Win GUI
+
+let levelWinGuiGroup;
+let levelWinBackground;
+let levelWinPlate;
+let levelWinNextLevelButton;
+let levelWinMainMenuButton;
+let levelWinTextPlate;
+let levelWinText;
+function makeWinLevelGui(){
+	levelWinGuiGroup = new GuiGroup(0, 0);
+
+	levelWinBackground = new GuiComponent(0, 0, screenWidth, screenHeight, 4);
+	levelWinBackground.drawColor = color("rgba(0, 0, 0, .5)");
+	levelWinBackground.stopClicks = true;
+	levelWinGuiGroup.addGui(levelWinBackground);
+
+	levelWinPlate = new NineSlice(screenWidth/2 - 120, screenHeight/2 - 70, 240, 160, 8, 8, 8, 8, 5, Art.grayBackground);
+	levelWinGuiGroup.addGui(levelWinPlate);
+
+	levelWinNextLevelButton = new Button(screenWidth/2 - 90, screenHeight/2 - 55, 180, 60, 5, 5, 5, 5, 6);
+	levelWinNextLevelButton.setInTexture(Art.blueButton2In);
+	levelWinNextLevelButton.setOutTexture(Art.blueButton2Out);
+	levelWinNextLevelButton.text = "Next Level";
+	levelWinNextLevelButton.onClickFunction = function(){ 
+		setLevel(currentLevelIndex+1);
+		setGameState(2);
+	}
+	levelWinGuiGroup.addGui(levelWinNextLevelButton);
+
+	levelWinMainMenuButton = new Button(screenWidth/2 - 90, screenHeight/2 + 15, 180, 60, 5, 5, 5, 5, 6);
+	levelWinMainMenuButton.setInTexture(Art.blueButton2In);
+	levelWinMainMenuButton.setOutTexture(Art.blueButton2Out);
+	levelWinMainMenuButton.text = "Main Menu";
+	levelWinMainMenuButton.onClickFunction = function(){ 
+		setGameState(0);
+	}
+	levelWinGuiGroup.addGui(levelWinMainMenuButton);
+
+	levelWinTextPlate = new NineSlice(screenWidth/2 - 140, screenHeight/2 - 160, 280, 80, 8, 8, 8, 8, 6, Art.greenButtonOut);
+	levelWinGuiGroup.addGui(levelWinTextPlate);
+
+	levelWinText = new TextComponent(screenWidth/2, screenHeight/2 - 120, 7, "You Win!");
+	levelWinText.fontColor = color("white");
+	levelWinText.fontSize = 45;
+	levelWinText.horizontalAlign = CENTER;
+	levelWinText.verticalAlign = CENTER;
+	levelWinGuiGroup.addGui(levelWinText);
+}
+
+function openWinLevelGui(){
+	levelWinGuiGroup.setActive(true);
+}
+
+function closeWinLevelGui(){
+	levelWinGuiGroup.setActive(false);
+}
+
+////////////////////////////Level Lose GUI
+
+let levelLoseGuiGroup;
+let levelLoseBackground;
+let levelLosePlate;
+let levelLoseNextLevelButton;
+let levelLoseMainMenuButton;
+let levelLoseTextPlate;
+let levelLoseText;
+function makeLoseLevelGui(){
+	levelLoseGuiGroup = new GuiGroup(0, 0);
+
+	levelLoseBackground = new GuiComponent(0, 0, screenWidth, screenHeight, 4);
+	levelLoseBackground.drawColor = color("rgba(0, 0, 0, .5)");
+	levelLoseBackground.stopClicks = true;
+	levelLoseGuiGroup.addGui(levelLoseBackground);
+
+	levelLosePlate = new NineSlice(screenWidth/2 - 120, screenHeight/2 - 70, 240, 160, 8, 8, 8, 8, 5, Art.grayBackground);
+	levelLoseGuiGroup.addGui(levelLosePlate);
+
+	levelLoseNextLevelButton = new Button(screenWidth/2 - 90, screenHeight/2 - 55, 180, 60, 5, 5, 5, 5, 6);
+	levelLoseNextLevelButton.setInTexture(Art.blueButton2In);
+	levelLoseNextLevelButton.setOutTexture(Art.blueButton2Out);
+	levelLoseNextLevelButton.text = "Retry Level";
+	levelLoseNextLevelButton.onClickFunction = function(){ 
+		setGameState(2);
+	}
+	levelLoseGuiGroup.addGui(levelLoseNextLevelButton);
+
+	levelLoseMainMenuButton = new Button(screenWidth/2 - 90, screenHeight/2 + 15, 180, 60, 5, 5, 5, 5, 6);
+	levelLoseMainMenuButton.setInTexture(Art.blueButton2In);
+	levelLoseMainMenuButton.setOutTexture(Art.blueButton2Out);
+	levelLoseMainMenuButton.text = "Main Menu";
+	levelLoseMainMenuButton.onClickFunction = function(){ 
+		setGameState(0);
+	}
+	levelLoseGuiGroup.addGui(levelLoseMainMenuButton);
+
+	levelLoseTextPlate = new NineSlice(screenWidth/2 - 140, screenHeight/2 - 160, 280, 80, 8, 8, 8, 8, 6, Art.redButtonOut);
+	levelLoseGuiGroup.addGui(levelLoseTextPlate);
+
+	levelLoseText = new TextComponent(screenWidth/2, screenHeight/2 - 120, 7, "You Lose!");
+	levelLoseText.fontColor = color("white");
+	levelLoseText.fontSize = 45;
+	levelLoseText.horizontalAlign = CENTER;
+	levelLoseText.verticalAlign = CENTER;
+	levelLoseGuiGroup.addGui(levelLoseText);
+}
+
+function openLoseLevelGui(){
+	levelLoseGuiGroup.setActive(true);
+}
+
+function closeLoseLevelGui(){
+	levelLoseGuiGroup.setActive(false);
+}
+
 ////////////////////////////// LEVEL GUI (main game gui)
 
 //Groups
@@ -207,6 +322,7 @@ class GuiComponent{
 		this.active = true;
 		this.drawColor = color("black");
 		this.parent = null;
+		this.stopClicks = false;
 		guiList.push(this);
 		guiList.sort((a, b) => (a.z > b.z) ? 1 : -1);
 	}
@@ -233,7 +349,15 @@ class GuiComponent{
 	}
 
 	press(){
-		let handled = false;
+		let handled;
+		if(this.stopClicks && this.active){
+			handled = true;
+			console.log(this);
+		}
+		else{
+			handled = false;
+		}
+
 		return handled;
 	}
 
@@ -539,6 +663,7 @@ class TowerButton extends GuiGroup{
 		this.costComponent.setY(this.costComponent.y + this.buttonComponent.travelDistance);
 		this.spriteTextBackgroundComponent.setY(this.spriteTextBackgroundComponent.y + this.buttonComponent.travelDistance);
 		this.spriteComponent.setY(this.spriteComponent.y + this.buttonComponent.travelDistance);
+		super.press();
 	}
 
 	release(){
@@ -651,6 +776,8 @@ class TextComponent extends GuiComponent{
 		this.font = fontMinecraft;
 		this.fontSize = 25;
 		this.fontColor = color("white");
+		this.horizontalAlign = LEFT;
+		this.verticalAlign = TOP;
 	}
 
 	drawSelf(){
@@ -659,7 +786,7 @@ class TextComponent extends GuiComponent{
 			textSize(this.fontSize);
 			noStroke();
 			fill(this.fontColor);
-	  		textAlign(LEFT, TOP);
+	  		textAlign(this.horizontalAlign, this.verticalAlign);
 			text(this.text, this.x, this.y);
 		}
 	}

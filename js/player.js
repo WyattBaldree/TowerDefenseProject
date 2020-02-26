@@ -1,5 +1,5 @@
 class Player{
-	constructor(startingGold = 300, startingHealth = 100){
+	constructor(startingGold = 300, startingHealth = 5){
 		this.setGold(startingGold);
 		this.setHealth(startingHealth);
 	}
@@ -12,5 +12,6 @@ class Player{
 	setHealth(health){
 		this.health = health;
 		playerDisplayPanel.healthComponent.text = this.health;
+		if (this.health <= 0) loseLevel();
 	}
 }

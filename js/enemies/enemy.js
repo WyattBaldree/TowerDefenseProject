@@ -166,6 +166,10 @@ class Enemy extends Unit{
 		super.removeFromGame();
 		let removeIndex = enemyList.indexOf(this);
 		if(removeIndex >= 0) enemyList.splice(removeIndex, 1);
+
+		if(enemyList.length <= 0 && Timeline.currentSpawn >= Timeline.totalSpawns()){
+			winLevel();
+		}
 	}
 
 }

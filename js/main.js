@@ -11,6 +11,7 @@ var gameSpeed = 2;
 
 
 var currentLevel;
+var currentLevelIndex;
 
 var player;
 
@@ -77,6 +78,8 @@ function setup() {
 	makeMainMenu();
 	makeLevelSelectMenu();
 	makeLevelGUI();
+	makeWinLevelGui();
+	makeLoseLevelGui();
 	setGameState(0);
 	//SpawnEnemy(1, 1, 100);
 }
@@ -105,12 +108,16 @@ function updateStep(dTime){
 	  		u.update(dTime*gameSpeed);
 		}
 	}
-
-	for(let gui of guiList){
+	let hoveredThisFrame = false;
+	for(let i = guiList.length - 1 ; i >= 0 ; i--){
+  		let gui = guiList[i];
   		if(!gui.active) continue;
   		gui.update(dTime);
-  		if(mouseX >= gui.x && mouseX < gui.x + gui.w && mouseY >= gui.y && mouseY < gui.y + gui.h){
-  			if(!gui.hovered) gui.beginHover();
+  		if(!hoveredThisFrame && mouseX >= gui.x && mouseX < gui.x + gui.w && mouseY >= gui.y && mouseY < gui.y + gui.h){
+  			if(!gui.hovered){
+  				gui.beginHover();
+  			}
+  			hoveredThisFrame = true;
   		}
   		else{
   			if(gui.hovered) gui.endHover();
@@ -204,11 +211,13 @@ function startLevel(){
 
 	new ArrowTowerLevel1(6, 7);
 
-	new ArrowTowerLevel1(6, 13);
+	//new ArrowTowerLevel1(6, 13);
 
-	new BombTowerLevel1(12, 7);
+	//new BombTowerLevel1(12, 7);
 
-	new BombTowerLevel1(12, 13);
+	//new BombTowerLevel1(12, 13);
+
+	speedButtonGroup.buttonList[2].press();
 }
 
 // End the level we are currently on.
@@ -226,6 +235,8 @@ function setGameState(state){
 	closeMainMenu();
 	closeLevelSelectMenu();
 	closeLevelGUI();
+	closeWinLevelGui();
+	closeLoseLevelGui();
 	switch(state){
 		case 0:
 			endLevel();
@@ -242,6 +253,14 @@ function setGameState(state){
 			openLeveLGUI();
 			gameState = 2;
 			break;
+		case 3:
+			//Lose Level
+			gameState = 3;
+			break;
+		case 4:
+			//Win Level
+			gameState = 4;
+			break;
 	}
 }
 
@@ -249,7 +268,8 @@ function mousePressed(event) {
   	console.log(event);
 
   	let handled = false;
-  	for(let gui of guiList){
+  	for(let i = guiList.length - 1 ; i >= 0 ; i--){
+  		let gui = guiList[i];
   		if(!gui.active) continue;
   		if(!handled && mouseX >= gui.x && mouseX < gui.x + gui.w && mouseY >= gui.y && mouseY < gui.y + gui.h){
   			handled = gui.press();
@@ -453,6 +473,7 @@ function setSelectedUnit(unit){
 
 function setLevel(i){
 	currentLevel = levelArray[i];
+	currentLevelIndex = i;
 }
 
 function debugCoordinates(){
@@ -468,3 +489,26 @@ function debugCoordinates(){
 	}
 }
 
+function loseLevel(){
+	openLoseLevelGui();
+	setGameSpeed(0);
+}
+
+function winLevel(){
+	openWinLevelGui();
+	setGameSpeed(0);
+}
+
+function keyPressed() {
+	if (keyCode === 32)
+	{
+		console.log("space pressed");
+    	winLevel();
+ 	}
+
+ 	if (keyCode === 77)
+	{
+		console.log("M pressed");
+    	loseLevel();
+ 	}
+}
