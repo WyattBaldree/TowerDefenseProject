@@ -9,16 +9,16 @@ class Path{
 		}
 	}
 	static getX(pathID,index){ //getPathX
-		return currentLevel.levelData.paths[pathID][index][0];
+		return selectedLevel.paths[pathID][index].x;
 	}
 	static getY(pathID,index){ //getPathY
-		return currentLevel.levelData.paths[pathID][index][1];
+		return selectedLevel.paths[pathID][index].y;
 	}
 	static length(pathID){ //getPathLength
-		return currentLevel.levelData.paths[pathID].length;
+		return selectedLevel.paths[pathID].length;
 	}
 	static total(){ //numPaths
-		return currentLevel.levelData.paths.length;
+		return selectedLevel.paths.length;
 	}
 }
 

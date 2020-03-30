@@ -60,6 +60,7 @@ function makeLevelSelectMenu(){
 	level1Button.setOutTexture(Art.blueButton2Out);
 	level1Button.text = "1";
 	level1Button.onClickFunction = function(){ 
+		currentLevelName = "level1";
 		setLevel(0);
 		setGameState(2);
 	}
@@ -69,7 +70,8 @@ function makeLevelSelectMenu(){
 	level2Button.setInTexture(Art.blueButton2In);
 	level2Button.setOutTexture(Art.blueButton2Out);
 	level2Button.text = "2";
-	level2Button.onClickFunction = function(){ 
+	level2Button.onClickFunction = function(){
+		currentLevelName = "level2";
 		setLevel(1);
 		setGameState(2);
 	}

@@ -12,6 +12,11 @@ var gameSpeed = 2;
 
 var currentLevel;
 var currentLevelIndex;
+var currentLevelName = "level1";
+
+let bottomCanvas = null;
+let middleCanvas = null;
+let topCanvas = null;
 
 var player;
 
@@ -27,8 +32,6 @@ let levelPlay = false; //Is the level currently playing or paused.
 let controlMode = 0; //How we are currently controlling the game. 0 - normal, 1 - placing tower
 let placeTowerID = 0; // Which tower we are currently trying to place.
 
-let solidBlockArray;
-
 let fontKenny;
 let fontKennyThin;
 let fontVCR;
@@ -40,6 +43,9 @@ function preload(){
 	levelArray.push(loadJSON('json/level2.json'));
 	currentLevel = levelArray[0];
 
+	loadLevel("level1");
+	loadLevel("level2");
+
 	fontKenny = loadFont('font/kenvector_future.ttf');
 	fontKennyThin = loadFont('font/kenvector_future_thin.ttf');
 	fontVCR = loadFont('font/VCR_OSD_MONO_1.001.ttf');
@@ -48,11 +54,14 @@ function preload(){
 	Art.loadArt();
 }
 
-// setup the game
+// setup the games
 function setup() {
 
+	bottomCanvas = createGraphics(playAreaWidth, playAreaHeight);
+	middleCanvas = createGraphics(playAreaWidth, playAreaHeight);
+	topCanvas = createGraphics(playAreaWidth, playAreaHeight);
+
 	towerArray = createArray(playAreaGridWidth, playAreaGridHeight);
-	solidBlockArray = createArray(playAreaGridWidth, playAreaGridHeight);
 
 
 	frameRate = FPS;
@@ -81,7 +90,6 @@ function setup() {
 	makeWinLevelGui();
 	makeLoseLevelGui();
 	setGameState(0);
-	//SpawnEnemy(1, 1, 100);
 }
 
 // This is our main loop.
@@ -90,7 +98,6 @@ function draw() {
 	updateStep(deltaTime/100);
 	cleanUp();
 	drawStep();
-	//debugCoordinates();
 }
 
 // Update the game state in this loop.
@@ -135,6 +142,8 @@ function drawStep(){
 	strokeWeight(2);
 
 	drawGrid(0, 0, playAreaWidth, playAreaHeight);
+
+	drawLevel();
 
 	for(var u of unitList){
   		u.drawSelf();
@@ -191,6 +200,7 @@ function cleanUp(){
 
 // Begin the currently selected level.
 function startLevel(){
+
 	levelPlay = true;
 	Timeline.currentSpawn = 0
 	Timeline.levelTimer = 0;
@@ -202,20 +212,7 @@ function startLevel(){
   		u.markForRemoval();
 	}
 
-	for(let arr of solidBlockArray){
-		arr = []
-	}
-	for(let pair of currentLevel.levelData.solid){
-		solidBlockArray[pair[0]][pair[1]] = 1;
-	}
-
 	new ArrowTowerLevel1(6, 7);
-
-	//new ArrowTowerLevel1(6, 13);
-
-	//new BombTowerLevel1(12, 7);
-
-	//new BombTowerLevel1(12, 13);
 
 	speedButtonGroup.buttonList[2].press();
 }
@@ -349,6 +346,12 @@ function drawGrid(x, y, gridWidth, gridHeight){
 	}
 }
 
+function drawLevel(){
+	image(bottomCanvas, 0, 0);
+	image(middleCanvas, 0, 0);
+	image(topCanvas, 0, 0);
+}
+
 function drawFilledGridSpace(x, y){
 	strokeWeight(1);
 	stroke(color("black"));
@@ -381,7 +384,7 @@ function drawTowerPlacementGrid(){
 }
 
 function canPlaceTowerHere(x, y){
-	return (towerArray[x][y] == null && solidBlockArray[x][y] == null); 
+	return (towerArray[x][y] == null && selectedLevel.solidArray[x][y] == null); 
 }
 
 function spawn(_enemyID, _pathID){
@@ -474,6 +477,8 @@ function setSelectedUnit(unit){
 function setLevel(i){
 	currentLevel = levelArray[i];
 	currentLevelIndex = i;
+
+	buildLevel(currentLevelName);
 }
 
 function debugCoordinates(){

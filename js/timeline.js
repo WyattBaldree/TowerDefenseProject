@@ -1,6 +1,7 @@
 class Timeline{
 	static levelTimer = 0;
 	static currentSpawn = 0;
+	static currentWave = 0;
 
 	static advanceTimeline(dTime){
 		Timeline.levelTimer+=dTime;
@@ -17,18 +18,19 @@ class Timeline{
 	}
 
 	static time(index){ //getTimelineTime
-		return currentLevel.levelData.timeline[index][0];
+		return selectedLevel.waves[Timeline.currentWave][index].time;
+
 	}
 	static enemyID(index){ //getTimelineEnemyID
-		return currentLevel.levelData.timeline[index][1];
+		return selectedLevel.waves[Timeline.currentWave][index].enemyId;
 	}
 	static pathID(index){ //getTimelinePathID
-		return currentLevel.levelData.timeline[index][2];
+		return selectedLevel.waves[Timeline.currentWave][index].pathId;
 	}
 	static totalSpawns(){ //getTimelineTotalSpawns
-		return currentLevel.levelData.timeline.length;
+		return selectedLevel.waves[Timeline.currentWave].length
 	}
 	static spawns(){ //getTimelineTotalSpawns
-		return currentLevel.levelData.timeline;
+		return selectedLevel.waves[Timeline.currentWave];
 	} 
 }
