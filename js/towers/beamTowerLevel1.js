@@ -19,9 +19,11 @@ class BeamTowerLevel1 extends CooldownTower{
 	drawSelf(){
 		super.drawSelf();
 		if(this.target){
+			push()
 			strokeWeight(4);
 			stroke(color('rgba(255,0,0, .7)'));
 			line(this.getXGridCenter(), this.getYGridCenter(), this.target.x + gridScale/2, this.target.y + gridScale/2);
+			pop();
 		}
 	}
 }

@@ -4,13 +4,16 @@ var projectileList = new Array(); // holda all projectile objects.
 class Projectile extends Unit{
 	constructor(x, y){
 		super(x, y)
-		this.speed = 20;
+		this.speed = 45;
 		this.damage = 1;
+		this.rotationOffset = 0;
+		this.doUpdateAngle = true;
 		projectileList.push(this);
 	}
 
 	update(dTime){
 		super.update(dTime);
+		this.updateAngle();
 	}
 
 	onHit(){
@@ -24,6 +27,8 @@ class Projectile extends Unit{
 		let distance = Math.sqrt(Math.pow(deltaX,2) + Math.pow(deltaY,2));
 
 		if(distance <= this.speed*dTime){
+			this.x = x;
+			this.y = y;
 			this.onHit();
 			return;
 		}
@@ -43,6 +48,10 @@ class Projectile extends Unit{
 		super.die();
 	}
 
+	updateAngle(){
+		this.angle = 0;
+	}
+
 	removeFromGame(){
 		super.removeFromGame();
 		let removeIndex = projectileList.indexOf(this);
@@ -50,9 +59,23 @@ class Projectile extends Unit{
 	}
 
 	drawSelf(){
-		strokeWeight(1);
-		stroke(color('black'));
-		fill(color('red'));
-		ellipse(this.x, this.y, gridScale/5);
+		if(this.texture){
+			push();
+			noSmooth();
+			angleMode(DEGREES)
+			this.tint.setAlpha(this.opacity);
+			tint(this.tint);
+			translate(this.x + gridScale/2, this.y + gridScale/2);
+			rotate(this.angle + this.rotationOffset);
+			scale(1 - 2 * this.flipX,1 - 2 * this.flipY);
+			image(this.texture, -gridScale/2 + this.drawOffsetX, -gridScale/2 + this.drawOffsetY, gridScale, gridScale);
+			pop();
+		}
+		else{
+			strokeWeight(1);
+			stroke(color('black'));
+			fill(color('red'));
+			ellipse(this.x + gridScale/2, this.y + gridScale/2, gridScale/5);
+		}
 	}
 }

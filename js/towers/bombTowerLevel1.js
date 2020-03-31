@@ -13,11 +13,14 @@ class BombTowerLevel1 extends CooldownTower{
 
 	constructor(x, y){
 		super(x, y);
-		this.bombRadius = 1;
+		this.bombRadius = 1.5;
 	}
 
 	shoot(){
 		super.shoot();
-		new ProjectileToUnitExplosion(this.getXGrid() + .5, this.getYGrid() + .5, this.target, this.bombRadius, this.damage);
+		let projectile = new ProjectileToUnitExplosion(this.getXGrid(), this.getYGrid(), this.target, this.bombRadius, this.damage);
+		projectile.animationFrames = [Art.potion];
+		projectile.texture = Art.potion;
+		projectile.doUpdateAngle = false;
 	}
 }

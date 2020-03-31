@@ -3,6 +3,7 @@
 let levelCollection = {}; //an object that holds all of the levels.
 var selectedLevel = {};
 var tilesetArt = {};
+let levelNames = [];
 function loadLevel(levelName){
 	//let levelJson = loadJSON('levels/' + levelName + '.json');
 
@@ -13,6 +14,7 @@ function loadLevel(levelName){
 
 
 	levelCollection[levelName] = levelJson;
+	levelNames.push(levelName);
 
 	loadTilesets(levelName);
 

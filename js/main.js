@@ -9,10 +9,8 @@ var playAreaGridHeight = playAreaHeight/gridScale;
 var FPS = 30;
 var gameSpeed = 2;
 
-
-var currentLevel;
-var currentLevelIndex;
-var currentLevelName = "level1";
+let currentLevelIndex = 0;
+let currentLevelName = "level1";
 
 let bottomCanvas = null;
 let middleCanvas = null;
@@ -39,10 +37,6 @@ let fontMinecraft;
 
 // load all artwork and json data before the game begins.
 function preload(){
-	levelArray.push(loadJSON('json/level1.json'));
-	levelArray.push(loadJSON('json/level2.json'));
-	currentLevel = levelArray[0];
-
 	loadLevel("level1");
 	loadLevel("level2");
 
@@ -141,7 +135,7 @@ function drawStep(){
 	background(150);
 	strokeWeight(2);
 
-	drawGrid(0, 0, playAreaWidth, playAreaHeight);
+	//drawGrid(0, 0, playAreaWidth, playAreaHeight);
 
 	drawLevel();
 
@@ -165,7 +159,7 @@ function drawStep(){
 						}
 					}
 				}
-				Path.draw();
+				//Path.draw();
 				break;
 			case 1:
 				drawTowerPlacementGrid();
@@ -475,9 +469,8 @@ function setSelectedUnit(unit){
 }
 
 function setLevel(i){
-	currentLevel = levelArray[i];
 	currentLevelIndex = i;
-
+	currentLevelName = levelNames[i];
 	buildLevel(currentLevelName);
 }
 

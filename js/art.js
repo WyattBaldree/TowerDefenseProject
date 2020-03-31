@@ -61,5 +61,7 @@ class Art{
 		Art.heart = loadImage('img/heart.png');
 		Art.thumbUp = loadImage('img/thumbUp.png');
 		Art.checkMark = loadImage('img/checkMark.png');
+		Art.arrow = loadImage('img/arrow.png');
+		Art.potion = loadImage('img/potion.png');
 	}
 }

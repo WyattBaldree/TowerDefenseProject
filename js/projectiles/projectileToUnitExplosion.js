@@ -7,6 +7,6 @@ class ProjectileToUnitExplosion extends ProjectileToUnit{
 	
 	onHit(){
 		super.onHit();
-		new Explosion(this.getXGrid(), this.getYGrid(), this.range, this.damage);
+		new Explosion(this.getXGrid() + .5, this.getYGrid() + .5, this.range, this.damage);
 	}
 }
