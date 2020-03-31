@@ -954,8 +954,8 @@ class TextBox extends GuiComponent{
 		this.setText(text);
 
 		this.autoScroll = true;
-		this.scrollSpeed = .15;
-		this.scrollPause = 120;
+		this.scrollSpeed = .75;
+		this.scrollPause = 20;
 		this.scrollPauseCurrent = this.scrollPause;
 		this.scrollAmount = 0;
 		this.autoScrollDirection = 1;
@@ -1008,7 +1008,7 @@ class TextBox extends GuiComponent{
 				}
 			}
 			else{
-				this.scrollAmount -= this.scrollSpeed*4*dTime;
+				this.scrollAmount -= this.scrollSpeed*dTime;
 				if(this.scrollAmount <= 0){
 					this.scrollPauseCurrent = this.scrollPause
 					this.autoScrollDirection = 1;
