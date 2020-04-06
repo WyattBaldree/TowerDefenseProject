@@ -72,8 +72,11 @@ class Enemy extends Unit{
 		else{
 			this.drawOffsetX = Math.random()*12 - 6;
 			this.drawOffsetY = Math.random()*12 - 6;
+			new DamageNumber(this.x + gridScale/2, this.y + gridScale/2, finalDamage);
 		}
 		this.health = preDamageHealth - finalDamage;
+
+
 		if(this.health <= 0 && preDamageHealth > 0){
 			this.die();
 		}
@@ -160,6 +163,7 @@ class Enemy extends Unit{
 		// award gold/xp then remove from the game
 		super.die();
 		player.setGold(player.gold + this.moneyValue);
+		new GoldNumber(this.x + gridScale/2, this.y + gridScale/2, this.moneyValue);
 	}
 
 	removeFromGame(){

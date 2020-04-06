@@ -16,6 +16,6 @@ class ArrowTowerLevel1 extends CooldownTower{
 		let projectile = new ProjectileToUnitDamage(this.getXGrid(), this.getYGrid(), this.target, this.damage);
 		projectile.animationFrames = [Art.arrow];
 		projectile.texture = Art.arrow;
-		projectile.rotationOffset = 225;
+		projectile.angleOffset = 225;
 	}
 }

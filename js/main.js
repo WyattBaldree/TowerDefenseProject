@@ -108,6 +108,11 @@ function updateStep(dTime){
 			if(u.deleted) continue;
 	  		u.update(dTime*gameSpeed);
 		}
+
+		for(var d of decalList){
+			if(d.deleted) continue;
+	  		d.update(dTime*gameSpeed);
+		}
 	}
 	let hoveredThisFrame = false;
 	for(let i = guiList.length - 1 ; i >= 0 ; i--){
@@ -141,6 +146,10 @@ function drawStep(){
 
 	for(var u of unitList){
   		u.drawSelf();
+	}
+
+	for(var d of decalList){
+  		d.drawSelf();
 	}
 
 	if(gameState == 2){
@@ -206,6 +215,11 @@ function startLevel(){
   		u.markForRemoval();
 	}
 
+	for(var d of decalList){
+  		if(d.deleted) continue;
+  		d.markForRemoval();
+	}
+
 	new ArrowTowerLevel1(6, 7);
 
 	speedButtonGroup.buttonList[2].press();
@@ -218,6 +232,11 @@ function endLevel(){
 	for(var u of unitList){
 		if(u.deleted) continue;
   		u.markForRemoval();
+	}
+
+	for(var d of decalList){
+  		if(d.deleted) continue;
+  		d.markForRemoval();
 	}
 }
 
