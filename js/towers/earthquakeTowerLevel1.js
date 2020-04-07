@@ -8,7 +8,7 @@ class EarthquakeTowerLevel1 extends CooldownTower{
 		classRef.damage = 3;
 		classRef.speed = 8;
 		classRef.price = 100;
-		classRef.upgrades = [];
+		classRef.upgrades = [NinjaTower];
 	}
 
 	shoot(){

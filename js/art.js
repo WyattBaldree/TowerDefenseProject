@@ -48,6 +48,8 @@ class Art{
 		Art.engineer1 = loadImage('img/engineer1.png');
 		Art.warrior0 = loadImage('img/warrior0.png');
 		Art.warrior1 = loadImage('img/warrior1.png');
+		Art.ninja0 = loadImage('img/ninja0.png');
+		Art.ninja1 = loadImage('img/ninja1.png');
 
 		//items
 		Art.goldCoin = loadImage('img/goldCoin.png');
@@ -56,7 +58,8 @@ class Art{
 		Art.sword = loadImage('img/sword.png');
 		Art.glasses = loadImage('img/glasses.png');
 		Art.rabbit = loadImage('img/rabbit.png');
-		Art.ninjaStar = loadImage('img/ninjaStar.png');
+		Art.ninjaStar0 = loadImage('img/ninjaStar0.png');
+		Art.ninjaStar1 = loadImage('img/ninjaStar1.png');
 		Art.eyeball = loadImage('img/eyeball.png');
 		Art.heart = loadImage('img/heart.png');
 		Art.thumbUp = loadImage('img/thumbUp.png');

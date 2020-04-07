@@ -908,7 +908,7 @@ class TowerDisplayPanel extends GuiGroup{
 		this.rangeComponentBackground.drawColor = textBackgroundColor;
 		this.addGui(this.rangeComponentBackground);
 
-		this.speedComponent = new SpriteAndText(this.x + panelWidth/2 + innerMargin, this.y + statBoxesYStart + textBackgroundSize + innerMargin + statBoxOffset, textSpriteSize, textSpriteSize, z + 2, Art.ninjaStar, "???");
+		this.speedComponent = new SpriteAndText(this.x + panelWidth/2 + innerMargin, this.y + statBoxesYStart + textBackgroundSize + innerMargin + statBoxOffset, textSpriteSize, textSpriteSize, z + 2, Art.ninjaStar0, "???");
 		this.speedComponent.fontSize = fontSize;
 		this.speedComponent.textSeparation = innerMargin;
 		this.speedComponent.fontColor = fontColor;

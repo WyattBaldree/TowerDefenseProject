@@ -77,6 +77,7 @@ function setup() {
 	BeamTowerLevel2.initializeClass();
 	BombTowerLevel1.initializeClass();
 	EarthquakeTowerLevel1.initializeClass();
+	NinjaTower.initializeClass();
 
 	makeMainMenu();
 	makeLevelSelectMenu();
