@@ -14,7 +14,7 @@ class UntargetableEnemy extends Enemy{
 		super(x,y,pathID);
 		this.untargetable = false;
 		this.untargetableTimeCurrent = 0;
-		this.untargetableTime = 50;
+		this.untargetableTime = 30;
 	}
 
 	takeDamage(damage){

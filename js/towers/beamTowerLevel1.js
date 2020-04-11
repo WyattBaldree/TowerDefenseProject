@@ -8,7 +8,7 @@ class BeamTowerLevel1 extends CooldownTower{
 		classRef.damage = 1;
 		classRef.speed = 30;
 		classRef.price = 100;
-		classRef.upgrades = [BeamTowerLevel2, ArrowTowerLevel1, BombTowerLevel1];
+		classRef.upgrades = [BeamTowerLevel2];
 	}
 
 	shoot(){

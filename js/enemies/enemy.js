@@ -65,7 +65,7 @@ class Enemy extends Unit{
 
 	takeDamage(damage){
 		let preDamageHealth = this.health;
-		let finalDamage = damage - this.armor;
+		let finalDamage = Math.ceil(damage - this.armor);
 		if(finalDamage < 0){
 			finalDamage = 0;
 		}
