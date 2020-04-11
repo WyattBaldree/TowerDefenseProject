@@ -445,7 +445,7 @@ function placeTower(x, y, towerClass, force = false){
 		newTower = new towerClass(x, y);
 	}
 	controlMode = 0;
-	if(newTower) setSelectedUnit(newTower);
+	if(newTower) setSelectedUnit(null);
 	return newTower;
 }
 
