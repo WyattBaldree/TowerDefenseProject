@@ -64,6 +64,7 @@ function setup() {
 	noSmooth();
 
 	//Initialize all unit classes
+	AdvancedDraw.initializeClass();
 	Unit.initializeClass();
 	Enemy.initializeClass();
 	FastEnemy.initializeClass();
@@ -78,6 +79,7 @@ function setup() {
 	BombTowerLevel1.initializeClass();
 	EarthquakeTowerLevel1.initializeClass();
 	NinjaTower.initializeClass();
+	Flag.initializeClass();
 
 	makeMainMenu();
 	makeLevelSelectMenu();

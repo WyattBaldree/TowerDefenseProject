@@ -1,7 +1,7 @@
 var unitList = new Array(); // holds all unit objects.
 var toBeRemovedList = new Array(); //holds all objects which are waiting to be removed from the game at the end of the step.
 
-class Unit{
+class Unit extends AdvancedDraw{
 
 	static initializeClass(){
 		let classRef = this;
@@ -11,25 +11,13 @@ class Unit{
 	}
 
 	constructor(x, y){
+		super(x, y);
 		this.setXGrid(x);
 		this.setYGrid(y);
 		this.deleted = false;
 
 		this.unitName = this.getUnitName();
 		this.description = this.getDescription();
-		this.animationFrames = this.getAnimationFrames();
-
-		//Things that control the sprite drawing.
-		this.angle = 0;
-		this.tint = color("white");
-		this.opacity = 255;
-		this.texture = this.animationFrames[0];
-		this.animationTime = 0;
-		this.animationSpeed = .08;
-		this.flipX = 0;
-		this.flipY = 0;
-		this.drawOffsetX = 0;
-		this.drawOffsetY = 0;
 
 		unitList.push(this);
 	}
@@ -40,51 +28,6 @@ class Unit{
 
 	getDescription(){
 		return this.constructor.description;
-	}
-
-	getAnimationFrames(){
-		return this.constructor.animationFrames;
-	}
-
-	getClass(){
-		return this.constructor;
-	}
-
-	drawSelf(){
-		if(this.texture){
-			push();
-			noSmooth();
-			angleMode(DEGREES)
-			this.tint.setAlpha(this.opacity);
-			tint(this.tint);
-			translate(this.x + gridScale/2, this.y + gridScale/2);
-			rotate(this.angle);
-			scale(1 - 2 * this.flipX,1 - 2 * this.flipY);
-			image(this.texture, -gridScale/2 + this.drawOffsetX, -gridScale/2 + this.drawOffsetY, gridScale, gridScale);
-			pop();
-		}
-		else{
-			strokeWeight(1);
-			stroke(color('black'));
-			fill(color('blue'));
-			ellipse(this.x + gridScale/2, this.y + gridScale/2, gridScale);
-		}		
-	}
-
-	getAnimationSpeed(){
-		return this.animationSpeed;
-	}
-
-	updateAnimation(dTime){
-		this.texture = this.animationFrames[Math.floor(this.animationTime) % this.animationFrames.length];
-		this.animationTime += (this.getAnimationSpeed())*dTime;
-	}
-
-	update(dTime){
-		this.updateAnimation(dTime);
-
-		this.drawOffsetX -= this.drawOffsetX - this.drawOffsetX/2*dTime;
-		this.drawOffsetY -= this.drawOffsetY - this.drawOffsetY/2*dTime;
 	}
 
 	drawHovered(){
@@ -112,34 +55,5 @@ class Unit{
 	removeFromGame(){
 		let removeIndex = unitList.indexOf(this);
 		if(removeIndex >= 0) unitList.splice(removeIndex, 1);
-	}
-
-	setXGrid(x){
-		this.x = x*gridScale;
-	}
-
-	setYGrid(y){
-		this.y = y*gridScale;
-	}
-
-	setPosGrid(x, y){
-		setXGrid(x);
-		setYGrid(y);
-	}
-
-	getXGrid(){
-		return (this.x) / gridScale;
-	}
-
-	getYGrid(){
-		return (this.y) / gridScale;
-	}
-
-	getXGridCenter(){
-		return this.x + gridScale/2;
-	}
-
-	getYGridCenter(){
-		return this.y + gridScale/2;
 	}
 }
