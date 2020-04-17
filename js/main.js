@@ -85,6 +85,9 @@ function setup() {
 	makeWinLevelGui();
 	makeLoseLevelGui();
 	setGameState(0);
+
+	saveData();
+	loadData();
 }
 
 // This is our main loop.
