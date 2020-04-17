@@ -79,7 +79,6 @@ function setup() {
 	BombTowerLevel1.initializeClass();
 	EarthquakeTowerLevel1.initializeClass();
 	NinjaTower.initializeClass();
-	Flag.initializeClass();
 
 	makeMainMenu();
 	makeLevelSelectMenu();
@@ -145,8 +144,6 @@ function drawStep(){
 	
 	background(150);
 	strokeWeight(2);
-
-	//drawGrid(0, 0, playAreaWidth, playAreaHeight);
 
 	drawLevel();
 

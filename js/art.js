@@ -51,6 +51,9 @@ class Art{
 		Art.ninja0 = loadImage('img/ninja0.png');
 		Art.ninja1 = loadImage('img/ninja1.png');
 
+		//map
+		Art.map = loadImage('levels/map.png');
+
 		//items
 		Art.goldCoin = loadImage('img/goldCoin.png');
 		Art.goldCoinBig = loadImage('img/goldCoinBig.png');
@@ -66,5 +69,8 @@ class Art{
 		Art.checkMark = loadImage('img/checkMark.png');
 		Art.arrow = loadImage('img/arrow.png');
 		Art.potion = loadImage('img/potion.png');
+		Art.crossedSwords = loadImage('img/crossedSwords.png');
+		Art.crossedSwordsHighlighted = loadImage('img/crossedSwordsHighlighted.png');
+		Art.shadow = loadImage('img/shadow.png');
 	}
 }

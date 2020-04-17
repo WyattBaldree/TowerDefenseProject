@@ -52,7 +52,7 @@ let level2Button;
 function makeLevelSelectMenu(){
 	levelSelectGuiGroup = new GuiGroup(0, 0);
 
-	levelSelectBackground = new NineSlice(0, 0, screenWidth, screenHeight, 8, 8, 8, 8, 0, Art.grayBackground);
+	levelSelectBackground = new GuiComponent(0, 32, Art.map.width*2, Art.map.height*2, 0, Art.map);
 	levelSelectGuiGroup.addGui(levelSelectBackground);
 
 	level1Button = new Button(90, 90, 60, 60, 5, 5, 5, 5, 1);
@@ -74,6 +74,10 @@ function makeLevelSelectMenu(){
 		setGameState(2);
 	}
 	levelSelectGuiGroup.addGui(level2Button);
+
+	levelSelectGuiGroup.addGui(new Flag(192, 166, 2));
+	levelSelectGuiGroup.addGui(new Flag(0, 28, 2));
+	levelSelectGuiGroup.addGui(new Flag(100, 300, 2));
 }
 
 function openLevelSelectMenu(){
@@ -323,6 +327,8 @@ class GuiComponent{
 		this.drawColor = color("black");
 		this.parent = null;
 		this.stopClicks = false;
+		this.onHoverBeginFunction = function(){};
+		this.onHoverEndFunction = function(){};
 		guiList.push(this);
 		guiList.sort((a, b) => (a.z > b.z) ? 1 : -1);
 	}
@@ -371,10 +377,12 @@ class GuiComponent{
 
 	beginHover(){
 		this.hovered = true;
+		this.onHoverBeginFunction();
 	}
 
 	endHover(){
 		this.hovered = false;
+		this.onHoverEndFunction();
 	}
 
 	drawSelf(){
@@ -1210,4 +1218,58 @@ class TowerUpgradePanel extends GuiGroup{
 		this.sellButton.setActive(true)
 		this.sellButton.setTowerClass(towerInstance.getClass());
 	}
-} 
+}
+
+class FlagButton extends Button{
+
+	constructor(x, y, w, h, z){
+		super(x, y, w, h, 0, 0, 0, 0, z)
+		this.setInTexture(null);
+		this.setOutTexture(null);
+	}
+
+	drawSelf(){
+		//super.drawSelf();
+	}
+}
+
+class Flag extends GuiGroup{
+	constructor(x, y, z){
+		super(x, y, z)
+
+		this.buttonSize = gridScale * 1.2;
+
+		this.floatRangeOfMotion = 4;
+		this.floatSpeed = .15;
+		this.floatOffset = 25;
+
+		this.timePassed = Math.random()/this.floatSpeed;
+
+		this.flagShadow = new GuiComponent(this.x - this.buttonSize/2 + gridScale/2, this.y - this.buttonSize/2 + gridScale/2, this.buttonSize, this.buttonSize, z + 1);
+		this.flagShadow.texture = Art.shadow;
+		this.addGui(this.flagShadow);
+
+		this.flagButton = new FlagButton(this.x - this.buttonSize/2 + gridScale/2, this.y - this.buttonSize/2 + gridScale/2, this.buttonSize, this.buttonSize,  z + 3);
+		this.addGui(this.flagButton);
+
+		this.flagSprite = new GuiComponent(this.x - this.buttonSize/2 + gridScale/2, this.y - this.buttonSize/2 - this.floatOffset + gridScale/2, this.buttonSize, this.buttonSize, z + 2);
+		this.flagSprite.texture = Art.crossedSwords;
+		this.addGui(this.flagSprite);
+
+		this.flagButton.onHoverBeginFunction = this.flagHoverBegin.bind(this);
+		this.flagButton.onHoverEndFunction = this.flagHoverEnd.bind(this);
+	}
+
+	update(deltaTime){
+		this.timePassed+=deltaTime;
+		this.flagSprite.y = this.y - this.buttonSize/2  + gridScale/2 - this.floatOffset + (Math.sin(this.timePassed * this.floatSpeed) * this.floatRangeOfMotion); 
+	}
+
+	flagHoverBegin(){
+		this.flagSprite.texture = Art.crossedSwordsHighlighted;
+	}
+
+	flagHoverEnd(){
+		this.flagSprite.texture = Art.crossedSwords;
+	}
+}
