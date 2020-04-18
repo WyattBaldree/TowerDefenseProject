@@ -28,3 +28,28 @@ function drawMap(){
 		flag.drawSelf();
 	}
 }*/
+
+function loadMap(){
+	for(let i = flagArray.length -1 ; i >=0 ; i--){
+			guiList.splice(guiList.indexOf(flagArray[i]), 1);
+			levelSelectGuiGroup.splice(levelSelectGuiGroup.indexOf(flagArray[i]), 1);
+			flagArray.splice(i, 1);
+	}
+
+
+	for(let i = 0 ; i < Object.keys(levelCollection).length ; i++){
+		let name = getLevelName(Object.values(levelCollection)[i]);
+		let x = getLevelX(Object.values(levelCollection)[i]);
+		let y = getLevelY(Object.values(levelCollection)[i]);
+		let flag = new Flag(x*gridScale, y*gridScale, 2, name, i);
+		flagArray.push(flag);
+	}
+
+	for(let i = 0 ; i < flagArray.length ; i++){
+		if(i < levelProgress){
+			flagArray[i].setActive(true);
+		}else{
+			flagArray[i].setActive(false);
+		}
+	}
+}

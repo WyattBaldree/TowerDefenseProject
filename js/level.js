@@ -209,3 +209,21 @@ function drawToCanvas(index, tileset, canvas, number){
 	canvas.noSmooth();
 	canvas.image(sourceImage, drawx*gridScale, drawy*gridScale, gridScale, gridScale, sourcex*16, sourcey*16, 16, 16);
 }
+
+function getLevelName(level){
+	let levelInfo = level.layers[6].objects;
+
+	return levelInfo[2].text.text;
+}
+
+function getLevelX(level){
+	let levelInfo = level.layers[6].objects;
+
+	return parseInt(levelInfo[1].text.text);
+}
+
+function getLevelY(level){
+	let levelInfo = level.layers[6].objects;
+
+	return parseInt(levelInfo[0].text.text);
+}

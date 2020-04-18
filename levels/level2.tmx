@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="24" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="7" nextobjectid="103">
+<map version="1.2" tiledversion="1.3.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="24" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="8" nextobjectid="109">
  <editorsettings>
   <export target="level2.json" format="json"/>
  </editorsettings>
@@ -373,6 +373,17 @@
   </object>
   <object id="101" x="375" y="181.5">
    <point/>
+  </object>
+ </objectgroup>
+ <objectgroup id="7" name="LevelInfo">
+  <object id="106" name="MapY" x="302.333" y="-58.0833" width="36" height="19">
+   <text wrap="1">11</text>
+  </object>
+  <object id="107" name="MapX" x="265.333" y="-58.0833" width="25" height="19">
+   <text wrap="1">1</text>
+  </object>
+  <object id="108" name="LevelName" x="124.333" y="-59.5833" width="105" height="19">
+   <text wrap="1">The Channel</text>
   </object>
  </objectgroup>
 </map>

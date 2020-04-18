@@ -16,6 +16,8 @@ let bottomCanvas = null;
 let middleCanvas = null;
 let topCanvas = null;
 
+let levelProgress = 2;
+
 var player;
 
 var selectedUnit = null;
@@ -34,6 +36,8 @@ let fontKenny;
 let fontKennyThin;
 let fontVCR;
 let fontMinecraft;
+
+let DEBUG = false;
 
 // load all artwork and json data before the game begins.
 function preload(){

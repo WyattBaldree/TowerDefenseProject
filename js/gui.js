@@ -49,10 +49,11 @@ let levelSelectGuiGroup;
 let levelSelectBackground;
 let level1Button;
 let level2Button;
+let flagArray = []
 function makeLevelSelectMenu(){
 	levelSelectGuiGroup = new GuiGroup(0, 0);
 
-	levelSelectBackground = new GuiComponent(0, 32, Art.map.width*2, Art.map.height*2, 0, Art.map);
+	levelSelectBackground = new GuiComponent(0, 28, Art.map.width*2, Art.map.height*2, 0, Art.map);
 	levelSelectGuiGroup.addGui(levelSelectBackground);
 
 	level1Button = new Button(90, 90, 60, 60, 5, 5, 5, 5, 1);
@@ -74,14 +75,11 @@ function makeLevelSelectMenu(){
 		setGameState(2);
 	}
 	levelSelectGuiGroup.addGui(level2Button);
-
-	levelSelectGuiGroup.addGui(new Flag(192, 166, 2));
-	levelSelectGuiGroup.addGui(new Flag(0, 28, 2));
-	levelSelectGuiGroup.addGui(new Flag(100, 300, 2));
 }
 
 function openLevelSelectMenu(){
 	levelSelectGuiGroup.setActive(true);
+	loadMap();
 }
 
 function closeLevelSelectMenu(){
@@ -1229,13 +1227,15 @@ class FlagButton extends Button{
 	}
 
 	drawSelf(){
-		//super.drawSelf();
+		if(DEBUG) super.drawSelf();
 	}
 }
 
 class Flag extends GuiGroup{
-	constructor(x, y, z){
-		super(x, y, z)
+	constructor(x, y, z, levelName){
+		super(x, y, 2)
+
+		this.levelName = levelName;
 
 		this.buttonSize = gridScale * 1.2;
 
@@ -1243,13 +1243,15 @@ class Flag extends GuiGroup{
 		this.floatSpeed = .15;
 		this.floatOffset = 25;
 
+		this.buttonExtraHeight = 32;
+
 		this.timePassed = Math.random()/this.floatSpeed;
 
 		this.flagShadow = new GuiComponent(this.x - this.buttonSize/2 + gridScale/2, this.y - this.buttonSize/2 + gridScale/2, this.buttonSize, this.buttonSize, z + 1);
 		this.flagShadow.texture = Art.shadow;
 		this.addGui(this.flagShadow);
 
-		this.flagButton = new FlagButton(this.x - this.buttonSize/2 + gridScale/2, this.y - this.buttonSize/2 + gridScale/2, this.buttonSize, this.buttonSize,  z + 3);
+		this.flagButton = new FlagButton(this.x - this.buttonSize/2 + gridScale/2, this.y - this.buttonSize/2 + gridScale/2 - this.buttonExtraHeight, this.buttonSize, this.buttonSize + this.buttonExtraHeight,  z + 3);
 		this.addGui(this.flagButton);
 
 		this.flagSprite = new GuiComponent(this.x - this.buttonSize/2 + gridScale/2, this.y - this.buttonSize/2 - this.floatOffset + gridScale/2, this.buttonSize, this.buttonSize, z + 2);
@@ -1258,11 +1260,15 @@ class Flag extends GuiGroup{
 
 		this.flagButton.onHoverBeginFunction = this.flagHoverBegin.bind(this);
 		this.flagButton.onHoverEndFunction = this.flagHoverEnd.bind(this);
+
+		this.flagButton.onClickFunction = function(){
+			console.log(this.levelName);
+		}.bind(this);
 	}
 
 	update(deltaTime){
 		this.timePassed+=deltaTime;
-		this.flagSprite.y = this.y - this.buttonSize/2  + gridScale/2 - this.floatOffset + (Math.sin(this.timePassed * this.floatSpeed) * this.floatRangeOfMotion); 
+		this.flagSprite.y = this.y - this.buttonSize/2  + gridScale/2 - this.floatOffset + Math.round(Math.sin(this.timePassed * this.floatSpeed) * this.floatRangeOfMotion); 
 	}
 
 	flagHoverBegin(){

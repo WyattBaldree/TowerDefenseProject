@@ -1206,9 +1206,68 @@
          "visible":true,
          "x":0,
          "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "id":7,
+         "name":"LevelInfo",
+         "objects":[
+                {
+                 "height":19,
+                 "id":106,
+                 "name":"MapY",
+                 "rotation":0,
+                 "text":
+                    {
+                     "text":"11",
+                     "wrap":true
+                    },
+                 "type":"",
+                 "visible":true,
+                 "width":36,
+                 "x":302.333333333333,
+                 "y":-58.0833333333333
+                }, 
+                {
+                 "height":19,
+                 "id":107,
+                 "name":"MapX",
+                 "rotation":0,
+                 "text":
+                    {
+                     "text":"1",
+                     "wrap":true
+                    },
+                 "type":"",
+                 "visible":true,
+                 "width":25,
+                 "x":265.333333333333,
+                 "y":-58.0833333333333
+                }, 
+                {
+                 "height":19,
+                 "id":108,
+                 "name":"LevelName",
+                 "rotation":0,
+                 "text":
+                    {
+                     "text":"The Channel",
+                     "wrap":true
+                    },
+                 "type":"",
+                 "visible":true,
+                 "width":105,
+                 "x":124.333333333333,
+                 "y":-59.5833333333333
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
         }],
- "nextlayerid":7,
- "nextobjectid":103,
+ "nextlayerid":8,
+ "nextobjectid":109,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.3.2",
