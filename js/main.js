@@ -227,8 +227,6 @@ function startLevel(){
   		d.markForRemoval();
 	}
 
-	new ArrowTowerLevel1(6, 7);
-
 	speedButtonGroup.buttonList[2].press();
 }
 

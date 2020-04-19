@@ -794,10 +794,10 @@
  </objectgroup>
  <objectgroup id="8" name="LevelInfo">
   <object id="129" name="MapY" x="320.5" y="-56" width="36" height="19">
-   <text wrap="1">15</text>
+   <text wrap="1">10</text>
   </object>
   <object id="131" name="MapX" x="283.5" y="-56" width="25" height="19">
-   <text wrap="1">0</text>
+   <text wrap="1">1</text>
   </object>
   <object id="132" name="LevelName" x="142.5" y="-57.5" width="83" height="19">
    <text wrap="1">King's Path</text>

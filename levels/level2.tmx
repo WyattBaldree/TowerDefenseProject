@@ -380,7 +380,7 @@
   <object id="206" x="26" y="108.5">
    <point/>
   </object>
-  <object id="207" x="48" y="107">
+  <object id="207" x="43.5" y="107.25">
    <point/>
   </object>
   <object id="208" x="57.5" y="106">
@@ -410,7 +410,7 @@
   <object id="216" x="188" y="106">
    <point/>
   </object>
-  <object id="217" x="209" y="105">
+  <object id="217" x="202" y="105">
    <point/>
   </object>
   <object id="218" x="221.5" y="103.5">
@@ -425,13 +425,13 @@
   <object id="221" x="269" y="104.5">
    <point/>
   </object>
-  <object id="222" x="288" y="103.5">
+  <object id="222" x="283" y="104.25">
    <point/>
   </object>
-  <object id="223" x="304" y="105">
+  <object id="223" x="297.75" y="105">
    <point/>
   </object>
-  <object id="224" x="316.5" y="105">
+  <object id="224" x="313.75" y="105.5">
    <point/>
   </object>
   <object id="225" x="330.5" y="103.5">
@@ -497,16 +497,16 @@
   <object id="245" x="119" y="126">
    <point/>
   </object>
-  <object id="246" x="101.5" y="124">
+  <object id="246" x="103.75" y="124">
    <point/>
   </object>
-  <object id="247" x="96.5" y="125">
+  <object id="247" x="89.75" y="125">
    <point/>
   </object>
   <object id="248" x="75.5" y="125.5">
    <point/>
   </object>
-  <object id="249" x="62" y="126">
+  <object id="249" x="60" y="126">
    <point/>
   </object>
   <object id="250" x="42.5" y="125.5">
@@ -545,7 +545,7 @@
   <object id="261" x="140.5" y="139.5">
    <point/>
   </object>
-  <object id="262" x="161.5" y="140">
+  <object id="262" x="152.5" y="140">
    <point/>
   </object>
   <object id="263" x="174" y="140.5">
@@ -557,13 +557,13 @@
   <object id="265" x="200.5" y="140">
    <point/>
   </object>
-  <object id="266" x="225" y="140.5">
+  <object id="266" x="217" y="140.5">
    <point/>
   </object>
-  <object id="267" x="238.5" y="140.5">
+  <object id="267" x="235.25" y="140.5">
    <point/>
   </object>
-  <object id="268" x="256" y="142">
+  <object id="268" x="249.25" y="141.25">
    <point/>
   </object>
   <object id="269" x="266" y="142">
@@ -581,10 +581,10 @@
   <object id="273" x="329.5" y="142">
    <point/>
   </object>
-  <object id="274" x="352" y="141.5">
+  <object id="274" x="346" y="141.75">
    <point/>
   </object>
-  <object id="275" x="368" y="142.5">
+  <object id="275" x="361.25" y="142.25">
    <point/>
   </object>
   <object id="276" x="378.5" y="142">
@@ -617,7 +617,7 @@
   <object id="285" x="252" y="155.5">
    <point/>
   </object>
-  <object id="286" x="240.5" y="153.5">
+  <object id="286" x="234.5" y="155.25">
    <point/>
   </object>
   <object id="287" x="222" y="156.5">
@@ -917,7 +917,7 @@
  </objectgroup>
  <objectgroup id="7" name="LevelInfo">
   <object id="106" name="MapY" x="302.333" y="-58.0833" width="36" height="19">
-   <text wrap="1">11</text>
+   <text wrap="1">6</text>
   </object>
   <object id="107" name="MapX" x="265.333" y="-58.0833" width="25" height="19">
    <text wrap="1">1</text>

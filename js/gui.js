@@ -49,6 +49,7 @@ let levelSelectGuiGroup;
 let levelSelectBackground;
 let levelSelectionButtonBar;
 let levelSelectionPrompt;
+let levelSelectionButtonBarInlay;
 
 let currentlySelectedLevel = null;
 let flagArray = [];
@@ -58,32 +59,28 @@ function makeLevelSelectMenu(){
 	levelSelectBackground = new GuiComponent(0, 0, Art.map.width*2, Art.map.height*2, 0, Art.map);
 	levelSelectGuiGroup.addGui(levelSelectBackground);
 
-	levelSelectionButtonBar = new NineSlice(64, playAreaHeight, screenWidth-128, 28, 8, 8, 8, 8, 1, Art.grayBackground);
-	levelSelectGuiGroup.addGui(levelSelectionButtonBar);
+	//levelSelectionButtonBar = new NineSlice(0, playAreaHeight, screenWidth-64, 28, 8, 8, 8, 8, 1, Art.grayBackground);
+	//levelSelectGuiGroup.addGui(levelSelectionButtonBar);
 
-	levelSelectionTitleText = new TextComponent(screenWidth/2, playAreaHeight + 14 , 2, "No Level Selected");
-	levelSelectionTitleText.fontSize = 16;
+	let inlayMargin = 2;
+
+	levelSelectionButtonBarInlay = new NineSlice(0 + inlayMargin, playAreaHeight + inlayMargin, screenWidth-64 - inlayMargin*2, 28 - inlayMargin*2, 8, 8, 8, 8, 2, Art.tanInlay);
+	levelSelectGuiGroup.addGui(levelSelectionButtonBarInlay);
+
+	levelSelectionTitleText = new TextComponent(screenWidth/2, playAreaHeight + 14 , 3, "Select a level.");
+	levelSelectionTitleText.fontSize = 18;
 	levelSelectionTitleText.fontColor = color("white");
 	levelSelectionTitleText.horizontalAlign = CENTER;
 	levelSelectionTitleText.verticalAlign = CENTER;
 	levelSelectGuiGroup.addGui(levelSelectionTitleText);
 
-	levelSelectMainMenuButton = new Button(0, playAreaHeight, 64, 28, 5, 5, 5, 5, 2);
+	levelSelectMainMenuButton = new Button(screenWidth - 64, playAreaHeight, 64, 28, 5, 5, 5, 5, 2);
 	levelSelectMainMenuButton.setInTexture(Art.blueButtonIn);
 	levelSelectMainMenuButton.setOutTexture(Art.blueButtonOut);
 	levelSelectMainMenuButton.textComponent.text = "Back"
-	levelSelectMainMenuButton.textComponent.fontSize = 16;
+	levelSelectMainMenuButton.textComponent.fontSize = 18;
 	levelSelectMainMenuButton.onClickFunction = function(){ setGameState(0); }
 	levelSelectGuiGroup.addGui(levelSelectMainMenuButton);
-
-	levelSelectBeginLevelButton = new Button(screenWidth - 64, playAreaHeight, 64, 28, 5, 5, 5, 5, 2);
-	levelSelectBeginLevelButton.setInTexture(Art.greenButtonIn);
-	levelSelectBeginLevelButton.setOutTexture(Art.greenButtonOut);
-	levelSelectBeginLevelButton.textComponent.text = "Begin"
-	levelSelectBeginLevelButton.textComponent.fontSize = 16;
-	levelSelectBeginLevelButton.disabled = true;
-	levelSelectBeginLevelButton.onClickFunction = function(){ setGameState(0); }
-	levelSelectGuiGroup.addGui(levelSelectBeginLevelButton);
 
 	levelSelectionPrompt = new LevelPrompt(0, 0, 2);
 	levelSelectionPrompt.setActive(false);
@@ -1353,7 +1350,7 @@ class LevelPrompt extends GuiComponent{
 			this.acceptButton.setInTexture(Art.greenButtonIn);
 			this.acceptButton.setOutTexture(Art.greenButtonOut);
 			this.acceptButton.textComponent.text = "Begin"
-			this.acceptButton.textComponent.fontSize = 16;
+			this.acceptButton.textComponent.fontSize = 20;
 			this.acceptButton.onClickFunction = function(){
 				setLevel(currentlySelectedLevel);
 				setGameState(2); 
@@ -1364,7 +1361,7 @@ class LevelPrompt extends GuiComponent{
 			this.cancelButton.setInTexture(Art.redButtonIn);
 			this.cancelButton.setOutTexture(Art.redButtonOut);
 			this.cancelButton.textComponent.text = "Back"
-			this.cancelButton.textComponent.fontSize = 16;
+			this.cancelButton.textComponent.fontSize = 20;
 			this.cancelButton.onClickFunction = function(){ 
 					levelSelectionPrompt.setActive(false);
 			}
