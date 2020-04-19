@@ -19,7 +19,6 @@ class Timeline{
 
 	static time(index){ //getTimelineTime
 		return selectedLevel.waves[Timeline.currentWave][index].time;
-
 	}
 	static enemyID(index){ //getTimelineEnemyID
 		return selectedLevel.waves[Timeline.currentWave][index].enemyId;

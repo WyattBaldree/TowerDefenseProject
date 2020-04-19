@@ -24,6 +24,9 @@ class Art{
 
 		Art.grayBackground = loadImage('img/grey_panel.png');
 		Art.yellowBackground = loadImage('img/yellow_panel.png');
+		Art.blueLineBackground = loadImage('img/blue_line.png');
+		Art.tanInlay = loadImage("img/tan_inlay.png");
+
 		Art.noSprite0 = loadImage('img/noSprite0.png');
 		Art.noSprite1 = loadImage('img/noSprite1.png');
 
@@ -72,5 +75,13 @@ class Art{
 		Art.crossedSwords = loadImage('img/crossedSwords.png');
 		Art.crossedSwordsHighlighted = loadImage('img/crossedSwordsHighlighted.png');
 		Art.shadow = loadImage('img/shadow.png');
+		Art.diamond = loadImage('img/diamond.png');
+		Art.diamondOff = loadImage('img/diamondOff.png');
+		Art.ruby = loadImage('img/ruby.png');
+		Art.rubyOff = loadImage('img/rubyOff.png');
+		Art.crown = loadImage('img/crown.png');
+		Art.crownHighlighted = loadImage('img/crownHighlighted.png');
+		Art.crownSilver = loadImage('img/crownSilver.png');
+		Art.crownSilverHighlighted = loadImage('img/crownSilverHighlighted.png');
 	}
 }

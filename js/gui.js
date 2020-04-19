@@ -47,39 +47,53 @@ function closeMainMenu(){
 
 let levelSelectGuiGroup;
 let levelSelectBackground;
-let level1Button;
-let level2Button;
-let flagArray = []
+let levelSelectionButtonBar;
+let levelSelectionPrompt;
+
+let currentlySelectedLevel = null;
+let flagArray = [];
 function makeLevelSelectMenu(){
 	levelSelectGuiGroup = new GuiGroup(0, 0);
 
-	levelSelectBackground = new GuiComponent(0, 28, Art.map.width*2, Art.map.height*2, 0, Art.map);
+	levelSelectBackground = new GuiComponent(0, 0, Art.map.width*2, Art.map.height*2, 0, Art.map);
 	levelSelectGuiGroup.addGui(levelSelectBackground);
 
-	level1Button = new Button(90, 90, 60, 60, 5, 5, 5, 5, 1);
-	level1Button.setInTexture(Art.blueButton2In);
-	level1Button.setOutTexture(Art.blueButton2Out);
-	level1Button.text = "1";
-	level1Button.onClickFunction = function(){
-		setLevel(0);
-		setGameState(2);
-	}
-	levelSelectGuiGroup.addGui(level1Button);
+	levelSelectionButtonBar = new NineSlice(64, playAreaHeight, screenWidth-128, 28, 8, 8, 8, 8, 1, Art.grayBackground);
+	levelSelectGuiGroup.addGui(levelSelectionButtonBar);
 
-	level2Button = new Button(180, 90, 60, 60, 5, 5, 5, 5, 1);
-	level2Button.setInTexture(Art.blueButton2In);
-	level2Button.setOutTexture(Art.blueButton2Out);
-	level2Button.text = "2";
-	level2Button.onClickFunction = function(){
-		setLevel(1);
-		setGameState(2);
-	}
-	levelSelectGuiGroup.addGui(level2Button);
+	levelSelectionTitleText = new TextComponent(screenWidth/2, playAreaHeight + 14 , 2, "No Level Selected");
+	levelSelectionTitleText.fontSize = 16;
+	levelSelectionTitleText.fontColor = color("white");
+	levelSelectionTitleText.horizontalAlign = CENTER;
+	levelSelectionTitleText.verticalAlign = CENTER;
+	levelSelectGuiGroup.addGui(levelSelectionTitleText);
+
+	levelSelectMainMenuButton = new Button(0, playAreaHeight, 64, 28, 5, 5, 5, 5, 2);
+	levelSelectMainMenuButton.setInTexture(Art.blueButtonIn);
+	levelSelectMainMenuButton.setOutTexture(Art.blueButtonOut);
+	levelSelectMainMenuButton.text = "Back"
+	levelSelectMainMenuButton.fontSize = 16;
+	levelSelectMainMenuButton.onClickFunction = function(){ setGameState(0); }
+	levelSelectGuiGroup.addGui(levelSelectMainMenuButton);
+
+	levelSelectBeginLevelButton = new Button(screenWidth - 64, playAreaHeight, 64, 28, 5, 5, 5, 5, 2);
+	levelSelectBeginLevelButton.setInTexture(Art.greenButtonIn);
+	levelSelectBeginLevelButton.setOutTexture(Art.greenButtonOut);
+	levelSelectBeginLevelButton.text = "Begin"
+	levelSelectBeginLevelButton.fontSize = 16;
+	levelSelectBeginLevelButton.disabled = true;
+	levelSelectBeginLevelButton.onClickFunction = function(){ setGameState(0); }
+	levelSelectGuiGroup.addGui(levelSelectBeginLevelButton);
+
+	levelSelectionPrompt = new LevelPrompt(0, 0, 2);
+	levelSelectionPrompt.setActive(false);
+
+	loadMap();
 }
 
 function openLevelSelectMenu(){
 	levelSelectGuiGroup.setActive(true);
-	loadMap();
+	updateFlags();
 }
 
 function closeLevelSelectMenu(){
@@ -511,6 +525,7 @@ class Button extends NineSlice{
 		this.fontSize = 25;
 		this.travelDistance = 4;
 		this.lockIn = false;
+		this.disabled = false;
 
 		this.buttonDownCallback = null;
 		this.buttonUpCallback = null;
@@ -545,7 +560,7 @@ class Button extends NineSlice{
 
 		this.pressed = true;
 		this.texture = this.inTexture;
-		if(this.onClickFunction) this.onClickFunction();
+		if(this.onClickFunction && !this.disabled) this.onClickFunction();
 
 
 		let handled = true;
@@ -574,7 +589,12 @@ class Button extends NineSlice{
 	  		let verticalOffset = this.pressed ? this.travelDistance : 0;
 			text(this.text, this.x + this.w/2, this.y + this.h/2 + verticalOffset);
 
-			if(this.hovered){
+			if(this.disabled){
+				fill(color("rgba(0,0,0,.40)"));
+				noStroke();
+				rect(this.x, this.y, this.w, this.h);
+			}
+			else if(this.hovered){
 				fill(color("rgba(255,255,255,.15)"));
 				noStroke();
 				rect(this.x, this.y, this.w, this.h);
@@ -784,15 +804,28 @@ class TextComponent extends GuiComponent{
 		this.fontColor = color("white");
 		this.horizontalAlign = LEFT;
 		this.verticalAlign = TOP;
+
+		this.shadow = true;
+		this.shadowOffset = this.fontSize/10;
+		this.shadowColor = color("rgba(0,0,0,.5)");
+
 	}
 
 	drawSelf(){
 		if(this.active){
+
 			textFont(this.font);
 			textSize(this.fontSize);
 			noStroke();
-			fill(this.fontColor);
 	  		textAlign(this.horizontalAlign, this.verticalAlign);
+
+			if(this.shadow == true){
+				fill(this.shadowColor);
+				text(this.text, this.x + this.shadowOffset, this.y + this.shadowOffset);
+			}
+
+			
+			fill(this.fontColor);
 			text(this.text, this.x, this.y);
 		}
 	}
@@ -1245,18 +1278,22 @@ class Flag extends GuiGroup{
 
 		this.buttonExtraHeight = 32;
 
+		this.flagSprite = Art.crossedSwords;
+		this.flagSpriteHighlighted = Art.crossedSwordsHighlighted; 
+
 		this.timePassed = Math.random()/this.floatSpeed;
 
 		this.flagShadow = new GuiComponent(this.x - this.buttonSize/2 + gridScale/2, this.y - this.buttonSize/2 + gridScale/2, this.buttonSize, this.buttonSize, z + 1);
 		this.flagShadow.texture = Art.shadow;
 		this.addGui(this.flagShadow);
 
-		this.flagButton = new FlagButton(this.x - this.buttonSize/2 + gridScale/2, this.y - this.buttonSize/2 + gridScale/2 - this.buttonExtraHeight, this.buttonSize, this.buttonSize + this.buttonExtraHeight,  z + 3);
+		this.flagButton = new FlagButton(this.x - this.buttonSize/2 + gridScale/2, this.y - this.buttonSize/2 + gridScale/2 - this.buttonExtraHeight, this.buttonSize, this.buttonSize + this.buttonExtraHeight,  z + 4);
 		this.addGui(this.flagButton);
 
-		this.flagSprite = new GuiComponent(this.x - this.buttonSize/2 + gridScale/2, this.y - this.buttonSize/2 - this.floatOffset + gridScale/2, this.buttonSize, this.buttonSize, z + 2);
-		this.flagSprite.texture = Art.crossedSwords;
-		this.addGui(this.flagSprite);
+		this.flagSpriteObject = new GuiComponent(this.x - this.buttonSize/2 + gridScale/2, this.y - this.buttonSize/2 - this.floatOffset + gridScale/2, this.buttonSize, this.buttonSize, z + 2);
+		//this.flagSprite.texture = Art.crossedSwords;
+		this.flagSpriteObject.texture = this.flagSprite;
+		this.addGui(this.flagSpriteObject);
 
 		this.flagButton.onHoverBeginFunction = this.flagHoverBegin.bind(this);
 		this.flagButton.onHoverEndFunction = this.flagHoverEnd.bind(this);
@@ -1268,14 +1305,64 @@ class Flag extends GuiGroup{
 
 	update(deltaTime){
 		this.timePassed+=deltaTime;
-		this.flagSprite.y = this.y - this.buttonSize/2  + gridScale/2 - this.floatOffset + Math.round(Math.sin(this.timePassed * this.floatSpeed) * this.floatRangeOfMotion); 
+		this.flagSpriteObject.y = this.y - this.buttonSize/2  + gridScale/2 - this.floatOffset + Math.round(Math.sin(this.timePassed * this.floatSpeed) * this.floatRangeOfMotion); 
 	}
 
 	flagHoverBegin(){
-		this.flagSprite.texture = Art.crossedSwordsHighlighted;
+		this.flagSpriteObject.texture = this.flagSpriteHighlighted;
 	}
 
 	flagHoverEnd(){
-		this.flagSprite.texture = Art.crossedSwords;
+		this.flagSpriteObject.texture = this.flagSprite;
 	}
+}
+
+class LevelPrompt extends GuiGroup{
+		constructor(x, y, z){
+			super(x, y, z);
+
+			let backgroundWidth = 250;
+			let backgroundHeight = 60;
+			this.promptBackground = new NineSlice(screenWidth/2 - backgroundWidth/2, playAreaHeight/2 - backgroundHeight/2, backgroundWidth, backgroundHeight, 8, 8, 8, 8, z, Art.grayBackground);
+			this.addGui(this.promptBackground);
+
+			let titleHeight = 40;
+			let titleMargin = 12;  
+
+			this.titleBackground = new NineSlice(screenWidth/2 - backgroundWidth/2 + titleMargin, playAreaHeight/2 - backgroundHeight/2 + titleMargin, backgroundWidth - titleMargin*2, titleHeight, 8, 8, 8, 8, z + 1, Art.tanInlay);
+			this.addGui(this.titleBackground);
+
+			let titleTextHeight = 20;
+
+			this.titleText = new TextComponent(this.promptBackground.x + backgroundWidth/2, this.promptBackground.y + titleHeight/2 + titleMargin, z+2, currentlySelectedLevel);
+			this.titleText.fontSize = 20;
+			this.titleText.horizontalAlign = CENTER;
+			this.titleText.verticalAlign = CENTER;
+			this.titleText.fontColor = color("white");
+			this.addGui(this.titleText);
+
+			let buttonHeight = 40;
+			let buttonWidth = backgroundWidth/2;
+
+			this.acceptButton = new Button(this.promptBackground.x, this.promptBackground.y + backgroundHeight, buttonWidth, buttonHeight, 5, 5, 5, 5, z+1);
+			this.acceptButton.setInTexture(Art.greenButtonIn);
+			this.acceptButton.setOutTexture(Art.greenButtonOut);
+			this.acceptButton.text = "Begin"
+			this.acceptButton.fontSize = 16;
+			this.acceptButton.onClickFunction = function(){
+				setLevel(currentlySelectedLevel);
+				setGameState(2); 
+			}
+			this.addGui(this.acceptButton);
+
+			this.cancelButton = new Button(this.promptBackground.x + backgroundWidth - buttonWidth, this.promptBackground.y + backgroundHeight, buttonWidth, buttonHeight, 5, 5, 5, 5, z+1);
+			this.cancelButton.setInTexture(Art.redButtonIn);
+			this.cancelButton.setOutTexture(Art.redButtonOut);
+			this.cancelButton.text = "Back"
+			this.cancelButton.fontSize = 16;
+			this.cancelButton.onClickFunction = function(){ 
+					levelSelectionPrompt.setActive(false);
+			}
+			this.addGui(this.cancelButton);
+		}
 }
