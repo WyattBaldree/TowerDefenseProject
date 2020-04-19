@@ -23,14 +23,14 @@ function makeMainMenu(){
 	mainMenuLevelSelectButton = new Button(screenWidth/2 - 90, screenHeight/2 + 30, 180, 60, 5, 5, 5, 5, 2);
 	mainMenuLevelSelectButton.setInTexture(Art.blueButtonIn);
 	mainMenuLevelSelectButton.setOutTexture(Art.blueButtonOut);
-	mainMenuLevelSelectButton.text = "Level Select"
+	mainMenuLevelSelectButton.textComponent.text = "Level Select"
 	mainMenuLevelSelectButton.onClickFunction = function(){ setGameState(1); }
 	mainMenuGuiGroup.addGui(mainMenuLevelSelectButton);
 
 	mainMenuOptionsButton = new Button(screenWidth/2 - 90, screenHeight/2 + 100, 180, 60, 5, 5, 5, 5, 2);
 	mainMenuOptionsButton.setInTexture(Art.blueButtonIn);
 	mainMenuOptionsButton.setOutTexture(Art.blueButtonOut);
-	mainMenuOptionsButton.text = "Options"
+	mainMenuOptionsButton.textComponent.text = "Options"
 	mainMenuOptionsButton.onClickFunction = function(){  }
 	mainMenuGuiGroup.addGui(mainMenuOptionsButton);
 }
@@ -71,16 +71,16 @@ function makeLevelSelectMenu(){
 	levelSelectMainMenuButton = new Button(0, playAreaHeight, 64, 28, 5, 5, 5, 5, 2);
 	levelSelectMainMenuButton.setInTexture(Art.blueButtonIn);
 	levelSelectMainMenuButton.setOutTexture(Art.blueButtonOut);
-	levelSelectMainMenuButton.text = "Back"
-	levelSelectMainMenuButton.fontSize = 16;
+	levelSelectMainMenuButton.textComponent.text = "Back"
+	levelSelectMainMenuButton.textComponent.fontSize = 16;
 	levelSelectMainMenuButton.onClickFunction = function(){ setGameState(0); }
 	levelSelectGuiGroup.addGui(levelSelectMainMenuButton);
 
 	levelSelectBeginLevelButton = new Button(screenWidth - 64, playAreaHeight, 64, 28, 5, 5, 5, 5, 2);
 	levelSelectBeginLevelButton.setInTexture(Art.greenButtonIn);
 	levelSelectBeginLevelButton.setOutTexture(Art.greenButtonOut);
-	levelSelectBeginLevelButton.text = "Begin"
-	levelSelectBeginLevelButton.fontSize = 16;
+	levelSelectBeginLevelButton.textComponent.text = "Begin"
+	levelSelectBeginLevelButton.textComponent.fontSize = 16;
 	levelSelectBeginLevelButton.disabled = true;
 	levelSelectBeginLevelButton.onClickFunction = function(){ setGameState(0); }
 	levelSelectGuiGroup.addGui(levelSelectBeginLevelButton);
@@ -125,7 +125,7 @@ function makeWinLevelGui(){
 	levelWinNextLevelButton = new Button(screenWidth/2 - 90, screenHeight/2 - 55, 180, 60, 5, 5, 5, 5, 6);
 	levelWinNextLevelButton.setInTexture(Art.blueButton2In);
 	levelWinNextLevelButton.setOutTexture(Art.blueButton2Out);
-	levelWinNextLevelButton.text = "Next Level";
+	levelWinNextLevelButton.textComponent.text = "Next Level";
 	levelWinNextLevelButton.onClickFunction = function(){ 
 		setLevel(currentLevelIndex+1);
 		setGameState(2);
@@ -135,7 +135,7 @@ function makeWinLevelGui(){
 	levelWinMainMenuButton = new Button(screenWidth/2 - 90, screenHeight/2 + 15, 180, 60, 5, 5, 5, 5, 6);
 	levelWinMainMenuButton.setInTexture(Art.blueButton2In);
 	levelWinMainMenuButton.setOutTexture(Art.blueButton2Out);
-	levelWinMainMenuButton.text = "Main Menu";
+	levelWinMainMenuButton.textComponent.text = "Main Menu";
 	levelWinMainMenuButton.onClickFunction = function(){ 
 		setGameState(0);
 	}
@@ -183,7 +183,7 @@ function makeLoseLevelGui(){
 	levelLoseNextLevelButton = new Button(screenWidth/2 - 90, screenHeight/2 - 55, 180, 60, 5, 5, 5, 5, 6);
 	levelLoseNextLevelButton.setInTexture(Art.blueButton2In);
 	levelLoseNextLevelButton.setOutTexture(Art.blueButton2Out);
-	levelLoseNextLevelButton.text = "Retry Level";
+	levelLoseNextLevelButton.textComponent.text = "Retry Level";
 	levelLoseNextLevelButton.onClickFunction = function(){ 
 		setGameState(2);
 	}
@@ -192,7 +192,7 @@ function makeLoseLevelGui(){
 	levelLoseMainMenuButton = new Button(screenWidth/2 - 90, screenHeight/2 + 15, 180, 60, 5, 5, 5, 5, 6);
 	levelLoseMainMenuButton.setInTexture(Art.blueButton2In);
 	levelLoseMainMenuButton.setOutTexture(Art.blueButton2Out);
-	levelLoseMainMenuButton.text = "Main Menu";
+	levelLoseMainMenuButton.textComponent.text = "Main Menu";
 	levelLoseMainMenuButton.onClickFunction = function(){ 
 		setGameState(0);
 	}
@@ -248,16 +248,16 @@ function makeLevelGUI(){
 	restartLevelButton = new Button(menuButtonsGuiGroup.x, menuButtonsGuiGroup.y, panelAreaWidth/2, 32, 5, 5, 5, 5, 1);
 	restartLevelButton.setInTexture(Art.blueButtonIn);
 	restartLevelButton.setOutTexture(Art.blueButtonOut);
-	restartLevelButton.text = "Restart";
-	restartLevelButton.fontSize = 15;
+	restartLevelButton.textComponent.text = "Restart";
+	restartLevelButton.textComponent.fontSize = 15;
 	restartLevelButton.onClickFunction = function(){ startLevel() }
 	menuButtonsGuiGroup.addGui(restartLevelButton);
 
 	returnToMainMenuButton = new Button(menuButtonsGuiGroup.x + panelAreaWidth/2, menuButtonsGuiGroup.y, panelAreaWidth/2, 32, 5, 5, 5, 5, 1);
 	returnToMainMenuButton.setInTexture(Art.blueButtonIn);
 	returnToMainMenuButton.setOutTexture(Art.blueButtonOut);
-	returnToMainMenuButton.text = "Main";
-	returnToMainMenuButton.fontSize = 15;
+	returnToMainMenuButton.textComponent.text = "Main";
+	returnToMainMenuButton.textComponent.fontSize = 15;
 	returnToMainMenuButton.onClickFunction = function(){ setGameState(0) }
 	menuButtonsGuiGroup.addGui(returnToMainMenuButton);
 
@@ -269,17 +269,17 @@ function makeLevelGUI(){
 	timelineGuiGroup.addGui(timelineDisplay);
 
 	speedButtonGroup = new RadioButtonGroup(timelineGuiGroup.x + playAreaWidth, timelineGuiGroup.y, panelAreaWidth, panelAreaHeight, 5, 5, 5, 5, 1, 4, true);
-	speedButtonGroup.buttonList[0].text = "ll";
-	speedButtonGroup.buttonList[0].fontSize = 15;
+	speedButtonGroup.buttonList[0].textComponent.text = "ll";
+	speedButtonGroup.buttonList[0].textComponent.fontSize = 15;
 	speedButtonGroup.buttonList[0].onClickFunction = function(){gameSpeed = 0;}
-	speedButtonGroup.buttonList[1].text = ">";
-	speedButtonGroup.buttonList[1].fontSize = 15;
+	speedButtonGroup.buttonList[1].textComponent.text = ">";
+	speedButtonGroup.buttonList[1].textComponent.fontSize = 15;
 	speedButtonGroup.buttonList[1].onClickFunction = function(){gameSpeed = .5;}
-	speedButtonGroup.buttonList[2].text = ">>";
-	speedButtonGroup.buttonList[2].fontSize = 15;
+	speedButtonGroup.buttonList[2].textComponent.text = ">>";
+	speedButtonGroup.buttonList[2].textComponent.fontSize = 15;
 	speedButtonGroup.buttonList[2].onClickFunction = function(){gameSpeed = 1;}
-	speedButtonGroup.buttonList[3].text = ">>>";
-	speedButtonGroup.buttonList[3].fontSize = 15;
+	speedButtonGroup.buttonList[3].textComponent.text = ">>>";
+	speedButtonGroup.buttonList[3].textComponent.fontSize = 15;
 	speedButtonGroup.buttonList[3].onClickFunction = function(){gameSpeed = 3;}
 
 	speedButtonGroup.buttonList[2].press();
@@ -341,26 +341,50 @@ class GuiComponent{
 		this.drawColor = color("black");
 		this.parent = null;
 		this.stopClicks = false;
+		this.draw = true;
 		this.onHoverBeginFunction = function(){};
 		this.onHoverEndFunction = function(){};
 		guiList.push(this);
 		guiList.sort((a, b) => (a.z > b.z) ? 1 : -1);
+
+
+		this.guiList = [];
 	}
 
 	update(dTime){
 
 	}
 
+
+
+	addGui(gui){
+		this.guiList.push(gui);
+		gui.parent = this;
+	}
+
 	setX(x){
+		let deltaX = x - this.x;
 		this.x = x;
+
+		for(let gui of this.guiList){
+			gui.setX(gui.x + deltaX);
+		}
 	}
 
 	setY(y){
+		let deltaY = y - this.y;
 		this.y = y;
+
+		for(let gui of this.guiList){
+			gui.setY(gui.y + deltaY);
+		}
 	}
 
 	setActive(active){
 		this.active = active;
+		for(let gui of this.guiList){
+			gui.setActive(active);
+		}
 	}
 
 	removeFromGame(){
@@ -400,14 +424,15 @@ class GuiComponent{
 	}
 
 	drawSelf(){
-		if(!this.active) return;
-		if(this.texture){
-			image(this.texture, this.x, this.y, this.w, this.h);
-		}
-		else{
-			noStroke();
-			fill(this.drawColor);
-			rect(this.x, this.y, this.w, this.h);
+		if(this.active && this.draw){
+			if(this.texture){
+				image(this.texture, this.x, this.y, this.w, this.h);
+			}
+			else{
+				noStroke();
+				fill(this.drawColor);
+				rect(this.x, this.y, this.w, this.h);
+			}
 		}
 	}
 }
@@ -415,39 +440,7 @@ class GuiComponent{
 class GuiGroup extends GuiComponent{
 	constructor(x, y, z = 0){
 		super(x, y, 0, 0, z)
-		this.x = x;
-		this.y = y;
-		this.guiList = [];
-	}
-
-	addGui(gui){
-		this.guiList.push(gui);
-		gui.parent = this;
-	}
-
-	setX(x){
-		let deltaX = x - this.x;
-		this.x = x;
-
-		for(let gui of this.guiList){
-			gui.setX(gui.x + deltaX);
-		}
-	}
-
-	setY(y){
-		let deltaY = y - this.y;
-		this.y = y;
-
-		for(let gui of this.guiList){
-			gui.setY(gui.y + deltaY);
-		}
-	}
-
-	setActive(active){
-		this.active = active;
-		for(let gui of this.guiList){
-			gui.setActive(active);
-		}
+		this.draw = false;
 	}
 }
 
@@ -464,8 +457,6 @@ class NineSlice extends GuiComponent{
 		if(!this.active) return;
 
 		if(this.texture){
-			//image(this.texture, this.x, this.y, this.w, this.h);
-
 			let textureCenterWidth = this.texture.width - this.leftMargin - this.rightMargin
 			let textureCenterHeight = this.texture.height - this.topMargin - this.bottomMargin;
 
@@ -477,10 +468,10 @@ class NineSlice extends GuiComponent{
 			let centerWidthPercent = textureCenterWidth/this.texture.width;
 			let centerHeightPercent = textureCenterHeight/this.texture.height;
 
-			let leftWidth = this.leftMargin;//this.w * leftMarginPercent;
-			let rightWidth = this.rightMargin;//this.w * rightMarginPercent;
-			let topHeight = this.topMargin;//this.w * leftMarginPercent;
-			let bottomHeight = this.bottomMargin;//this.w * rightMarginPercent;
+			let leftWidth = this.leftMargin;
+			let rightWidth = this.rightMargin;
+			let topHeight = this.topMargin;
+			let bottomHeight = this.bottomMargin;
 			let centerWidth = this.w - leftWidth - rightWidth;
 			let centerHeight = this.h - topHeight - bottomHeight;
 
@@ -523,11 +514,18 @@ class Button extends NineSlice{
 		this.pressed = false;
 		this.outTexture = null;
 		this.inTexture = null;
-		this.text = "";
-		this.fontSize = 25;
+
 		this.travelDistance = 4;
 		this.lockIn = false;
 		this.disabled = false;
+
+		this.textComponent = new TextComponent(x + w/2, y + h/2, z + 2, "");
+		this.textComponent.fontSize = 25;
+		this.textComponent.horizontalAlign = CENTER;
+		this.textComponent.verticalAlign = CENTER;
+		this.textComponent.font = fontMinecraft;
+		this.textComponent.fontColor = color("white");
+		this.addGui(this.textComponent);
 
 		this.buttonDownCallback = null;
 		this.buttonUpCallback = null;
@@ -561,6 +559,7 @@ class Button extends NineSlice{
 		if(this.buttonDownCallback) this.buttonDownCallback();
 
 		this.pressed = true;
+		this.textComponent.setY(this.y + this.h/2 + this.travelDistance);
 		this.texture = this.inTexture;
 		if(this.onClickFunction && !this.disabled) this.onClickFunction();
 
@@ -576,6 +575,7 @@ class Button extends NineSlice{
 	release(){
 		if(this.buttonUpCallback) this.buttonUpCallback();
 		this.pressed = false;
+		this.textComponent.setY(this.y + this.h/2);
 		this.texture = this.outTexture;
 
 	}
@@ -584,13 +584,6 @@ class Button extends NineSlice{
 		//if(this.hovered) tint(color("yellow"));
 		super.drawSelf();
 		if(this.active){
-			fill(255);
-			textFont(fontMinecraft);
-	 		textSize(this.fontSize);
-	  		textAlign(CENTER, CENTER);
-	  		let verticalOffset = this.pressed ? this.travelDistance : 0;
-			text(this.text, this.x + this.w/2, this.y + this.h/2 + verticalOffset);
-
 			if(this.disabled){
 				fill(color("rgba(0,0,0,.40)"));
 				noStroke();
@@ -605,10 +598,11 @@ class Button extends NineSlice{
 	}
 }
 
-class RadioButtonGroup extends GuiGroup{
+class RadioButtonGroup extends GuiComponent{
 	constructor(x, y, w, h, leftMargin = 0, rightMargin = 0, topMargin = 0, bottomMargin = 0, z = 0, numButtons = 1, horizontal = true){
 		super(x, y, z);
 		this.buttonList = [];
+		this.draw = false;
 
 		if(horizontal){
 			let individualWidth = w/numButtons;
@@ -643,9 +637,10 @@ class RadioButtonGroup extends GuiGroup{
 	}
 }
 
-class imageButton extends GuiGroup{
+class imageButton extends GuiComponent{
 	constructor(x, y, w, h, leftMargin = 0, rightMargin = 0, topMargin = 0, bottomMargin = 0, z = 0, onClickFunction = null, image = null){
 		super(x, y, z);
+		this.draw = false;
 
 		this.buttonComponent = new Button(x, y, w, h, leftMargin, rightMargin, topMargin, bottomMargin, z, onClickFunction);
 		this.addGui(this.buttonComponent);
@@ -659,9 +654,10 @@ class imageButton extends GuiGroup{
 	}
 }
 
-class TowerButton extends GuiGroup{
+class TowerButton extends GuiComponent{
 	constructor(x, y, z = 0){
-		super(x, y);
+		super(x, y, 0, 0, z);
+		this.draw = false;
 
 		this.towerClass = null;
 
@@ -670,7 +666,7 @@ class TowerButton extends GuiGroup{
 
 		let centerWidth = this.buttonComponent.w - this.buttonComponent.leftMargin - this.buttonComponent.rightMargin;
 
-		this.spriteComponent = new GuiComponent(this.buttonComponent.x + this.buttonComponent.leftMargin, this.buttonComponent.y + this.buttonComponent.topMargin, centerWidth, centerWidth, z + 1);
+		this.spriteComponent = new GuiComponent(this.buttonComponent.x + this.buttonComponent.leftMargin, this.buttonComponent.y + this.buttonComponent.topMargin, centerWidth, centerWidth, z + 2);
 		this.addGui(this.spriteComponent);
 
 		this.costComponent = new SpriteAndText(x + this.buttonComponent.leftMargin - 15, y +45, 50, 50, z + 2, Art.goldCoin, "???");
@@ -679,7 +675,7 @@ class TowerButton extends GuiGroup{
 		this.costComponent.fontColor = color("yellow");
 		this.addGui(this.costComponent);
 
-		this.spriteTextBackgroundComponent = new GuiComponent(this.buttonComponent.x + this.buttonComponent.leftMargin, this.costComponent.y + (this.buttonComponent.fontSize+2)/2, centerWidth, this.buttonComponent.fontSize-4, z + 1);
+		this.spriteTextBackgroundComponent = new GuiComponent(this.buttonComponent.x + this.buttonComponent.leftMargin, this.costComponent.y + (this.buttonComponent.textComponent.fontSize+2)/2, centerWidth, this.buttonComponent.textComponent.fontSize-4, z + 1);
 		this.spriteTextBackgroundComponent.drawColor = color("rgba(0,0,0,.3)");
 		this.addGui(this.spriteTextBackgroundComponent);
 
@@ -806,7 +802,7 @@ class TextComponent extends GuiComponent{
 		this.fontColor = color("white");
 		this.horizontalAlign = LEFT;
 		this.verticalAlign = TOP;
-
+ 
 		this.shadow = true;
 		this.shadowOffset = this.fontSize/10;
 		this.shadowColor = color("rgba(0,0,0,.5)");
@@ -855,9 +851,10 @@ class SpriteAndText extends GuiComponent{
 	}
 }  
 
-class TowerDisplayPanel extends GuiGroup{
+class TowerDisplayPanel extends GuiComponent{
 	constructor(x, y, z = 0){
 		super(x, y);
+		this.draw = false;
 
 		this.towerClass = null;
 
@@ -1078,9 +1075,10 @@ class TextBox extends GuiComponent{
 	}
 }
 
-class PlayerDisplayPanel extends GuiGroup{
+class PlayerDisplayPanel extends GuiComponent{
 	constructor(x, y, z = 0){
 		super(x, y);
+		this.draw = false;
 
 		let panelWidth = screenWidth - playAreaWidth;
 		let panelHeight = 77;
@@ -1125,9 +1123,10 @@ class PlayerDisplayPanel extends GuiGroup{
 	}
 }
 
-class TimelineDisplay extends GuiGroup{
+class TimelineDisplay extends GuiComponent{
 	constructor(x, y, z = 0){
 		super(x, y, z);
+		this.draw = false;
 
 		let panelWidth = playAreaWidth;
 		let panelHeight = screenHeight - playAreaHeight;
@@ -1136,13 +1135,12 @@ class TimelineDisplay extends GuiGroup{
 		this.spriteSize = 16;
 		this.sideMargin = 10;
 
-		this.backgroundComponent = new NineSlice(this.x, this.y, panelWidth, panelHeight, 5, 5, 5, 5, z-1);
+		this.backgroundComponent = new NineSlice(this.x, this.y, panelWidth, panelHeight, 5, 5, 5, 5, z-2);
 		this.backgroundComponent.texture = Art.grayBackground;
 		this.addGui(this.backgroundComponent);
 	}
 
 	drawSelf(){
-		super.drawSelf();
 		if(this.active){
 			let width = this.backgroundComponent.w;
 			let height = this.backgroundComponent.h;
@@ -1167,12 +1165,14 @@ class TimelineDisplay extends GuiGroup{
 				}
 			}
 		}
+		super.drawSelf();
 	}
 }
 
-class TowerSelectPanel extends GuiGroup{
+class TowerSelectPanel extends GuiComponent{
 	constructor(x, y, z = 0){
 		super(x, y, z);
+		this.draw = false;
 		let panelWidth = screenWidth - playAreaWidth;
 
 		this.panelBackground = new NineSlice(this.x, this.y, panelWidth, playAreaHeight - 280, 8, 8, 8, 8, 0, Art.grayBackground);
@@ -1204,9 +1204,10 @@ class TowerSelectPanel extends GuiGroup{
 	}
 }
 
-class TowerUpgradePanel extends GuiGroup{
+class TowerUpgradePanel extends GuiComponent{
 	constructor(x, y, z = 0){
 		super(x, y, z);
+		this.draw = false;
 		let panelWidth = screenWidth - playAreaWidth;
 		this.towerButtonList = [];
 
@@ -1266,9 +1267,10 @@ class FlagButton extends Button{
 	}
 }
 
-class Flag extends GuiGroup{
+class Flag extends GuiComponent{
 	constructor(x, y, z, levelName){
-		super(x, y, 2)
+		super(x, y, 2);
+		this.draw = false;
 
 		this.levelName = levelName;
 
@@ -1319,9 +1321,10 @@ class Flag extends GuiGroup{
 	}
 }
 
-class LevelPrompt extends GuiGroup{
+class LevelPrompt extends GuiComponent{
 		constructor(x, y, z){
 			super(x, y, z);
+			this.draw = false;
 
 			let backgroundWidth = 250;
 			let backgroundHeight = 64;
@@ -1349,8 +1352,8 @@ class LevelPrompt extends GuiGroup{
 			this.acceptButton = new Button(this.promptBackground.x, this.promptBackground.y + backgroundHeight, buttonWidth, buttonHeight, 5, 5, 5, 5, z+1);
 			this.acceptButton.setInTexture(Art.greenButtonIn);
 			this.acceptButton.setOutTexture(Art.greenButtonOut);
-			this.acceptButton.text = "Begin"
-			this.acceptButton.fontSize = 16;
+			this.acceptButton.textComponent.text = "Begin"
+			this.acceptButton.textComponent.fontSize = 16;
 			this.acceptButton.onClickFunction = function(){
 				setLevel(currentlySelectedLevel);
 				setGameState(2); 
@@ -1360,8 +1363,8 @@ class LevelPrompt extends GuiGroup{
 			this.cancelButton = new Button(this.promptBackground.x + backgroundWidth - buttonWidth, this.promptBackground.y + backgroundHeight, buttonWidth, buttonHeight, 5, 5, 5, 5, z+1);
 			this.cancelButton.setInTexture(Art.redButtonIn);
 			this.cancelButton.setOutTexture(Art.redButtonOut);
-			this.cancelButton.text = "Back"
-			this.cancelButton.fontSize = 16;
+			this.cancelButton.textComponent.text = "Back"
+			this.cancelButton.textComponent.fontSize = 16;
 			this.cancelButton.onClickFunction = function(){ 
 					levelSelectionPrompt.setActive(false);
 			}
