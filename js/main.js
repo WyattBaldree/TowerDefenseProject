@@ -215,7 +215,7 @@ function startLevel(){
 	Timeline.currentSpawn = 0
 	Timeline.levelTimer = 0;
 
-	player = new Player(1000);
+	player = new Player(800);
 
 	for(var u of unitList){
 		if(u.deleted) continue;
