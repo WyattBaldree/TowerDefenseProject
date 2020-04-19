@@ -87,12 +87,14 @@ function makeLevelSelectMenu(){
 
 	levelSelectionPrompt = new LevelPrompt(0, 0, 2);
 	levelSelectionPrompt.setActive(false);
+	levelSelectGuiGroup.addGui(levelSelectionPrompt);
 
 	loadMap();
 }
 
 function openLevelSelectMenu(){
 	levelSelectGuiGroup.setActive(true);
+	levelSelectionPrompt.setActive(false);
 	updateFlags();
 }
 
@@ -1322,7 +1324,7 @@ class LevelPrompt extends GuiGroup{
 			super(x, y, z);
 
 			let backgroundWidth = 250;
-			let backgroundHeight = 60;
+			let backgroundHeight = 64;
 			this.promptBackground = new NineSlice(screenWidth/2 - backgroundWidth/2, playAreaHeight/2 - backgroundHeight/2, backgroundWidth, backgroundHeight, 8, 8, 8, 8, z, Art.grayBackground);
 			this.addGui(this.promptBackground);
 
