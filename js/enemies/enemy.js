@@ -52,7 +52,7 @@ class Enemy extends Unit{
 		this.frost = 0;
 		this.shock = 0;
 
-		this.addEffect(new Effect("frost", 50, 10));
+		this.addEffect(new Effect("frost;50;10"));
 		
 		enemyList.push(this);
 	}
@@ -187,6 +187,9 @@ class Enemy extends Unit{
 	processEffect(effect){
 		let name = effect.name;
 		let magnitude = effect.magnitude;
+
+		let finalFrost = 0;
+		let finalShock = 0;
 		switch(name){
 			case "frost":
 				if(magnitude > this.frost){
@@ -222,8 +225,6 @@ class Enemy extends Unit{
 
 	drawSelf(){
 		super.drawSelf();
-		noStroke();
-		rect(this.x, this.y, gridScale, gridScale);
 	}
 
 
