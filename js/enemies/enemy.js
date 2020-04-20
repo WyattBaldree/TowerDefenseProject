@@ -47,6 +47,12 @@ class Enemy extends Unit{
 		this.currentIndex = 0;
 		this.untargetable = false;
 		this.currentDistanceOnPath = 0;
+
+		////////////////EFFECTS
+		this.frost = 0;
+		this.shock = 0;
+
+		this.addEffect(new Effect("frost", 50, 10));
 		
 		enemyList.push(this);
 	}
@@ -85,7 +91,7 @@ class Enemy extends Unit{
 	move(spd){
 
 		if (this.currentIndex < Path.length(this.pathID)){
-			let finalSpeed = spd;
+			let finalSpeed = spd * (100-this.frost)/100;
 
 			let currentNodeX = Path.getX(this.pathID,this.currentIndex) * gridScale;
 			let currentNodeY = Path.getY(this.pathID,this.currentIndex) * gridScale;
@@ -175,5 +181,50 @@ class Enemy extends Unit{
 			winLevel();
 		}
 	}
+
+
+
+	processEffect(effect){
+		let name = effect.name;
+		let magnitude = effect.magnitude;
+		switch(name){
+			case "frost":
+				if(magnitude > this.frost){
+					this.frost = magnitude;
+				}
+				this.tint = color("rgba(186,242,239)");
+				break;
+			case "shock":
+				if(magnitude > this.shock){
+					this.shock = magnitude;
+				}
+				this.tint = color("rgba(255,255,51)");
+				break;
+
+		}
+
+	}
+
+	effectRemoved(effect){
+		let name = effect.name;
+		let magnitude = effect.magnitude;
+
+		switch(name){
+			case "frost":
+				this.frost = 0;
+				break;
+			case "shock":
+				this.shock = 0;
+		}
+
+		this.tint = color("rgba(0,0,0)");
+	}
+
+	drawSelf(){
+		super.drawSelf();
+		noStroke();
+		rect(this.x, this.y, gridScale, gridScale);
+	}
+
 
 }

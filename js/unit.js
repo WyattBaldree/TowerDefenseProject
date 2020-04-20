@@ -19,7 +19,51 @@ class Unit extends AdvancedDraw{
 		this.unitName = this.getUnitName();
 		this.description = this.getDescription();
 
+		this.effectStack = [];
+
 		unitList.push(this);
+	}
+
+	update(deltaTime){
+		this.updateEffects(deltaTime);
+	}
+
+	updateEffects(deltaTime){
+		for( let i = this.effectStack.length-1 ; i >= 0; i--){
+			this.effectStack[i].currentDuration -= deltaTime;
+			if(Math.floor(this.effectStack[i].currentDuration) != this.effectStack[i].previousFloor){
+				this.processEffect(this.effectStack[i]);
+			}
+
+			this.effectStack[i].previousFloor = Math.floor(this.effectStack[i].currentDuration);
+
+			if(this.effectStack[i].currentDuration > this.effectStack[i].duration){
+				this.effectRemove(this.effectStack[i]);
+				this.effectStack.splice(i, 1);
+
+			}
+		}
+	}
+
+	processEffect(effect){
+		//implement in children
+	}
+
+	addEffect(effect){
+		this.effectStack.push(effect);
+		this.processEffect(effect);
+	}
+
+	processEffect(effect){
+
+	}
+
+	removeEffect(effectName){
+		for( let i = this.effectStack.length-1 ; i >= 0; i--){
+			if(this.effectStack[i].name == effectName){
+				this.effectStack.splice(i, 1);
+			}
+		}
 	}
 
 	getUnitName(){
@@ -55,5 +99,23 @@ class Unit extends AdvancedDraw{
 	removeFromGame(){
 		let removeIndex = unitList.indexOf(this);
 		if(removeIndex >= 0) unitList.splice(removeIndex, 1);
+	}
+}
+
+class Effect{
+	constructor(effectText){
+		this.effectArray = effectText.split(";");
+
+		this.name = this.effectArray[0];
+		this.magnitude = this.effectArray[1];
+		this.duration = this.effectArray[2];
+
+		this.currentDuration = this.duration;
+		this.previousFloor = 0;
+	}
+
+	updateEffect(deltaTime){
+		this.currentDuration += deltaTime;
+
 	}
 }
