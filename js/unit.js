@@ -19,7 +19,10 @@ class Unit extends AdvancedDraw{
 		this.unitName = this.getUnitName();
 		this.description = this.getDescription();
 
+		////////////////EFFECTS
 		this.effectStack = [];
+		this.frost = 0;
+		this.shock = 0;
 
 		unitList.push(this);
 	}
@@ -30,40 +33,55 @@ class Unit extends AdvancedDraw{
 
 	updateEffects(deltaTime){
 		for( let i = this.effectStack.length-1 ; i >= 0; i--){
-			this.effectStack[i].currentDuration -= deltaTime;
-			if(Math.floor(this.effectStack[i].currentDuration) != this.effectStack[i].previousFloor){
-				this.processEffect(this.effectStack[i]);
-			}
-
-			this.effectStack[i].previousFloor = Math.floor(this.effectStack[i].currentDuration);
-
+			this.effectStack[i].currentDuration += deltaTime;
 			if(this.effectStack[i].currentDuration > this.effectStack[i].duration){
-				this.effectRemove(this.effectStack[i]);
-				this.effectStack.splice(i, 1);
-
+				this.removeEffect(this.effectStack[i]);
 			}
 		}
 	}
 
-	processEffect(effect){
-		//implement in children
+	getEffectMax(effectName){
+		let max = 0;
+		for( let i = this.effectStack.length-1 ; i >= 0; i--){
+			if(this.effectStack[i].name == effectName){
+				if(this.effectStack[i].magnitude > max) max = this.effectStack[i].magnitude;
+			}
+		}
+
+		return max;
 	}
 
 	addEffect(effect){
 		this.effectStack.push(effect);
-		this.processEffect(effect);
+
+		this.setStatus(effect.name, this.getEffectMax(effect.name));
 	}
 
-	processEffect(effect){
+	removeEffect(effect){
+		this.effectStack.splice(Array.prototype.indexOf(effect), 1);
 
+		this.setStatus(effect.name, this.getEffectMax(effect.name));
 	}
 
-	removeEffect(effectName){
+	setStatus(effectName, magnitude){
+		switch(effectName){
+			case "frost":
+				this.frost = magnitude;
+				break;
+			case "shock":
+				this.shock = magnitude;
+				break;
+		}
+	}
+
+	removeAllEffectWithName(effectName){
 		for( let i = this.effectStack.length-1 ; i >= 0; i--){
 			if(this.effectStack[i].name == effectName){
 				this.effectStack.splice(i, 1);
 			}
 		}
+
+		this.setStatus(effectName, this.getEffectMax(effectName));
 	}
 
 	getUnitName(){
@@ -110,8 +128,7 @@ class Effect{
 		this.magnitude = this.effectArray[1];
 		this.duration = this.effectArray[2];
 
-		this.currentDuration = this.duration;
-		this.previousFloor = 0;
+		this.currentDuration = 0;
 	}
 
 	updateEffect(deltaTime){

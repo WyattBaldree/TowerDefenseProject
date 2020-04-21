@@ -48,11 +48,7 @@ class Enemy extends Unit{
 		this.untargetable = false;
 		this.currentDistanceOnPath = 0;
 
-		////////////////EFFECTS
-		this.frost = 0;
-		this.shock = 0;
-
-		this.addEffect(new Effect("frost;50;10"));
+		this.addEffect(new Effect("frost;75;30"));
 		
 		enemyList.push(this);
 	}
@@ -182,48 +178,18 @@ class Enemy extends Unit{
 		}
 	}
 
-
-
-	processEffect(effect){
-		let name = effect.name;
-		let magnitude = effect.magnitude;
-
-		let finalFrost = 0;
-		let finalShock = 0;
-		switch(name){
-			case "frost":
-				if(magnitude > this.frost){
-					this.frost = magnitude;
-				}
-				this.tint = color("rgba(186,242,239)");
-				break;
-			case "shock":
-				if(magnitude > this.shock){
-					this.shock = magnitude;
-				}
-				this.tint = color("rgba(255,255,51)");
-				break;
-
-		}
-
-	}
-
-	effectRemoved(effect){
-		let name = effect.name;
-		let magnitude = effect.magnitude;
-
-		switch(name){
-			case "frost":
-				this.frost = 0;
-				break;
-			case "shock":
-				this.shock = 0;
-		}
-
-		this.tint = color("rgba(0,0,0)");
-	}
-
 	drawSelf(){
+		let finalTint = color("white");
+		if(this.frost > 0){
+			finalTint = lerpColor(color("rgba(186,242,239)"), finalTint, .5);
+		}
+
+		if(this.shock > 0){
+			finalTint = lerpColor(color("rgba(255,255,51)"), finalTint, .5);
+		}
+
+		this.tint = finalTint;
+
 		super.drawSelf();
 	}
 
