@@ -43,6 +43,8 @@ class Art{
 		//towers
 		Art.archer0 = loadImage('img/archer0.png');
 		Art.archer1 = loadImage('img/archer1.png');
+		Art.frostArcher0 = loadImage('img/frostArcher0.png');
+		Art.frostArcher1 = loadImage('img/frostArcher1.png');
 		Art.mage0 = loadImage('img/mage0.png');
 		Art.mage1 = loadImage('img/mage1.png');
 		Art.wizard0 = loadImage('img/wizard0.png');
@@ -71,6 +73,7 @@ class Art{
 		Art.thumbUp = loadImage('img/thumbUp.png');
 		Art.checkMark = loadImage('img/checkMark.png');
 		Art.arrow = loadImage('img/arrow.png');
+		Art.frostArrow = loadImage('img/frostArrow.png');
 		Art.potion = loadImage('img/potion.png');
 		Art.crossedSwords = loadImage('img/crossedSwords.png');
 		Art.crossedSwordsHighlighted = loadImage('img/crossedSwordsHighlighted.png');

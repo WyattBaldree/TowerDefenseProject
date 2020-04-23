@@ -9,6 +9,8 @@ class Projectile extends Unit{
 		this.angleOffset = 0;
 		this.doUpdateAngle = true;
 		projectileList.push(this);
+
+		this.effect = null;
 	}
 
 	update(dTime){

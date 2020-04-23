@@ -68,3 +68,10 @@ function dealDamageInArea(x, y, range, damage){
 		enemy.takeDamage(damage);
 	}
 }
+
+function addEffectInArea(x, y, range, effect){
+	let enemyList = getListOfUnitsInRange(x, y, range, "enemy");
+	for(let enemy of enemyList){
+		enemy.addEffect(new Effect(effect));
+	}
+}

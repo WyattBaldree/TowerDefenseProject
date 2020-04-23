@@ -6,6 +6,7 @@ class ProjectileToUnitDamage extends ProjectileToUnit{
 	
 	onHit(){
 		super.onHit();
+		if(this.effect != null) this.target.addEffect(new Effect(this.effect));
 		this.target.takeDamage(this.damage);
 	}
 }

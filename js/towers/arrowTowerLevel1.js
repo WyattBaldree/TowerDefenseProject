@@ -8,7 +8,7 @@ class ArrowTowerLevel1 extends CooldownTower{
 		classRef.damage = 4;
 		classRef.speed = 6;
 		classRef.price = 100;
-		classRef.upgrades = [];
+		classRef.upgrades = [FrostArcher];
 	}
 
 	shoot(){

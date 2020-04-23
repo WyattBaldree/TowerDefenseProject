@@ -78,6 +78,7 @@ function setup() {
 	Tower.initializeClass();
 	CooldownTower.initializeClass();
 	ArrowTowerLevel1.initializeClass();
+	FrostArcher.initializeClass();
 	BeamTowerLevel1.initializeClass();
 	BeamTowerLevel2.initializeClass();
 	BombTowerLevel1.initializeClass();

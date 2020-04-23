@@ -28,12 +28,13 @@ class Unit extends AdvancedDraw{
 	}
 
 	update(deltaTime){
+		super.update(deltaTime);
 		this.updateEffects(deltaTime);
 	}
 
 	updateEffects(deltaTime){
 		for( let i = this.effectStack.length-1 ; i >= 0; i--){
-			this.effectStack[i].currentDuration += deltaTime;
+			this.effectStack[i].updateEffect(deltaTime);
 			if(this.effectStack[i].currentDuration > this.effectStack[i].duration){
 				this.removeEffect(this.effectStack[i]);
 			}
@@ -43,7 +44,7 @@ class Unit extends AdvancedDraw{
 	getEffectMax(effectName){
 		let max = 0;
 		for( let i = this.effectStack.length-1 ; i >= 0; i--){
-			if(this.effectStack[i].name == effectName){
+			if(this.effectStack[i].effectName == effectName){
 				if(this.effectStack[i].magnitude > max) max = this.effectStack[i].magnitude;
 			}
 		}
@@ -54,13 +55,17 @@ class Unit extends AdvancedDraw{
 	addEffect(effect){
 		this.effectStack.push(effect);
 
-		this.setStatus(effect.name, this.getEffectMax(effect.name));
+		this.setStatus(effect.effectName, this.getEffectMax(effect.effectName));
 	}
 
 	removeEffect(effect){
-		this.effectStack.splice(Array.prototype.indexOf(effect), 1);
+		for( let i = this.effectStack.length-1 ; i >= 0; i--){
+			if(this.effectStack[i] === effect){
+				this.effectStack.splice(i, 1);
+			}
+		}
 
-		this.setStatus(effect.name, this.getEffectMax(effect.name));
+		this.setStatus(effect.effectName, this.getEffectMax(effect.effectName));
 	}
 
 	setStatus(effectName, magnitude){
@@ -76,7 +81,7 @@ class Unit extends AdvancedDraw{
 
 	removeAllEffectWithName(effectName){
 		for( let i = this.effectStack.length-1 ; i >= 0; i--){
-			if(this.effectStack[i].name == effectName){
+			if(this.effectStack[i].effectName == effectName){
 				this.effectStack.splice(i, 1);
 			}
 		}
@@ -124,15 +129,14 @@ class Effect{
 	constructor(effectText){
 		this.effectArray = effectText.split(";");
 
-		this.name = this.effectArray[0];
-		this.magnitude = this.effectArray[1];
-		this.duration = this.effectArray[2];
+		this.effectName = this.effectArray[0];
+		this.magnitude = parseInt(this.effectArray[1]);
+		this.duration = parseInt(this.effectArray[2]);
 
 		this.currentDuration = 0;
 	}
 
 	updateEffect(deltaTime){
 		this.currentDuration += deltaTime;
-
 	}
 }
