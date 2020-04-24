@@ -188,8 +188,9 @@ class Enemy extends Unit{
 		translate(this.x + gridScale/2, this.y + gridScale/2);
 		rotate(this.angle);
 		scale(1 - 2 * this.flipX,1 - 2 * this.flipY);
+
 		if(this.frost > 0){
-			this.tint.setAlpha(this.frost/150 * 255);
+			this.tint.setAlpha(((this.frost+50)/200) * 255);
 			tint(this.tint);
 
 			image(Art.iceEffect, -gridScale/2 + this.drawOffsetX, -gridScale/2 + this.drawOffsetY, gridScale, gridScale);
