@@ -179,18 +179,28 @@ class Enemy extends Unit{
 	}
 
 	drawSelf(){
-		let finalTint = color("white");
+		super.drawSelf();
+
+		push();
+		noSmooth();
+		angleMode(DEGREES)
+		tint(this.tint);
+		translate(this.x + gridScale/2, this.y + gridScale/2);
+		rotate(this.angle);
+		scale(1 - 2 * this.flipX,1 - 2 * this.flipY);
 		if(this.frost > 0){
-			finalTint = lerpColor(color("rgba(186,242,239)"), finalTint, .5);
+			this.tint.setAlpha(this.frost/150 * 255);
+			tint(this.tint);
+
+			image(Art.iceEffect, -gridScale/2 + this.drawOffsetX, -gridScale/2 + this.drawOffsetY, gridScale, gridScale);
 		}
 
 		if(this.shock > 0){
-			finalTint = lerpColor(color("rgba(255,255,51)"), finalTint, .5);
+			//this.tint.setAlpha(this.shock/150);
+			//image(Art.iceEffect, -gridScale/2 + this.drawOffsetX, -gridScale/2 + this.drawOffsetY, gridScale, gridScale);
 		}
 
-		this.tint = finalTint;
-
-		super.drawSelf();
+		pop();
 	}
 
 

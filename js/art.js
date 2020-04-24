@@ -86,5 +86,6 @@ class Art{
 		Art.crownHighlighted = loadImage('img/crownHighlighted.png');
 		Art.crownSilver = loadImage('img/crownSilver.png');
 		Art.crownSilverHighlighted = loadImage('img/crownSilverHighlighted.png');
+		Art.iceEffect = loadImage('img/iceEffect.png');
 	}
 }
