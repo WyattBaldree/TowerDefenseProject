@@ -30,8 +30,11 @@ function makeMainMenu(){
 	mainMenuOptionsButton = new Button(screenWidth/2 - 90, screenHeight/2 + 100, 180, 60, 5, 5, 5, 5, 2);
 	mainMenuOptionsButton.setInTexture(Art.blueButtonIn);
 	mainMenuOptionsButton.setOutTexture(Art.blueButtonOut);
-	mainMenuOptionsButton.textComponent.text = "Options"
-	mainMenuOptionsButton.onClickFunction = function(){  }
+	mainMenuOptionsButton.textComponent.text = "Clear Data"
+	mainMenuOptionsButton.onClickFunction = function(){ 
+		initializeData();
+		loadData();
+	}
 	mainMenuGuiGroup.addGui(mainMenuOptionsButton);
 }
 

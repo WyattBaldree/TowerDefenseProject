@@ -16,7 +16,7 @@ let bottomCanvas = null;
 let middleCanvas = null;
 let topCanvas = null;
 
-let levelProgress = 2;
+let levelProgress = 1;
 
 var player;
 
@@ -92,7 +92,6 @@ function setup() {
 	makeLoseLevelGui();
 	setGameState(0);
 
-	saveData();
 	loadData();
 }
 
@@ -520,6 +519,10 @@ function loseLevel(){
 function winLevel(){
 	openWinLevelGui();
 	setGameSpeed(0);
+	if(currentLevelIndex + 1 >= levelProgress){
+		levelProgress = currentLevelIndex + 2;
+		saveData();
+	}
 }
 
 function keyPressed() {

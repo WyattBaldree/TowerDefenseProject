@@ -17,8 +17,6 @@ function loadLevel(levelName){
 	levelNames.push(levelName);
 
 	loadTilesets(levelName);
-
-	console.log(levelCollection[levelName]);
 	return levelJson;
 }
 
@@ -35,29 +33,16 @@ function buildLevel(levelName){
 
 	let levelTileSets = levelJson.tilesets;
 
-	console.log(levelTileLayerBottom);
-	console.log(levelTileLayerMiddle);
-	console.log(levelTileLayerTop);
-	console.log(levelPaths);
-	console.log(levelWaves);
-	console.log(levelSolids);
-
-	console.log(levelTileSets);
-
 	selectedLevel = {};
 	setSolidAreas(levelName);
 	setPaths(levelName);
 	setTimeline(levelName);
 
 	drawLevelCanvases(levelName);
-
-	console.log(selectedLevel);
 }
 
 function setSolidAreas(levelName){
 	let levelSolids = levelCollection[levelName].layers[5].objects;
-	console.log(levelSolids);
-	console.log(levelSolids.length)
 
 	selectedLevel.solidArray = createArray(playAreaGridWidth, playAreaGridHeight);
 
@@ -72,14 +57,11 @@ function setSolidAreas(levelName){
 function setPaths(levelName){
 	let levelPaths = levelCollection[levelName].layers[3].objects;
 
-	console.log(levelPaths);
 	selectedLevel.paths = [];
 
 	for(var i = 0 ; i < levelPaths.length ; i++){
 		selectedLevel.paths[i] = [];
 		for(var j = 0 ; j < levelPaths[i].polyline.length ; j++){
-			console.log(levelPaths[i].polyline[j].x);
-			console.log(levelPaths[i].polyline[j].y);
 			selectedLevel.paths[i][j] = {"x":levelPaths[i].polyline[j].x/16, "y":levelPaths[i].polyline[j].y/16};
 		}
 	}
@@ -91,14 +73,10 @@ function setTimeline(levelName){
 	selectedLevel.waves = [];
 	for(var i = 0 ; i < levelWaves.length ; i++){
 		selectedLevel.waves[i] = [];
-		console.log(levelWaves[i].text.text);
 		var waveText = levelWaves[i].text.text;
 		var waveTextSplit = waveText.split("\n");
 		for(var j = 0 ; j < waveTextSplit.length ; j++){
 			var enemyInfoSplit = waveTextSplit[j].split(",");
-
-
-			console.log(enemyInfoSplit[0] + " : " + enemyInfoSplit[1] + " : " + enemyInfoSplit[2]);
 
 			selectedLevel.waves[i][j] = {};
 			selectedLevel.waves[i][j].time = parseInt(enemyInfoSplit[0]);
@@ -128,7 +106,6 @@ function loadAllTileMapsForLayer(levelName, layer){
 			let blah = "levels/tilesets/" + tilesetName;
 			xmlhttp.open("GET", "levels/" + tilesetName, false);
 			xmlhttp.send();
-			console.log(xmlhttp.responseText);
 
 			let parser = new DOMParser();
 			let tilesetXML = parser.parseFromString(xmlhttp.responseText,"text/xml");
@@ -138,8 +115,6 @@ function loadAllTileMapsForLayer(levelName, layer){
 
 			tilesetArt[tilesetName] = {}
 			tilesetArt[tilesetName].image = loadImage("levels/" + imageSource.substring(3));
-
-			console.log(imageSource.substring(3));
 		}
 	}
 }
@@ -180,12 +155,10 @@ function drawLayerCanvas(levelName, layer, canvas){
 		for (var j = 0 ; j < tilesets.length ; j++){
 			if(j == tilesets.length-1){
 				let numberInTileset = tileNumber - tilesets[j].firstgid;
-				console.log(layer.name + " : " + tilesets[j].source + " : " + numberInTileset);
 				drawToCanvas(i, tilesets[j].source, canvas, numberInTileset);
 			}
 			else if(tileNumber < tilesets[j+1].firstgid){
 				let numberInTileset = tileNumber - tilesets[j].firstgid;
-				console.log(layer.name + " : " + tilesets[j].source + " : " + numberInTileset);
 				drawToCanvas(i, tilesets[j].source, canvas, numberInTileset);
 				break;
 			}
