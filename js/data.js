@@ -6,13 +6,21 @@ function loadData(){
 		data = JSON.parse(localStorage.saveData);
 	}
 	console.log(data);
-	levelProgress = data.progress;
+	levelProgress = data.levelProgressData;
+	perkPoints = data.perks.perkPointsData;
 
 	//updateFlags();
 }
 
 function saveData(){
-	let data = JSON.stringify({progress:levelProgress,player:{perks:"sdfasd"}});
+	let data = JSON.stringify(
+		{
+			levelProgressData:levelProgress,
+			perks:
+			{
+				perksPointsData:perkPoints
+			}
+		});
 	localStorage.saveData = data;
 
 	//get progress on map
@@ -23,7 +31,14 @@ function saveData(){
 function initializeData(){
 	localStorage.clear();
 
-	let data = JSON.stringify({progress:1,player:{perks:"none"}});
+	let data = JSON.stringify(
+		{
+			levelProgressData:1,
+			perks:
+			{
+				perksPointsData:1
+			}
+		});
 	localStorage.saveData = data;
 
 	console.log(data);
