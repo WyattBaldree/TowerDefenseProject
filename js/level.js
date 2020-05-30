@@ -2,6 +2,7 @@
 
 let levelCollection = {}; //an object that holds all of the levels.
 var selectedLevel = {};
+var levelData = [];
 var tilesetArt = {};
 let levelNames = [];
 function loadLevel(levelName){
@@ -20,30 +21,54 @@ function loadLevel(levelName){
 	return levelJson;
 }
 
+function buildAllLevels(){
+	for(let levelName of levelNames){
+		buildLevel(levelName);
+		levelData.push(selectedLevel);
+	}
+}
+
 function buildLevel(levelName){
 	let levelJson = levelCollection[levelName];
 
-	let levelTileLayerBottom = levelJson.layers[0].data;
-	let levelTileLayerMiddle = levelJson.layers[1].data;
-	let levelTileLayerTop = levelJson.layers[2].data;
+	let levelTileLayerBottom = levelJson.layers.find(x => x.name == "BottomLayer").data;
+	let levelTileLayerMiddle = levelJson.layers.find(x => x.name == "MiddleLayer").data;
+	let levelTileLayerTop = levelJson.layers.find(x => x.name == "TopLayer").data;
 
-	let levelPaths = levelJson.layers[3].objects;
-	let levelWaves = levelJson.layers[4].objects;
-	let levelSolids = levelJson.layers[5].objects;
+	let levelPaths = levelJson.layers.find(x => x.name == "Paths").objects;
+	let levelWaves = levelJson.layers.find(x => x.name == "Waves").objects;
+	let levelSolids = levelJson.layers.find(x => x.name == "Solid").objects;
+	let levelInfo = levelJson.layers.find(x => x.name == "LevelInfo").objects;
+	let levelStartingTowers = levelJson.layers.find(x => x.name == "StartingTowers").objects;
 
 	let levelTileSets = levelJson.tilesets;
 
 	selectedLevel = {};
-	setSolidAreas(levelName);
-	setPaths(levelName);
-	setTimeline(levelName);
 
-	drawLevelCanvases(levelName);
+	setLevelName(levelInfo);
+	setLevelX(levelInfo);
+	setLevelY(levelInfo);
+	setSolidAreas(levelSolids);
+	setPaths(levelPaths);
+	setTimeline(levelWaves);
+	setStartingTowers(levelStartingTowers);
+
+	setLevelCanvases(levelName);
 }
 
-function setSolidAreas(levelName){
-	let levelSolids = levelCollection[levelName].layers[5].objects;
+function setStartingTowers(levelStartingTowers){
+	selectedLevel.startingTowers = [];
 
+	for(var i = 0 ; i < levelStartingTowers.length ; i++){
+
+		let xx = Math.floor(levelStartingTowers[i].x/16);
+		let yy = Math.floor(levelStartingTowers[i].y/16);
+		let towerName = levelStartingTowers[i].name;
+		selectedLevel.startingTowers[i] = {x:xx, y:yy, name:towerName};
+	}
+}
+
+function setSolidAreas(levelSolids){
 	selectedLevel.solidArray = createArray(playAreaGridWidth, playAreaGridHeight);
 
 	for(var i = 0 ; i < levelSolids.length ; i++){
@@ -52,11 +77,10 @@ function setSolidAreas(levelName){
 		let y = Math.floor(levelSolids[i].y/16);
 		selectedLevel.solidArray[x][y] = 1;
 	}
+
 }
 
-function setPaths(levelName){
-	let levelPaths = levelCollection[levelName].layers[3].objects;
-
+function setPaths(levelPaths){
 	selectedLevel.paths = [];
 
 	for(var i = 0 ; i < levelPaths.length ; i++){
@@ -67,9 +91,7 @@ function setPaths(levelName){
 	}
 }
 
-function setTimeline(levelName){
-	let levelWaves = levelCollection[levelName].layers[4].objects;
-
+function setTimeline(levelWaves){
 	selectedLevel.waves = [];
 	for(var i = 0 ; i < levelWaves.length ; i++){
 		selectedLevel.waves[i] = [];
@@ -84,6 +106,18 @@ function setTimeline(levelName){
 			selectedLevel.waves[i][j].pathId = parseInt(enemyInfoSplit[2]);
 		}
 	}
+}
+
+function setLevelName(levelInfo){
+	selectedLevel.name = levelInfo[2].text.text;
+}
+
+function setLevelX(levelInfo){
+	selectedLevel.x = parseInt(levelInfo[1].text.text);
+}
+
+function setLevelY(levelInfo){
+	selectedLevel.y = parseInt(levelInfo[0].text.text);
 }
 
 function loadTilesets(levelName){
@@ -132,14 +166,14 @@ function getTilesetFromNumber(levelName, number){
 	return tilesets[tilesets.length-1].source;
 }
 
-function drawLevelCanvases(levelName){
-	bottomCanvas.clear();
-	middleCanvas.clear();
-	topCanvas.clear();
+function setLevelCanvases(levelName){
+	selectedLevel.bottomCanvas = createGraphics(playAreaWidth, playAreaHeight);
+	selectedLevel.middleCanvas = createGraphics(playAreaWidth, playAreaHeight);
+	selectedLevel.topCanvas = createGraphics(playAreaWidth, playAreaHeight);
 
-	drawLayerCanvas(levelName, levelCollection[levelName].layers[0], bottomCanvas)
-	drawLayerCanvas(levelName, levelCollection[levelName].layers[1], middleCanvas)
-	drawLayerCanvas(levelName, levelCollection[levelName].layers[2], topCanvas)
+	drawLayerCanvas(levelName, levelCollection[levelName].layers[0], selectedLevel.bottomCanvas)
+	drawLayerCanvas(levelName, levelCollection[levelName].layers[1], selectedLevel.middleCanvas)
+	drawLayerCanvas(levelName, levelCollection[levelName].layers[2], selectedLevel.topCanvas)
 }
 
 function drawLayerCanvas(levelName, layer, canvas){
@@ -181,22 +215,4 @@ function drawToCanvas(index, tileset, canvas, number){
 
 	canvas.noSmooth();
 	canvas.image(sourceImage, drawx*gridScale, drawy*gridScale, gridScale, gridScale, sourcex*16, sourcey*16, 16, 16);
-}
-
-function getLevelName(level){
-	let levelInfo = level.layers[6].objects;
-
-	return levelInfo[2].text.text;
-}
-
-function getLevelX(level){
-	let levelInfo = level.layers[6].objects;
-
-	return parseInt(levelInfo[1].text.text);
-}
-
-function getLevelY(level){
-	let levelInfo = level.layers[6].objects;
-
-	return parseInt(levelInfo[0].text.text);
 }

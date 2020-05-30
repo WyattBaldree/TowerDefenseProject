@@ -1,10 +1,10 @@
 let flagList = [];
 
 function loadMap(){
-	for(let i = 0 ; i < Object.keys(levelCollection).length ; i++){
-		let name = getLevelName(Object.values(levelCollection)[i]);
-		let x = getLevelX(Object.values(levelCollection)[i]);
-		let y = getLevelY(Object.values(levelCollection)[i]);
+	for(let i = 0 ; i < levelData.length ; i++){
+		let name = levelData[i].name;
+		let x = levelData[i].x;
+		let y = levelData[i].y;
 		let flag = new Flag(x*gridScale, y*gridScale, 2, name, i);
 		flag.flagButton.onClickFunction = function(){
 			currentlySelectedLevel = i.valueOf();

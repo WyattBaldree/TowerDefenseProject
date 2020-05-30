@@ -12,10 +12,6 @@ var gameSpeed = 2;
 let currentLevelIndex = 0;
 let currentLevelName = "level1";
 
-let bottomCanvas = null;
-let middleCanvas = null;
-let topCanvas = null;
-
 let levelProgress = 1;
 
 var player;
@@ -55,11 +51,6 @@ function preload(){
 
 // setup the games
 function setup() {
-
-	bottomCanvas = createGraphics(playAreaWidth, playAreaHeight);
-	middleCanvas = createGraphics(playAreaWidth, playAreaHeight);
-	topCanvas = createGraphics(playAreaWidth, playAreaHeight);
-
 	towerArray = createArray(playAreaGridWidth, playAreaGridHeight);
 
 
@@ -67,6 +58,8 @@ function setup() {
 	createCanvas(screenWidth, screenHeight);
 	noFill();
 	noSmooth();
+
+	buildAllLevels();
 
 	//Initialize all unit classes
 	AdvancedDraw.initializeClass();
@@ -231,6 +224,11 @@ function startLevel(){
   		d.markForRemoval();
 	}
 
+	for(let startingTower of levelData[currentLevelIndex].startingTowers){
+		let towerClass = getClass(startingTower.name)
+		new towerClass(startingTower.x, startingTower.y);
+	}
+
 	speedButtonGroup.buttonList[2].press();
 }
 
@@ -369,9 +367,9 @@ function drawGrid(x, y, gridWidth, gridHeight){
 }
 
 function drawLevel(){
-	image(bottomCanvas, 0, 0);
-	image(middleCanvas, 0, 0);
-	image(topCanvas, 0, 0);
+	image(levelData[currentLevelIndex].bottomCanvas, 0, 0);
+	image(levelData[currentLevelIndex].middleCanvas, 0, 0);
+	image(levelData[currentLevelIndex].topCanvas, 0, 0);
 }
 
 function drawFilledGridSpace(x, y){
@@ -406,7 +404,7 @@ function drawTowerPlacementGrid(){
 }
 
 function canPlaceTowerHere(x, y){
-	return (towerArray[x][y] == null && selectedLevel.solidArray[x][y] == null); 
+	return (towerArray[x][y] == null && levelData[currentLevelIndex].solidArray[x][y] == null); 
 }
 
 function spawn(_enemyID, _pathID){
@@ -508,7 +506,6 @@ function setSelectedUnit(unit){
 function setLevel(i){
 	currentLevelIndex = i;
 	currentLevelName = levelNames[i];
-	buildLevel(currentLevelName);
 }
 
 function debugCoordinates(){

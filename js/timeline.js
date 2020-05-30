@@ -18,18 +18,18 @@ class Timeline{
 	}
 
 	static time(index){ //getTimelineTime
-		return selectedLevel.waves[Timeline.currentWave][index].time;
+		return levelData[currentLevelIndex].waves[Timeline.currentWave][index].time;
 	}
 	static enemyID(index){ //getTimelineEnemyID
-		return selectedLevel.waves[Timeline.currentWave][index].enemyId;
+		return levelData[currentLevelIndex].waves[Timeline.currentWave][index].enemyId;
 	}
 	static pathID(index){ //getTimelinePathID
-		return selectedLevel.waves[Timeline.currentWave][index].pathId;
+		return levelData[currentLevelIndex].waves[Timeline.currentWave][index].pathId;
 	}
 	static totalSpawns(){ //getTimelineTotalSpawns
-		return selectedLevel.waves[Timeline.currentWave].length
+		return levelData[currentLevelIndex].waves[Timeline.currentWave].length
 	}
 	static spawns(){ //getTimelineTotalSpawns
-		return selectedLevel.waves[Timeline.currentWave];
+		return levelData[currentLevelIndex].waves[Timeline.currentWave];
 	} 
 }

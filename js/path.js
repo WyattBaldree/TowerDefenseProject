@@ -9,16 +9,16 @@ class Path{
 		}
 	}
 	static getX(pathID,index){ //getPathX
-		return selectedLevel.paths[pathID][index].x;
+		return levelData[currentLevelIndex].paths[pathID][index].x;
 	}
 	static getY(pathID,index){ //getPathY
-		return selectedLevel.paths[pathID][index].y;
+		return levelData[currentLevelIndex].paths[pathID][index].y;
 	}
 	static length(pathID){ //getPathLength
-		return selectedLevel.paths[pathID].length;
+		return levelData[currentLevelIndex].paths[pathID].length;
 	}
 	static total(){ //numPaths
-		return selectedLevel.paths.length;
+		return levelData[currentLevelIndex].paths.length;
 	}
 	static totalDistanceOfPath(pathID){
 		let totalDistanceOfPath = 0;
