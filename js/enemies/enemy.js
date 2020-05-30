@@ -48,7 +48,7 @@ class Enemy extends Unit{
 		this.untargetable = false;
 		this.currentDistanceOnPath = 0;
 
-		this.addEffect(new Effect("frost;75;30"));
+		//this.addEffect(new Effect("frost;75;30"));
 		
 		enemyList.push(this);
 	}
@@ -84,10 +84,10 @@ class Enemy extends Unit{
 		}
 	}
 
-	move(spd){
+	move(spd, force = false){
 
 		if (this.currentIndex < Path.length(this.pathID)){
-			let finalSpeed = spd * (100-this.frost)/100;
+			let finalSpeed = force ? spd : spd * (100-this.frost)/100;
 
 			let currentNodeX = Path.getX(this.pathID,this.currentIndex) * gridScale;
 			let currentNodeY = Path.getY(this.pathID,this.currentIndex) * gridScale;
@@ -151,13 +151,8 @@ class Enemy extends Unit{
 	}
 
 	getCurrentDistanceOfPath(){
-		let totalDistanceOfPath = 0;
-		for(let i = 0; i < Path.length(this.pathID) - 1; i++){
-			let deltaX = Path.getX(this.pathID, i + 1) * gridScale - Path.getX(this.pathID, i) * gridScale;
-			let deltaY = Path.getY(this.pathID, i + 1) * gridScale - Path.getY(this.pathID, i) * gridScale;
-			totalDistanceOfPath += Math.sqrt(Math.pow(deltaX,2) + Math.pow(deltaY,2));
-		}
-		return totalDistanceOfPath - this.getDistanceToEndOfPath()
+		let totalDistanceOfPath = Path.totalDistanceOfPath(this.pathID);
+		return totalDistanceOfPath - this.getDistanceToEndOfPath();
 	}
 
 	die()
@@ -190,7 +185,7 @@ class Enemy extends Unit{
 		scale(1 - 2 * this.flipX,1 - 2 * this.flipY);
 
 		if(this.frost > 0){
-			this.tint.setAlpha(((this.frost+50)/200) * 255);
+			this.tint.setAlpha(((this.frost+50)/300) * 255);
 			tint(this.tint);
 
 			image(Art.iceEffect, -gridScale/2 + this.drawOffsetX, -gridScale/2 + this.drawOffsetY, gridScale, gridScale);

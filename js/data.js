@@ -1,15 +1,20 @@
 function loadData(){
-	let data = JSON.parse(localStorage.saveData || null);
-	console.log(data);
-	if(data == null){
-		initializeData();
-		data = JSON.parse(localStorage.saveData);
-	}
-	console.log(data);
-	levelProgress = data.levelProgressData;
-	perkPoints = data.perks.perkPointsData;
+	try{
+		let data = JSON.parse(localStorage.saveData || null);
+		console.log(data);
+		if(data == null){
+			initializeData();
+			data = JSON.parse(localStorage.saveData);
+		}
+		console.log(data);
+		levelProgress = data.levelProgressData;
+		perkPoints = data.perks.perkPointsData;
 
-	//updateFlags();
+		//updateFlags();
+	}
+	catch(err){
+		initializeData();
+	}
 }
 
 function saveData(){
@@ -33,7 +38,7 @@ function initializeData(){
 
 	let data = JSON.stringify(
 		{
-			levelProgressData:1,
+			levelProgressData:3,
 			perks:
 			{
 				perksPointsData:1

@@ -1322,52 +1322,52 @@ class Flag extends GuiComponent{
 }
 
 class LevelPrompt extends GuiComponent{
-		constructor(x, y, z){
-			super(x, y, z);
-			this.draw = false;
+	constructor(x, y, z){
+		super(x, y, z);
+		this.draw = false;
 
-			let backgroundWidth = 250;
-			let backgroundHeight = 64;
-			this.promptBackground = new NineSlice(screenWidth/2 - backgroundWidth/2, playAreaHeight/2 - backgroundHeight/2, backgroundWidth, backgroundHeight, 8, 8, 8, 8, z, Art.grayBackground);
-			this.addGui(this.promptBackground);
+		let backgroundWidth = 250;
+		let backgroundHeight = 64;
+		this.promptBackground = new NineSlice(screenWidth/2 - backgroundWidth/2, playAreaHeight/2 - backgroundHeight/2, backgroundWidth, backgroundHeight, 8, 8, 8, 8, z, Art.grayBackground);
+		this.addGui(this.promptBackground);
 
-			let titleHeight = 40;
-			let titleMargin = 12;  
+		let titleHeight = 40;
+		let titleMargin = 12;  
 
-			this.titleBackground = new NineSlice(screenWidth/2 - backgroundWidth/2 + titleMargin, playAreaHeight/2 - backgroundHeight/2 + titleMargin, backgroundWidth - titleMargin*2, titleHeight, 8, 8, 8, 8, z + 1, Art.tanInlay);
-			this.addGui(this.titleBackground);
+		this.titleBackground = new NineSlice(screenWidth/2 - backgroundWidth/2 + titleMargin, playAreaHeight/2 - backgroundHeight/2 + titleMargin, backgroundWidth - titleMargin*2, titleHeight, 8, 8, 8, 8, z + 1, Art.tanInlay);
+		this.addGui(this.titleBackground);
 
-			let titleTextHeight = 20;
+		let titleTextHeight = 20;
 
-			this.titleText = new TextComponent(this.promptBackground.x + backgroundWidth/2, this.promptBackground.y + titleHeight/2 + titleMargin, z+2, currentlySelectedLevel);
-			this.titleText.fontSize = 20;
-			this.titleText.horizontalAlign = CENTER;
-			this.titleText.verticalAlign = CENTER;
-			this.titleText.fontColor = color("white");
-			this.addGui(this.titleText);
+		this.titleText = new TextComponent(this.promptBackground.x + backgroundWidth/2, this.promptBackground.y + titleHeight/2 + titleMargin, z+2, currentlySelectedLevel);
+		this.titleText.fontSize = 20;
+		this.titleText.horizontalAlign = CENTER;
+		this.titleText.verticalAlign = CENTER;
+		this.titleText.fontColor = color("white");
+		this.addGui(this.titleText);
 
-			let buttonHeight = 40;
-			let buttonWidth = backgroundWidth/2;
+		let buttonHeight = 40;
+		let buttonWidth = backgroundWidth/2;
 
-			this.acceptButton = new Button(this.promptBackground.x, this.promptBackground.y + backgroundHeight, buttonWidth, buttonHeight, 5, 5, 5, 5, z+1);
-			this.acceptButton.setInTexture(Art.greenButtonIn);
-			this.acceptButton.setOutTexture(Art.greenButtonOut);
-			this.acceptButton.textComponent.text = "Begin"
-			this.acceptButton.textComponent.fontSize = 20;
-			this.acceptButton.onClickFunction = function(){
-				setLevel(currentlySelectedLevel);
-				setGameState(2); 
-			}
-			this.addGui(this.acceptButton);
-
-			this.cancelButton = new Button(this.promptBackground.x + backgroundWidth - buttonWidth, this.promptBackground.y + backgroundHeight, buttonWidth, buttonHeight, 5, 5, 5, 5, z+1);
-			this.cancelButton.setInTexture(Art.redButtonIn);
-			this.cancelButton.setOutTexture(Art.redButtonOut);
-			this.cancelButton.textComponent.text = "Back"
-			this.cancelButton.textComponent.fontSize = 20;
-			this.cancelButton.onClickFunction = function(){ 
-					levelSelectionPrompt.setActive(false);
-			}
-			this.addGui(this.cancelButton);
+		this.acceptButton = new Button(this.promptBackground.x, this.promptBackground.y + backgroundHeight, buttonWidth, buttonHeight, 5, 5, 5, 5, z+1);
+		this.acceptButton.setInTexture(Art.greenButtonIn);
+		this.acceptButton.setOutTexture(Art.greenButtonOut);
+		this.acceptButton.textComponent.text = "Begin"
+		this.acceptButton.textComponent.fontSize = 20;
+		this.acceptButton.onClickFunction = function(){
+			setLevel(currentlySelectedLevel);
+			setGameState(2); 
 		}
+		this.addGui(this.acceptButton);
+
+		this.cancelButton = new Button(this.promptBackground.x + backgroundWidth - buttonWidth, this.promptBackground.y + backgroundHeight, buttonWidth, buttonHeight, 5, 5, 5, 5, z+1);
+		this.cancelButton.setInTexture(Art.redButtonIn);
+		this.cancelButton.setOutTexture(Art.redButtonOut);
+		this.cancelButton.textComponent.text = "Back"
+		this.cancelButton.textComponent.fontSize = 20;
+		this.cancelButton.onClickFunction = function(){ 
+				levelSelectionPrompt.setActive(false);
+		}
+		this.addGui(this.cancelButton);
+	}
 }

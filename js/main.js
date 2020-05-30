@@ -43,6 +43,7 @@ let DEBUG = false;
 function preload(){
 	loadLevel("level1");
 	loadLevel("level2");
+	loadLevel("level3");
 
 	fontKenny = loadFont('font/kenvector_future.ttf');
 	fontKennyThin = loadFont('font/kenvector_future_thin.ttf');
@@ -75,6 +76,9 @@ function setup() {
 	RegularEnemy.initializeClass();
 	ArmoredEnemy.initializeClass();
 	UntargetableEnemy.initializeClass();
+	SmallEgg.initializeClass();
+	Snail.initializeClass();
+	Slug.initializeClass();
 	Tower.initializeClass();
 	CooldownTower.initializeClass();
 	ArrowTowerLevel1.initializeClass();
@@ -429,6 +433,15 @@ function getClassFromEnemyID(_enemyID){
 		case 3:
 		    enemyClass = UntargetableEnemy;
 			break;
+		case 4:
+		    enemyClass = SmallEgg;
+			break;
+		case 5:
+		    enemyClass = Snail;
+			break;
+		case 6:
+		    enemyClass = Slug;
+			break;
 		default:
 		    // code block
 	} 
@@ -437,7 +450,7 @@ function getClassFromEnemyID(_enemyID){
 
 function spawnInPath(_enemyID, _pathID, pathprogress){
 	let enemy = spawn(_enemyID, _pathID);
-	enemy.move(pathprogress);	
+	enemy.move(pathprogress, true);	
 }
 
 function placeTower(x, y, towerClass, force = false){

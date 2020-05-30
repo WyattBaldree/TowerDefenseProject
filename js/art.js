@@ -39,6 +39,14 @@ class Art{
 		Art.kobold1 = loadImage('img/kobold1.png');
 		Art.ghost0 = loadImage('img/ghost0.png');
 		Art.ghost1 = loadImage('img/ghost1.png');
+		Art.egg0 = loadImage('img/egg0.png');
+		Art.egg1 = loadImage('img/egg1.png');
+		Art.eggSmall0 = loadImage('img/eggSmall0.png');
+		Art.eggSmall1 = loadImage('img/eggSmall1.png');
+		Art.snail0 = loadImage('img/snail0.png');
+		Art.snail1 = loadImage('img/snail1.png');
+		Art.slug0 = loadImage('img/slug0.png');
+		Art.slug1 = loadImage('img/slug1.png');
 
 		//towers
 		Art.archer0 = loadImage('img/archer0.png');

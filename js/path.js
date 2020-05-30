@@ -20,5 +20,14 @@ class Path{
 	static total(){ //numPaths
 		return selectedLevel.paths.length;
 	}
+	static totalDistanceOfPath(pathID){
+		let totalDistanceOfPath = 0;
+		for(let i = 0; i < Path.length(pathID) - 1; i++){
+			let deltaX = Path.getX(pathID, i + 1) * gridScale - Path.getX(pathID, i) * gridScale;
+			let deltaY = Path.getY(pathID, i + 1) * gridScale - Path.getY(pathID, i) * gridScale;
+			totalDistanceOfPath += Math.sqrt(Math.pow(deltaX,2) + Math.pow(deltaY,2));
+		}
+		return totalDistanceOfPath;
+	}
 }
 

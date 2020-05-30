@@ -927,7 +927,7 @@
  </objectgroup>
  <objectgroup id="7" name="LevelInfo">
   <object id="106" name="MapY" x="302.333" y="-58.0833" width="36" height="19">
-   <text wrap="1">6</text>
+   <text wrap="1">4</text>
   </object>
   <object id="107" name="MapX" x="265.333" y="-58.0833" width="25" height="19">
    <text wrap="1">1</text>
