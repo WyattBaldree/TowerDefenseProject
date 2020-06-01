@@ -8,16 +8,17 @@ class NinjaTower extends CooldownTower{
 		classRef.damage = 5;
 		classRef.speed = 12;
 		classRef.price = 200;
+		classRef.maxTargets = 1;
 		classRef.upgrades = [];
 	}
 
-	shoot(){
+	shoot(shootTarget){
 		super.shoot();
-		let dist = getDistanceBetweenUnits(this,this.target)
+		let dist = getDistanceBetweenUnits(this,shootTarget)
 		if(dist < this.getRange()*gridScale/2){
 			new Explosion(this.getXGrid() + .5, this.getYGrid() + .5, this.getRange()/2, this.getDamage());
 		}else{
-			let projectile = new ProjectileToUnitDamage(this.getXGrid(), this.getYGrid(), this.target, this.getDamage()/2);
+			let projectile = new ProjectileToUnitDamage(this.getXGrid(), this.getYGrid(), shootTarget, this.getDamage()/2);
 			projectile.animationFrames = [Art.ninjaStar0, Art.ninjaStar1];
 			projectile.texture = projectile.animationFrames[0];
 			projectile.doUpdateAngle = false;

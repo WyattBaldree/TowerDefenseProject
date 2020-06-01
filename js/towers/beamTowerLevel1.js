@@ -8,22 +8,31 @@ class BeamTowerLevel1 extends CooldownTower{
 		classRef.damage = 1;
 		classRef.speed = 30;
 		classRef.price = 100;
-		classRef.upgrades = [BeamTowerLevel2];
+		classRef.maxTargets = 1;
+		classRef.upgrades = [BeamTowerLevel2, FireElementalist];
 	}
 
-	shoot(){
-		super.shoot();
-		this.target.takeDamage(this.getDamage());
+	shoot(shootTarget){
+		super.shoot(shootTarget);
+		shootTarget.takeDamage(this.getDamage());
 	}
 
 	drawSelf(){
 		super.drawSelf();
-		if(this.target){
-			push()
-			strokeWeight(4);
-			stroke(color('rgba(255,0,0, .7)'));
-			line(this.getXGridCenter(), this.getYGridCenter(), this.target.x + gridScale/2, this.target.y + gridScale/2);
-			pop();
+		for(let i = 0; i < this.getBaseMaxTargets() ; i++){
+			if(this.targets[i]){
+				push()
+				strokeWeight(4);
+				stroke(color('rgba(255,0,0, .7)'));
+				let xDif = this.targets[i].x + gridScale/2 - this.getXGridCenter();
+				let yDif = this.targets[i].y + gridScale/2 - this.getYGridCenter();
+				let mag = distanceFormula(0, 0, xDif, yDif);
+				let xUnit = xDif/mag;
+				let yUnit = yDif/mag;
+
+				line(this.getXGridCenter() + xUnit*gridScale/2, this.getYGridCenter() + yUnit*gridScale/2, this.targets[i].x + gridScale/2, this.targets[i].y + gridScale/2);
+				pop();
+			}
 		}
 	}
 }

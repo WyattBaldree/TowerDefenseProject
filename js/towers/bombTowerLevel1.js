@@ -8,6 +8,7 @@ class BombTowerLevel1 extends CooldownTower{
 		classRef.damage = 4;
 		classRef.speed = 6;
 		classRef.price = 100;
+		classRef.maxTargets = 1;
 		classRef.upgrades = [];
 	}
 
@@ -16,9 +17,9 @@ class BombTowerLevel1 extends CooldownTower{
 		this.bombRadius = 1.5;
 	}
 
-	shoot(){
+	shoot(shootTarget){
 		super.shoot();
-		let projectile = new ProjectileToUnitExplosion(this.getXGrid(), this.getYGrid(), this.target, this.bombRadius, this.getDamage());
+		let projectile = new ProjectileToUnitExplosion(this.getXGrid(), this.getYGrid(), shootTarget, this.bombRadius, this.getDamage());
 		projectile.animationFrames = [Art.potion];
 		projectile.texture = Art.potion;
 		projectile.doUpdateAngle = false;

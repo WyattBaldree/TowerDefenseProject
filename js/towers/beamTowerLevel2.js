@@ -8,6 +8,7 @@ class BeamTowerLevel2 extends BeamTowerLevel1{
 		classRef.damage = 1;
 		classRef.speed = 60;
 		classRef.price = 150;
+		classRef.maxTargets = 1;
 		classRef.upgrades = [];
 	}
 }

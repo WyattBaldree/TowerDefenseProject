@@ -8,15 +8,16 @@ class FrostArcher extends CooldownTower{
 		classRef.damage = 5;
 		classRef.speed = 7;
 		classRef.price = 150;
+		classRef.maxTargets = 1;
 		classRef.upgrades = [];
 
 		this.slowAmount
 		this.slowDuration
 	}
 
-	shoot(){
+	shoot(shootTarget){
 		super.shoot();
-		let projectile = new ProjectileToUnitDamage(this.getXGrid(), this.getYGrid(), this.target, this.getDamage());
+		let projectile = new ProjectileToUnitDamage(this.getXGrid(), this.getYGrid(), shootTarget, this.getDamage());
 		projectile.animationFrames = [Art.frostArrow];
 		projectile.texture = Art.frostArrow;
 		projectile.angleOffset = 315;

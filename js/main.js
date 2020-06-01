@@ -78,6 +78,8 @@ function setup() {
 	CooldownTower.initializeClass();
 	ArrowTowerLevel1.initializeClass();
 	FrostArcher.initializeClass();
+	FireElementalist.initializeClass();
+	FireElemental.initializeClass();
 	BeamTowerLevel1.initializeClass();
 	BeamTowerLevel2.initializeClass();
 	BombTowerLevel1.initializeClass();
@@ -236,7 +238,7 @@ function startLevel(){
 	Timeline.currentSpawn = 0
 	Timeline.levelTimer = 0;
 
-	player = new Player(800);
+	player = new Player(levelData[currentLevelIndex].startingGold);
 
 	for(var u of unitList){
 		if(u.deleted) continue;

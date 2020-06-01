@@ -49,6 +49,7 @@ function buildLevel(levelName){
 	setLevelName(levelInfo);
 	setLevelX(levelInfo);
 	setLevelY(levelInfo);
+	setLevelStartingGold(levelInfo);
 	setSolidAreas(levelSolids);
 	setPaths(levelPaths);
 	setTimeline(levelWaves);
@@ -124,14 +125,19 @@ function setTimeline(levelWaves){
 
 function setLevelName(levelInfo){
 	selectedLevel.name = levelInfo[2].text.text;
+	selectedLevel.name = levelInfo.find(e => e.name == "LevelName").text.text;
 }
 
 function setLevelX(levelInfo){
-	selectedLevel.x = parseInt(levelInfo[1].text.text);
+	selectedLevel.x = parseInt(levelInfo.find(e => e.name == "MapX").text.text);
 }
 
 function setLevelY(levelInfo){
-	selectedLevel.y = parseInt(levelInfo[0].text.text);
+	selectedLevel.y = parseInt(levelInfo.find(e => e.name == "MapY").text.text);
+}
+
+function setLevelStartingGold(levelInfo){
+	selectedLevel.startingGold = parseInt(levelInfo.find(e => e.name == "StartingGold").text.text);
 }
 
 function loadTilesets(levelName){

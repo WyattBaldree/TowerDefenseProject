@@ -8,42 +8,49 @@ class CooldownTower extends Tower{
 		classRef.damage = 5;
 		classRef.speed = 10;
 		classRef.price = 100;
+		classRef.maxTargets = 1;
 		classRef.upgrades = [];
 	}
 
 	constructor(x, y){
 		super(x, y);
-		this.target = null;
+		this.targets = [];
 	}
 
 	update(dTime){
 		super.update(dTime);
 
 		// check if our current target is still valid
-		if(this.target != null){
-			if( getDistanceBetweenUnits(this, this.target) > this.getRange() * gridScale ||
-				this.target.untargetable||
-				this.target.deleted){
-				this.target = null;
-			}
-		}
+		for(let i = 0; i < this.getBaseMaxTargets() ; i++){
 
-		// check if we need a new target and if we do get one.
-		if(this.target == null){
-			this.findTarget();
-		}
-		else{
-			if(this.target.x > this.x){
-				this.flipX = 1;
+			if(this.targets[i] != null){
+				if( getDistanceBetweenUnits(this, this.targets[i]) > this.getRange() * gridScale ||
+				this.targets[i].untargetable||
+				this.targets[i].deleted){
+					this.targets[i] = null;
+				}
+			}
+
+			// check if we need a new target and if we do get one.
+			if(this.targets[i] == null){
+				this.targets[i] = this.findTarget();
 			}
 			else{
-				this.flipX = 0;
+				if(this.targets[i].x > this.x){
+					this.flipX = 1;
+				}
+				else{
+					this.flipX = 0;
+				}
+			}
+
+			// if we have a target, try to shoot at it.
+			if(this.targets[i] != null && this.cooldown <= 0){
+				this.shoot(this.targets[i]);
 			}
 		}
-
-		// if we have a target, try to shoot at it.
-		if(this.target != null && this.cooldown <= 0){
-			this.shoot();
+		if(this.cooldown <= 0){
+			this.cooldown += 100;
 		}
 
 		if(this.cooldown > 0) this.cooldown -= this.getSpeed()*dTime;
@@ -54,6 +61,7 @@ class CooldownTower extends Tower{
 		let finalTarget;
 		let smallestDistanceFromGoal = Number.MAX_VALUE;
 		for(let enemy of potentialTargets){
+			if(this.targets.find(e => e == enemy)) continue;
 			if(enemy.untargetable) continue;
 			let distanceFromEnd = enemy.getDistanceToEndOfPath();
 			if(distanceFromEnd < smallestDistanceFromGoal){
@@ -62,6 +70,6 @@ class CooldownTower extends Tower{
 			}
 		}
 
-		this.target = finalTarget;
+		return finalTarget;
 	}
 }

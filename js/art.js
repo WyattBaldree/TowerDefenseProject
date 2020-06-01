@@ -57,6 +57,10 @@ class Art{
 		Art.mage1 = loadImage('img/mage1.png');
 		Art.wizard0 = loadImage('img/wizard0.png');
 		Art.wizard1 = loadImage('img/wizard1.png');
+		Art.fireElementalist0 = loadImage('img/fireElementalist0.png');
+		Art.fireElementalist1 = loadImage('img/fireElementalist1.png');
+		Art.fireElemental0 = loadImage('img/fireElemental0.png');
+		Art.fireElemental1 = loadImage('img/fireElemental1.png');
 		Art.engineer0 = loadImage('img/engineer0.png');
 		Art.engineer1 = loadImage('img/engineer1.png');
 		Art.warrior0 = loadImage('img/warrior0.png');

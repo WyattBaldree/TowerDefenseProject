@@ -13,6 +13,7 @@ class Tower extends Unit{
 		classRef.damage = 5;
 		classRef.speed = 5;
 		classRef.price = 100;
+		classRef.maxTargets = 1;
 		classRef.upgrades = [];
 	}
 
@@ -20,6 +21,8 @@ class Tower extends Unit{
 		super(x, y);
 
 		this.animationSpeed = .15;
+
+		this.canTargetMultiple = false;
 
 		this.isOnDamageTile = this.isOnTile("Damage");
 		this.isOnRangeTile = this.isOnTile("Range");
@@ -46,6 +49,10 @@ class Tower extends Unit{
 		return this.constructor.price;
 	}
 
+	getBaseMaxTargets(){
+		return this.constructor.maxTargets;
+	}
+
 	getUpgrades(){
 		return this.constructor.upgrades;
 	}
@@ -54,8 +61,7 @@ class Tower extends Unit{
 		super.update(dTime);
 	}
 
-	shoot(){
-		this.cooldown += 100;
+	shoot(shootTarget){
 	}
 
 	die(){

@@ -8,12 +8,13 @@ class ArrowTowerLevel1 extends CooldownTower{
 		classRef.damage = 4;
 		classRef.speed = 6;
 		classRef.price = 100;
+		classRef.maxTargets = 1;
 		classRef.upgrades = [FrostArcher];
 	}
 
-	shoot(){
+	shoot(shootTarget){
 		super.shoot();
-		let projectile = new ProjectileToUnitDamage(this.getXGrid(), this.getYGrid(), this.target, this.getDamage());
+		let projectile = new ProjectileToUnitDamage(this.getXGrid(), this.getYGrid(), shootTarget, this.getDamage());
 		projectile.animationFrames = [Art.arrow];
 		projectile.texture = Art.arrow;
 		projectile.angleOffset = 225;
