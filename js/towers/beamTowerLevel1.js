@@ -13,7 +13,7 @@ class BeamTowerLevel1 extends CooldownTower{
 
 	shoot(){
 		super.shoot();
-		this.target.takeDamage(this.damage);
+		this.target.takeDamage(this.getDamage());
 	}
 
 	drawSelf(){

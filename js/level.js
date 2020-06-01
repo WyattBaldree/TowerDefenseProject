@@ -40,6 +40,7 @@ function buildLevel(levelName){
 	let levelSolids = levelJson.layers.find(x => x.name == "Solid").objects;
 	let levelInfo = levelJson.layers.find(x => x.name == "LevelInfo").objects;
 	let levelStartingTowers = levelJson.layers.find(x => x.name == "StartingTowers").objects;
+	let levelPowerTiles = levelJson.layers.find(x => x.name == "PowerTiles").objects;
 
 	let levelTileSets = levelJson.tilesets;
 
@@ -52,8 +53,21 @@ function buildLevel(levelName){
 	setPaths(levelPaths);
 	setTimeline(levelWaves);
 	setStartingTowers(levelStartingTowers);
+	setPowerTiles(levelPowerTiles);
 
 	setLevelCanvases(levelName);
+}
+
+function setPowerTiles(levelPowerTiles){
+	selectedLevel.powerTiles = [];
+
+	for(var i = 0 ; i < levelPowerTiles.length ; i++){
+
+		let xx = Math.floor(levelPowerTiles[i].x/16);
+		let yy = Math.floor(levelPowerTiles[i].y/16);
+		let tileName = levelPowerTiles[i].name;
+		selectedLevel.powerTiles[i] = {x:xx, y:yy, name:tileName};
+	}
 }
 
 function setStartingTowers(levelStartingTowers){

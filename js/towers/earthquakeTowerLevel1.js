@@ -13,6 +13,6 @@ class EarthquakeTowerLevel1 extends CooldownTower{
 
 	shoot(){
 		super.shoot();
-		new Explosion(this.getXGrid() + .5, this.getYGrid() + .5, this.range, this.damage);
+		new Explosion(this.getXGrid() + .5, this.getYGrid() + .5, this.getRange(), this.getDamage());
 	}
 }

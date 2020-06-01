@@ -67,6 +67,11 @@ class Art{
 		//map
 		Art.map = loadImage('levels/map.png');
 
+		//tiles
+		Art.tileDamage = loadImage('img/tileDamage.png');
+		Art.tileRange = loadImage('img/tileRange.png');
+		Art.tileSpeed = loadImage('img/tileSpeed.png');
+
 		//items
 		Art.goldCoin = loadImage('img/goldCoin.png');
 		Art.goldCoinBig = loadImage('img/goldCoinBig.png');

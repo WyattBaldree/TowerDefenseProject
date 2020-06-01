@@ -18,11 +18,12 @@ class Tower extends Unit{
 
 	constructor(x, y){
 		super(x, y);
-		this.range = this.getBaseRange();
-		this.damage = this.getBaseDamage();
-		this.speed = this.getBaseSpeed();
 
 		this.animationSpeed = .15;
+
+		this.isOnDamageTile = this.isOnTile("Damage");
+		this.isOnRangeTile = this.isOnTile("Range");
+		this.isOnSpeedTile = this.isOnTile("Speed");
 
 		this.cooldown = 0;
 		towerList.push(this);
@@ -62,6 +63,40 @@ class Tower extends Unit{
 		super.die();
 	}
 
+	getDamage(){
+		let multiplier = 1;
+		if(this.isOnDamageTile){
+			multiplier*=2;
+		}
+		return this.getBaseDamage() * multiplier;
+	}
+
+	getRange(){
+		let multiplier = 1;
+		if(this.isOnRangeTile){
+			multiplier*=2;
+		}
+		return this.getBaseRange() * multiplier;
+	}
+
+	getSpeed(){
+		let multiplier = 1;
+		if(this.isOnSpeedTile){
+			multiplier*=2;
+		}
+		return this.getBaseSpeed() * multiplier;
+	}
+
+	isOnTile(tileType){
+		for(let i = 0 ; i < levelData[currentLevelIndex].powerTiles.length ; i++){
+			let currentTile = levelData[currentLevelIndex].powerTiles[i];
+			if(currentTile.x == this.getXGrid() && currentTile.y == this.getYGrid() && currentTile.name == tileType){
+				return true;
+			}
+		}
+		return false;
+	}
+
 	removeFromGame(){
 		super.removeFromGame();
 		let removeIndex = towerList.indexOf(this);
@@ -71,6 +106,15 @@ class Tower extends Unit{
 	}
 
 	drawSelf(){
+		if(this.isOnDamageTile){
+			this.tint = color("red");
+		}
+		else if(this.isOnRangeTile){
+			this.tint = color("green");
+		}
+		else if(this.isOnSpeedTile){
+			this.tint = color("yellow");
+		}
 		super.drawSelf();
 	}
 
@@ -78,14 +122,14 @@ class Tower extends Unit{
 		// draw the range of the tower.
 		stroke(color('rgba(255,255,51, 1)'));
 		fill(color('rgba(255,255,51,.2)'));
-		ellipse(this.getXGridCenter(), this.getYGridCenter(), this.range * 2 * gridScale);
+		ellipse(this.getXGridCenter(), this.getYGridCenter(), this.getRange() * 2 * gridScale);
 	}
 
 	drawSelected(){
 		// draw the range of the tower.
 		stroke(color('rgba(255,255,51, 1)'));
 		fill(color('rgba(255,255,51,.2)'));
-		ellipse(this.getXGridCenter(), this.getYGridCenter(), this.range * 2 * gridScale);
+		ellipse(this.getXGridCenter(), this.getYGridCenter(), this.getRange() * 2 * gridScale);
 
 		// draw a red square around the tower.
 		stroke(color('rgba(255,0,0, 1)'));

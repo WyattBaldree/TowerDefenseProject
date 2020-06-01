@@ -21,7 +21,7 @@ class CooldownTower extends Tower{
 
 		// check if our current target is still valid
 		if(this.target != null){
-			if( getDistanceBetweenUnits(this, this.target) > this.range * gridScale ||
+			if( getDistanceBetweenUnits(this, this.target) > this.getRange() * gridScale ||
 				this.target.untargetable||
 				this.target.deleted){
 				this.target = null;
@@ -46,11 +46,11 @@ class CooldownTower extends Tower{
 			this.shoot();
 		}
 
-		if(this.cooldown > 0) this.cooldown -= this.speed*dTime;
+		if(this.cooldown > 0) this.cooldown -= this.getSpeed()*dTime;
 	}
 
 	findTarget(){
-		let potentialTargets = getListOfUnitsInRange(this.x, this.y, this.range, "enemy");
+		let potentialTargets = getListOfUnitsInRange(this.x, this.y, this.getRange(), "enemy");
 		let finalTarget;
 		let smallestDistanceFromGoal = Number.MAX_VALUE;
 		for(let enemy of potentialTargets){

@@ -16,7 +16,7 @@ class FrostArcher extends CooldownTower{
 
 	shoot(){
 		super.shoot();
-		let projectile = new ProjectileToUnitDamage(this.getXGrid(), this.getYGrid(), this.target, this.damage);
+		let projectile = new ProjectileToUnitDamage(this.getXGrid(), this.getYGrid(), this.target, this.getDamage());
 		projectile.animationFrames = [Art.frostArrow];
 		projectile.texture = Art.frostArrow;
 		projectile.angleOffset = 315;

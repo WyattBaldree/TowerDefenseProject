@@ -23,6 +23,8 @@ var mouseGridY;
 
 let levelArray = new Array();
 
+let powerTileList = [];
+
 let gameState = 0; //0 - main menu, 1 - level select, 2 - inGame;
 let levelPlay = false; //Is the level currently playing or paused.
 let controlMode = 0; //How we are currently controlling the game. 0 - normal, 1 - placing tower
@@ -146,17 +148,18 @@ function drawStep(){
 	background(150);
 	strokeWeight(2);
 
-	drawLevel();
-
-	for(var u of unitList){
-  		u.drawSelf();
-	}
-
-	for(var d of decalList){
-  		d.drawSelf();
-	}
-
 	if(gameState == 2){
+		drawLevel();
+		drawPowerTiles();
+
+		for(var u of unitList){
+  			u.drawSelf();
+		}
+
+		for(var d of decalList){
+  			d.drawSelf();
+		}
+
 		switch(controlMode){
 			case 0:
 				if(selectedUnit != null){
@@ -186,6 +189,8 @@ function drawStep(){
 				ellipse(mouseX - mouseX%gridScale + gridScale/2, mouseY - mouseY%gridScale + gridScale/2, placeTowerClass.range * 2 * gridScale);
 				break;
 		}
+
+
 		noStroke();
 		fill(color('rgba(255, 127, 0, .5)'));
 		drawSelectionSquare();
@@ -193,6 +198,25 @@ function drawStep(){
 
 	for(var gui of guiList){
   		gui.drawSelf();
+	}
+}
+
+function drawPowerTiles(){
+	for(let tile of powerTileList){
+		noFill();
+		strokeWeight(2);
+		let tileSprite = null;
+		if(tile.name == "Damage"){
+			tileSprite = Art.tileDamage;
+		}
+		else if(tile.name == "Range"){
+			tileSprite = Art.tileRange;
+		}
+		else{
+			tileSprite = Art.tileSpeed;
+		}
+
+		image(tileSprite, tile.x * gridScale, tile.y * gridScale, gridScale, gridScale);
 	}
 }
 
@@ -222,6 +246,11 @@ function startLevel(){
 	for(var d of decalList){
   		if(d.deleted) continue;
   		d.markForRemoval();
+	}
+
+	powerTileList = [];
+	for(let i = 0 ; i < levelData[currentLevelIndex].powerTiles.length ; i++){
+		powerTileList.push(levelData[currentLevelIndex].powerTiles[i]);
 	}
 
 	for(let startingTower of levelData[currentLevelIndex].startingTowers){

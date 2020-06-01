@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="24" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="10" nextobjectid="288">
+<map version="1.2" tiledversion="1.3.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="24" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="12" nextobjectid="291">
  <editorsettings>
   <export target="level1.json" format="json"/>
  </editorsettings>
@@ -805,6 +805,17 @@
  </objectgroup>
  <objectgroup id="9" name="StartingTowers">
   <object id="287" name="NinjaTower" x="136" y="167">
+   <point/>
+  </object>
+ </objectgroup>
+ <objectgroup id="10" name="PowerTiles">
+  <object id="288" name="Damage" x="152.75" y="152.75">
+   <point/>
+  </object>
+  <object id="289" name="Range" x="168.75" y="151">
+   <point/>
+  </object>
+  <object id="290" name="Speed" x="185.25" y="153.75">
    <point/>
   </object>
  </objectgroup>
