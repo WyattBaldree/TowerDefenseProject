@@ -6,12 +6,12 @@ class Player{
 
 	setGold(gold){
 		this.gold = gold;
-		playerDisplayPanel.goldComponent.text = this.gold;
+		playerDisplayPanel.goldComponent.setText(this.gold);
 	}
 
 	setHealth(health){
 		this.health = health;
-		playerDisplayPanel.healthComponent.text = this.health;
+		playerDisplayPanel.healthComponent.setText(this.health);
 		if (this.health <= 0) loseLevel();
 	}
 }

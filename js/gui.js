@@ -36,9 +36,6 @@ function makeMainMenu(){
 		loadData();
 	}
 
-	let sb = new StatBlock(800, 300, Art.fireElementalist0, 5);
-	sb.setText("538jdhafkdjhfalkdsjfhsadlkjfhsdlkjfh");
-
 	mainMenuGuiGroup.addGui(mainMenuOptionsButton);
 }
 
@@ -857,15 +854,19 @@ class SpriteAndText extends GuiComponent{
 }
 
 class StatBlock extends GuiGroup{
-	constructor(x, y, sprite, z = 0){
+	constructor(x, y, sprite, z = 0, textBoxWidth = 48){
 		super(x, y, z);
 
+		//settings
 		let spriteSize = 32;
-		let textBoxWidth = 64;
+		let textBoxHeight = 24;
 		let padding = 4;
 		let font = fontMinecraft;
 
-		let fontSize = spriteSize - padding*2;
+		//derived from settings
+
+		let textBoxverticalOffset = (spriteSize - textBoxHeight)/2; 
+		let fontSize = textBoxHeight - padding*2;
 		let textHeight = font.textBounds("ABCDEF", 0, 0, fontSize).h;
 
 		//create graphic component
@@ -874,12 +875,12 @@ class StatBlock extends GuiGroup{
 		this.addGui(this.spriteComponent);
 
 		//create text background
-		this.backgroundComponent = new GuiComponent(this.x + spriteSize, this.y, textBoxWidth, spriteSize, z);
-		this.backgroundComponent.drawColor = color("rgba(0,0,0,.5)");
+		this.backgroundComponent = new GuiComponent(this.x + spriteSize, this.y + textBoxverticalOffset, textBoxWidth, textBoxHeight, z);
+		this.backgroundComponent.drawColor = color("rgba(0,0,0,.4)");
 		this.addGui(this.backgroundComponent);
 
 		//create textBox component
-		this.textBoxComponent = new TextBox(this.x + spriteSize + padding, this.y + (spriteSize - textHeight)/2, textBoxWidth - 2 * padding, spriteSize - 2 * padding, "", z+1, "horizontal");
+		this.textBoxComponent = new TextBox(this.x + spriteSize + padding, this.y + (textBoxHeight - textHeight)/2 + textBoxverticalOffset, textBoxWidth - 2 * padding, textBoxHeight - 2 * padding, "", z+1, "horizontal");
 		this.textBoxComponent.setFontSize(fontSize);
 		this.addGui(this.textBoxComponent);
 	}
@@ -905,7 +906,7 @@ class TowerDisplayPanel extends GuiComponent{
 		let sideMargin = 10;
 		let topMargin = 10;
 		let fontColor = color("white");
-		let textBackgroundColor = color("rgba(0,0,0,.5)");
+		let textBackgroundColor = color("rgba(0,0,0,.4)");
 		let textBoxHeight = 60;
 		let textBoxFontSize = 15;
 		let innerMargin = 4;
@@ -954,45 +955,21 @@ class TowerDisplayPanel extends GuiComponent{
 
 		//stat boxes
 
-		this.costComponent = new SpriteAndText(this.x + sideMargin, this.y + statBoxesYStart + statBoxOffset, textSpriteSize, textSpriteSize, z + 2, Art.goldCoinStack, "???");
-		this.costComponent.fontSize = fontSize;
-		this.costComponent.textSeparation = innerMargin;
-		this.costComponent.fontColor = fontColor;
+		this.costComponent = new StatBlock(this.x + sideMargin, this.y + statBoxesYStart + statBoxOffset, Art.goldCoinStack, z + 2);
+		this.costComponent.setText("???");
 		this.addGui(this.costComponent);
 
-		this.costComponentBackground = new GuiComponent(this.x + sideMargin + textSpriteSize, this.y + statBoxesYStart, panelWidth/2 - sideMargin*2 - textSpriteSize, textBackgroundSize, z + 1);
-		this.costComponentBackground.drawColor = textBackgroundColor;
-		this.addGui(this.costComponentBackground);
-
-		this.damageComponent = new SpriteAndText(this.x + sideMargin, this.y + statBoxesYStart + textBackgroundSize + innerMargin + statBoxOffset, textSpriteSize, textSpriteSize, z + 2, Art.sword, "???");
-		this.damageComponent.fontSize = fontSize;
-		this.damageComponent.textSeparation = innerMargin;
-		this.damageComponent.fontColor = fontColor;
+		this.damageComponent = new StatBlock(this.x + sideMargin, this.y + statBoxesYStart + textBackgroundSize + innerMargin + statBoxOffset, Art.sword,z + 2);
+		this.damageComponent.setText("???");
 		this.addGui(this.damageComponent);
 
-		this.damageComponentBackground = new GuiComponent(this.x + sideMargin + textSpriteSize, this.y + statBoxesYStart + textBackgroundSize + innerMargin, panelWidth/2 - sideMargin*2 - textSpriteSize, textBackgroundSize, z + 1);
-		this.damageComponentBackground.drawColor = textBackgroundColor;
-		this.addGui(this.damageComponentBackground);
-
-		this.rangeComponent = new SpriteAndText(this.x + panelWidth/2 + innerMargin, this.y + statBoxesYStart + statBoxOffset, textSpriteSize, textSpriteSize, z + 2, Art.eyeball, "???");
-		this.rangeComponent.fontSize = fontSize;
-		this.rangeComponent.textSeparation = innerMargin;
-		this.rangeComponent.fontColor = fontColor;
+		this.rangeComponent = new StatBlock(this.x + panelWidth/2 + innerMargin, this.y + statBoxesYStart + statBoxOffset, Art.eyeball, z + 2);
+		this.rangeComponent.setText("???");
 		this.addGui(this.rangeComponent);
 
-		this.rangeComponentBackground = new GuiComponent(this.x + panelWidth/2 + innerMargin + textSpriteSize, this.y + statBoxesYStart, panelWidth/2 - sideMargin - innerMargin - textSpriteSize, textBackgroundSize, z + 1);
-		this.rangeComponentBackground.drawColor = textBackgroundColor;
-		this.addGui(this.rangeComponentBackground);
-
-		this.speedComponent = new SpriteAndText(this.x + panelWidth/2 + innerMargin, this.y + statBoxesYStart + textBackgroundSize + innerMargin + statBoxOffset, textSpriteSize, textSpriteSize, z + 2, Art.ninjaStar0, "???");
-		this.speedComponent.fontSize = fontSize;
-		this.speedComponent.textSeparation = innerMargin;
-		this.speedComponent.fontColor = fontColor;
+		this.speedComponent = new StatBlock(this.x + panelWidth/2 + innerMargin, this.y + statBoxesYStart + textBackgroundSize + innerMargin + statBoxOffset, Art.ninjaStar0, z + 2);
+		this.speedComponent.setText("???");
 		this.addGui(this.speedComponent);
-
-		this.speedComponentBackground = new GuiComponent(this.x + panelWidth/2 + innerMargin + textSpriteSize, this.y + statBoxesYStart + textBackgroundSize + innerMargin, panelWidth/2 - sideMargin - innerMargin - textSpriteSize, textBackgroundSize, z + 1);
-		this.speedComponentBackground.drawColor = textBackgroundColor;
-		this.addGui(this.speedComponentBackground);
 	}
 
 	setOutTexture(tex){
@@ -1009,11 +986,11 @@ class TowerDisplayPanel extends GuiComponent{
 		this.towerClass = _towerClass;
 		if(this.towerClass){
 			this.spriteComponent.texture = this.towerClass.animationFrames[0];
-			this.costComponent.text = this.towerClass.price;
-			this.damageComponent.text = this.towerClass.damage;
-			this.rangeComponent.text = this.towerClass.range;
-			this.speedComponent.text = this.towerClass.speed;
-			this.titleComponent.text = this.towerClass.unitName;
+			this.costComponent.setText(this.towerClass.price);
+			this.damageComponent.setText(this.towerClass.damage);
+			this.rangeComponent.setText(this.towerClass.range);
+			this.speedComponent.setText(this.towerClass.speed);
+			this.titleComponent.setText(this.towerClass.unitName);
 			this.descriptionTextBox.setText(this.towerClass.description);
 		}
 	}
@@ -1202,7 +1179,7 @@ class PlayerDisplayPanel extends GuiComponent{
 
 		let fontColor = color("white");
 		let fontSize = 16;
-		let textBackgroundColor = color("rgba(0,0,0,.5)");
+		let textBackgroundColor = color("rgba(0,0,0,.4)");
 		let textBackgroundSize = 20;
 
 		let statBoxOffset = 6;
@@ -1214,25 +1191,13 @@ class PlayerDisplayPanel extends GuiComponent{
 		this.backgroundComponent.texture = Art.grayBackground;
 		this.addGui(this.backgroundComponent);
 
-		this.goldComponent = new SpriteAndText(this.x + sideMargin, this.y + topMargin, gridScale, gridScale, z + 2, Art.goldCoinStack, "???");
-		this.goldComponent.fontSize = fontSize;
-		this.goldComponent.textSeparation = innerMargin;
-		this.goldComponent.fontColor = fontColor;
+		this.goldComponent = new StatBlock(this.x + sideMargin, this.y + topMargin, Art.goldCoinStack, z + 2, panelWidth - sideMargin*2 - 32);
+		this.goldComponent.setText("???");
 		this.addGui(this.goldComponent);
 
-		this.goldComponentBackground = new GuiComponent(this.x + sideMargin + gridScale, this.y + topMargin + statBoxOffset, panelWidth - sideMargin*2 - gridScale, textBackgroundSize, z + 1);
-		this.goldComponentBackground.drawColor = textBackgroundColor;
-		this.addGui(this.goldComponentBackground);
-
-		this.healthComponent = new SpriteAndText(this.x + sideMargin, this.y + topMargin + verticalSeparation + textBackgroundSize, gridScale, gridScale, z + 2, Art.heart, "???");
-		this.healthComponent.fontSize = fontSize;
-		this.healthComponent.textSeparation = innerMargin;
-		this.healthComponent.fontColor = fontColor;
+		this.healthComponent = new StatBlock(this.x + sideMargin, this.y + topMargin + verticalSeparation + textBackgroundSize, Art.heart, z + 2, panelWidth - sideMargin*2 - 32);
+		this.healthComponent.setText("???");
 		this.addGui(this.healthComponent);
-
-		this.healthComponentBackground = new GuiComponent(this.x + sideMargin + gridScale, this.y + topMargin + statBoxOffset + verticalSeparation + textBackgroundSize, panelWidth - sideMargin*2 - gridScale, textBackgroundSize, z + 1);
-		this.healthComponentBackground.drawColor = textBackgroundColor;
-		this.addGui(this.healthComponentBackground);
 	}
 }
 
