@@ -35,6 +35,10 @@ function makeMainMenu(){
 		initializeData();
 		loadData();
 	}
+
+	let sb = new StatBlock(800, 300, Art.fireElementalist0, 5);
+	sb.setText("538jdhafkdjhfalkdsjfhsadlkjfhsdlkjfh");
+
 	mainMenuGuiGroup.addGui(mainMenuOptionsButton);
 }
 
@@ -426,6 +430,7 @@ class GuiComponent{
 	drawSelf(){
 		if(this.active && this.draw){
 			if(this.texture){
+				noSmooth();
 				image(this.texture, this.x, this.y, this.w, this.h);
 			}
 			else{
@@ -846,10 +851,43 @@ class SpriteAndText extends GuiComponent{
 	 		textSize(this.fontSize);
 	  		textAlign(LEFT, CENTER);
 	  		fill(this.fontColor);
-			text(this.text, this.x + this.w + this.textSeparation, this.y + (this.h)/2);
+			text(this.text, this.x + this.w + this.textSeparation, this.y + this.h / 2);
 		}
 	}
-}  
+}
+
+class StatBlock extends GuiGroup{
+	constructor(x, y, sprite, z = 0){
+		super(x, y, z);
+
+		let spriteSize = 32;
+		let textBoxWidth = 64;
+		let padding = 4;
+		let font = fontMinecraft;
+
+		let fontSize = spriteSize - padding*2;
+		let textHeight = font.textBounds("ABCDEF", 0, 0, fontSize).h;
+
+		//create graphic component
+		this.spriteComponent = new GuiComponent(this.x, this.y, spriteSize, spriteSize, z);
+		this.spriteComponent.texture = sprite;
+		this.addGui(this.spriteComponent);
+
+		//create text background
+		this.backgroundComponent = new GuiComponent(this.x + spriteSize, this.y, textBoxWidth, spriteSize, z);
+		this.backgroundComponent.drawColor = color("rgba(0,0,0,.5)");
+		this.addGui(this.backgroundComponent);
+
+		//create textBox component
+		this.textBoxComponent = new TextBox(this.x + spriteSize + padding, this.y + (spriteSize - textHeight)/2, textBoxWidth - 2 * padding, spriteSize - 2 * padding, "", z+1, "horizontal");
+		this.textBoxComponent.setFontSize(fontSize);
+		this.addGui(this.textBoxComponent);
+	}
+
+	setText(text){
+		this.textBoxComponent.setText(text);
+	}
+}
 
 class TowerDisplayPanel extends GuiComponent{
 	constructor(x, y, z = 0){
@@ -867,9 +905,9 @@ class TowerDisplayPanel extends GuiComponent{
 		let sideMargin = 10;
 		let topMargin = 10;
 		let fontColor = color("white");
-		let textBackgroundColor = color("rgba(0,0,0,.3)");
+		let textBackgroundColor = color("rgba(0,0,0,.5)");
 		let textBoxHeight = 60;
-		let textBoxFontSize = 13;
+		let textBoxFontSize = 15;
 		let innerMargin = 4;
 
 		let statBoxesYStart = topMargin + spriteSize + 2*innerMargin + textBoxHeight + 2*innerMargin;
@@ -894,8 +932,8 @@ class TowerDisplayPanel extends GuiComponent{
 
 		//title
 
-		this.titleComponent = new TextComponent(this.x + sideMargin + spriteSize + innerMargin*2, this.y + topMargin + innerMargin, z + 2, "title");
-		this.titleComponent.fontSize = fontSize;
+		this.titleComponent = new TextBox(this.x + sideMargin + spriteSize + innerMargin*2, this.y + topMargin + innerMargin, panelWidth - sideMargin*2 - innerMargin*3 - spriteSize, fontSize, "title", z + 2);
+		this.titleComponent.setFontSize(fontSize);
 		this.titleComponent.fontColor = fontColor;
 		this.addGui(this.titleComponent);
 
@@ -906,7 +944,7 @@ class TowerDisplayPanel extends GuiComponent{
 		//description
 
 		this.descriptionTextBox = new TextBox(this.x + sideMargin + innerMargin, this.y + topMargin + spriteSize + 2*innerMargin, panelWidth - 2*sideMargin - innerMargin, textBoxHeight, "", z+2);
-		this.descriptionTextBox.fontSize = textBoxFontSize;
+		this.descriptionTextBox.setFontSize(textBoxFontSize);
 		this.descriptionTextBox.fontColor = fontColor;
 		this.addGui(this.descriptionTextBox);
 
@@ -982,13 +1020,21 @@ class TowerDisplayPanel extends GuiComponent{
 }
 
 class TextBox extends GuiComponent{
-	constructor(x, y, w, h, text = "", z = 0){
+	constructor(x, y, w, h, text = "", z = 0, scrollAxis = "vertical"){
 		super(x, y, w, h, z, null);
 		this.textLines = [];
 		this.font = fontMinecraft;
 		this.fontSize = 25;
 		this.fontColor = color("white");
 		this.textHeight = 0;
+		this.scrollAxis = scrollAxis;
+		this.textHeight = 0;
+		this.textWidth = 0;
+ 
+		this.shadow = true;
+		this.shadowOffset = this.fontSize/10;
+		this.shadowColor = color("rgba(0,0,0,.5)");
+
 		this.setText(text);
 
 		this.autoScroll = true;
@@ -1003,10 +1049,25 @@ class TextBox extends GuiComponent{
 	}
 
 	setText(text){
+		this.text = text;
 		this.scrollAmount = 0;
 		this.autoScrollDirection = 1;
 		this.scrollPauseCurrent = this.scrollPause;
 		this.textLines = [];
+		if(this.scrollAxis == "vertical"){
+			this.setTextVertical(text);
+		}
+		else{
+			this.setTextHorizontal(text);
+		}
+	}
+
+	setFontSize(fontSize){
+		this.fontSize = fontSize;
+		this.setText(this.text);
+	}
+
+	setTextVertical(text){
 		let currentLineIndex = 0;
 		let currentLine = "";
 		let thisLineHasSpace = false;
@@ -1033,14 +1094,32 @@ class TextBox extends GuiComponent{
 			}
 		}
 		this.textLines[currentLineIndex] = currentLine;
+		this.textHeight = this.textLines.length * this.fontSize;
+		this.textWidth = this.w;
+	}
+
+	setTextHorizontal(text){
+		this.textLines.push(text);
+		this.textHeight = this.fontSize;
+		this.textWidth = this.font.textBounds(this.textLines[0], 0, 0, this.fontSize).w;
 	}
 
 	update(dTime){
+		if(this.scrollAxis == "vertical"){
+			this.updateVertical(dTime);
+		}
+		else{
+			this.updateHorizontal(dTime);
+		}
+		this.scrollPauseCurrent -= dTime;
+	}
+
+	updateVertical(dTime){
 		if(this.scrollPauseCurrent <= 0){
 			//scroll
 			if(this.autoScrollDirection){
 				this.scrollAmount += this.scrollSpeed*dTime;
-				if(this.scrollAmount >= (this.textLines.length * this.fontSize) - this.h){
+				if(this.scrollAmount >= this.textHeight - this.h){
 					this.scrollPauseCurrent = this.scrollPause
 					this.autoScrollDirection = 0;
 				}
@@ -1053,7 +1132,26 @@ class TextBox extends GuiComponent{
 				}
 			}
 		}
-		this.scrollPauseCurrent -= dTime;
+	}
+
+	updateHorizontal(dTime){
+		if(this.scrollPauseCurrent <= 0){
+			//scroll
+			if(this.autoScrollDirection){
+				this.scrollAmount += this.scrollSpeed*dTime;
+				if(this.scrollAmount >= this.textWidth - this.w){
+					this.scrollPauseCurrent = this.scrollPause
+					this.autoScrollDirection = 0;
+				}
+			}
+			else{
+				this.scrollAmount -= this.scrollSpeed*dTime;
+				if(this.scrollAmount <= 0){
+					this.scrollPauseCurrent = this.scrollPause
+					this.autoScrollDirection = 1;
+				}
+			}
+		}
 	}
 
 	drawSelf(){
@@ -1065,10 +1163,25 @@ class TextBox extends GuiComponent{
 			this.textCanvas.fill(this.fontColor);
 	  		this.textCanvas.textAlign(LEFT, TOP);
 
-
-			for(let i = 0 ; i < this.textLines.length ; i++){
-				this.textCanvas.text(this.textLines[i], 0, 0 + i*this.fontSize - this.scrollAmount);
+	  		if(this.scrollAxis == "vertical"){
+				for(let i = 0 ; i < this.textLines.length ; i++){
+					if(this.shadow == true){
+						this.textCanvas.fill(this.shadowColor);
+						this.textCanvas.text(this.textLines[i], this.shadowOffset, i*this.fontSize - this.scrollAmount + this.shadowOffset);
+					}
+					this.textCanvas.fill(this.fontColor);
+					this.textCanvas.text(this.textLines[i], 0, i*this.fontSize - this.scrollAmount);
+				}
 			}
+			else{
+				if(this.shadow == true){
+					this.textCanvas.fill(this.shadowColor);
+					this.textCanvas.text(this.textLines[0], this.shadowOffset - this.scrollAmount, this.shadowOffset);
+				}
+				this.textCanvas.fill(this.fontColor);
+				this.textCanvas.text(this.textLines[0], -this.scrollAmount, 0);
+			}
+			
 
 			image(this.textCanvas, this.x, this.y);
 		}
@@ -1089,7 +1202,7 @@ class PlayerDisplayPanel extends GuiComponent{
 
 		let fontColor = color("white");
 		let fontSize = 16;
-		let textBackgroundColor = color("rgba(0,0,0,.3)");
+		let textBackgroundColor = color("rgba(0,0,0,.5)");
 		let textBackgroundSize = 20;
 
 		let statBoxOffset = 6;
