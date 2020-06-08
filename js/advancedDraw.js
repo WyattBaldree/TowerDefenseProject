@@ -78,8 +78,8 @@ class AdvancedDraw{
 	}
 
 	setPosGrid(x, y){
-		setXGrid(x);
-		setYGrid(y);
+		this.setXGrid(x);
+		this.setYGrid(y);
 	}
 
 	getXGrid(){

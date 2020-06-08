@@ -888,6 +888,10 @@ class StatBlock extends GuiGroup{
 	setText(text){
 		this.textBoxComponent.setText(text);
 	}
+
+	setFontColor(newColor){
+		this.textBoxComponent.fontColor = newColor;
+	}
 }
 
 class TowerDisplayPanel extends GuiComponent{
@@ -896,6 +900,7 @@ class TowerDisplayPanel extends GuiComponent{
 		this.draw = false;
 
 		this.towerClass = null;
+		this.towerInstance = null;
 
 		let panelWidth = screenWidth - playAreaWidth;
 		let panelHeight = 172;
@@ -925,7 +930,12 @@ class TowerDisplayPanel extends GuiComponent{
 		//sprite
 
 		this.spriteComponent = new GuiComponent(this.x + sideMargin, this.y + topMargin, spriteSize, spriteSize, z + 2);
+		this.spriteComponent.active = false;
 		this.addGui(this.spriteComponent);
+
+		this.cameraComponent = new Camera(0, 0, gridScale, gridScale, this.x + sideMargin, this.y + topMargin, spriteSize, spriteSize, z + 2);
+		this.cameraComponent.active = false;
+		this.addGui(this.cameraComponent);
 
 		this.spriteComponentBackground = new GuiComponent(this.x + sideMargin, this.y + topMargin, spriteSize, spriteSize, z + 1);
 		this.spriteComponentBackground.drawColor = textBackgroundColor;
@@ -983,15 +993,148 @@ class TowerDisplayPanel extends GuiComponent{
 	}
 
 	setTowerClass(_towerClass){
+		this.cameraComponent.setActive(false);
+		this.spriteComponent.setActive(true);
+		if(this.towerInstance){
+			this.towerInstance.onStatUpdated = function(){};
+		}
 		this.towerClass = _towerClass;
+		this.towerInstance = null;;
 		if(this.towerClass){
 			this.spriteComponent.texture = this.towerClass.animationFrames[0];
 			this.costComponent.setText(this.towerClass.price);
+
+			this.damageComponent.setFontColor(color("white"));
 			this.damageComponent.setText(this.towerClass.damage);
+
+			this.rangeComponent.setFontColor(color("white"));
 			this.rangeComponent.setText(this.towerClass.range);
+
+			this.speedComponent.setFontColor(color("white"));
 			this.speedComponent.setText(this.towerClass.speed);
+
 			this.titleComponent.setText(this.towerClass.unitName);
 			this.descriptionTextBox.setText(this.towerClass.description);
+		}else{
+			this.setEmpty();
+		}
+	}
+
+	setEmpty(){
+		this.cameraComponent.setActive(false);
+		this.spriteComponent.setActive(false);
+
+		this.spriteComponent.texture = null;
+		this.costComponent.setText("---");
+
+		this.damageComponent.setFontColor(color("white"));
+		this.damageComponent.setText("---");
+
+		this.rangeComponent.setFontColor(color("white"));
+		this.rangeComponent.setText("---");
+
+		this.speedComponent.setFontColor(color("white"));
+		this.speedComponent.setText("---");
+
+		this.titleComponent.setText("---");
+		this.descriptionTextBox.setText("");
+	}
+
+	setTowerInstance(_towerInstance){
+		this.cameraComponent.setActive(true);
+		this.spriteComponent.setActive(false);
+		if(this.towerInstance){
+			this.towerInstance.onStatUpdated = function(){};
+		}
+		if(_towerInstance){
+			_towerInstance.onStatUpdated = this.updateInstanceValues.bind(this);
+
+			this.cameraComponent.srcX = _towerInstance.x;
+			this.cameraComponent.srcY = _towerInstance.y;
+
+			this.towerInstance = _towerInstance;
+			this.towerClass = null;
+			this.updateInstanceValues();
+		}
+		else{
+			this.setEmpty();
+		}
+	}
+
+	updateInstanceValues(){
+		if(this.towerInstance){
+			this.spriteComponent.texture = this.towerInstance.animationFrames[0];
+
+			this.cameraComponent.srcX = this.towerInstance.x;
+			this.cameraComponent.srcY = this.towerInstance.y;
+
+			this.costComponent.setText(this.towerInstance.getClass().price);
+
+			let finalDamage = this.towerInstance.getDamage();
+			let baseDamage = this.towerInstance.getBaseDamage()
+
+			if(finalDamage > baseDamage){
+				this.damageComponent.setFontColor(color("rgb(219,215,93)"));
+			}
+			else if(finalDamage < baseDamage){
+				this.damageComponent.setFontColor(color("red"));
+			}
+			else{
+				this.damageComponent.setFontColor(color("white"));
+			}
+			this.damageComponent.setText(this.towerInstance.getDamage());
+
+			let finalRange = this.towerInstance.getRange();
+			let baseRange = this.towerInstance.getBaseRange()
+
+			if(finalRange > baseRange){
+				this.rangeComponent.setFontColor(color("rgb(219,215,93)"));
+			}
+			else if(finalRange < baseRange){
+				this.rangeComponent.setFontColor(color("red"));
+			}
+			else{
+				this.rangeComponent.setFontColor(color("white"));
+			}
+			this.rangeComponent.setText(this.towerInstance.getRange());
+
+			let finalSpeed = this.towerInstance.getSpeed();
+			let baseSpeed = this.towerInstance.getBaseSpeed()
+
+			if(finalSpeed > baseSpeed){
+				this.speedComponent.setFontColor(color("rgb(219,215,93)"));
+			}
+			else if(finalSpeed < baseSpeed){
+				this.speedComponent.setFontColor(color("red"));
+			}
+			else{
+				this.speedComponent.setFontColor(color("white"));
+			}
+			this.speedComponent.setText(this.towerInstance.getSpeed());
+			this.titleComponent.setText(this.towerInstance.unitName);
+			this.descriptionTextBox.setText(this.towerInstance.description);
+		}
+	}
+}
+
+class Camera extends GuiComponent{
+	constructor(srcX,srcY,srcW,srcH,destX,destY,destW,destH, z = 0){
+		super(destX, destY, destW, destH, z, null);
+		this.srcX = srcX;
+		this.srcY = srcY;
+		this.srcW = srcW;
+		this.srcH = srcH;
+		this.destX = destX;
+		this.destY = destY;
+		this.destW = destW;
+		this.destH = destH;
+	}
+
+	drawSelf(){
+		super.drawSelf();
+		if(this.active){
+			let c = get(this.srcX, this.srcY, this.srcW, this.srcH);
+			image(c, this.destX, this.destY, this.destW, this.destH);
 		}
 	}
 }

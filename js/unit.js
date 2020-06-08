@@ -15,6 +15,7 @@ class Unit extends AdvancedDraw{
 		this.setXGrid(x);
 		this.setYGrid(y);
 		this.deleted = false;
+		this.active = true;
 
 		this.unitName = this.getUnitName();
 		this.description = this.getDescription();
@@ -23,6 +24,9 @@ class Unit extends AdvancedDraw{
 		this.effectStack = [];
 		this.frost = 0;
 		this.shock = 0;
+		this.tileDamageBonus = 0;
+		this.tileRangeBonus = 0;
+		this.tileSpeedBonus = 0;
 
 		unitList.push(this);
 	}
@@ -32,8 +36,12 @@ class Unit extends AdvancedDraw{
 		this.updateEffects(deltaTime);
 	}
 
+	// event called after a stat has potentially been updated.
+	onStatUpdated(){};
+
 	updateEffects(deltaTime){
 		for( let i = this.effectStack.length-1 ; i >= 0; i--){
+			if(this.effectStack[i].permanent) continue;
 			this.effectStack[i].updateEffect(deltaTime);
 			if(this.effectStack[i].currentDuration > this.effectStack[i].duration){
 				this.removeEffect(this.effectStack[i]);
@@ -76,7 +84,17 @@ class Unit extends AdvancedDraw{
 			case "shock":
 				this.shock = magnitude;
 				break;
+			case "tileDamageBonus":
+				this.tileDamageBonus = magnitude;
+				break;
+			case "tileRangeBonus":
+				this.tileRangeBonus = magnitude;
+				break;
+			case "tileSpeedBonus":
+				this.tileSpeedBonus = magnitude;
+				break;
 		}
+		this.onStatUpdated();
 	}
 
 	removeAllEffectWithName(effectName){
@@ -88,6 +106,17 @@ class Unit extends AdvancedDraw{
 
 		this.setStatus(effectName, this.getEffectMax(effectName));
 	}
+
+	removeAllEffects(){
+		this.effectStack = [];
+		this.frost = 0;
+		this.shock = 0;
+		this.tileDamageBonus = 0;
+		this.tileRangeBonus = 0;
+		this.tileSpeedBonus = 0;
+		this.onStatUpdated();
+	}
+
 
 	getUnitName(){
 		return this.constructor.unitName;
@@ -129,9 +158,15 @@ class Effect{
 	constructor(effectText){
 		this.effectArray = effectText.split(";");
 
+		this.permanent = false;
+		
 		this.effectName = this.effectArray[0];
 		this.magnitude = parseInt(this.effectArray[1]);
 		this.duration = parseInt(this.effectArray[2]);
+
+		if(this.duration = -1){
+			this.permanent = true;
+		}
 
 		this.currentDuration = 0;
 	}

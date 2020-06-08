@@ -24,13 +24,40 @@ class Tower extends Unit{
 
 		this.canTargetMultiple = false;
 
-		this.isOnDamageTile = this.isOnTile("Damage");
-		this.isOnRangeTile = this.isOnTile("Range");
-		this.isOnSpeedTile = this.isOnTile("Speed");
-
 		this.cooldown = 0;
-		towerList.push(this);
+
+		this.move(x, y);
 		towerArray[this.getXGrid()][this.getYGrid()] = this;
+		towerList.push(this);
+	}
+
+	move(x, y){
+		if(x >= 0 && y >= 0 && x < towerArray.length && y < towerArray[0].length){
+			//towerArray[this.getXGrid()][this.getYGrid()] = null;
+			this.removeAllEffects();
+
+			this.setPosGrid(x, y);
+
+			let isOnDamageTile = this.isOnTile("Damage");
+			let isOnRangeTile = this.isOnTile("Range");
+			let isOnSpeedTile = this.isOnTile("Speed");
+
+			if(isOnDamageTile){
+				this.addEffect(new Effect("tileDamageBonus;100;-1"));
+			}
+			if(isOnRangeTile){
+				this.addEffect(new Effect("tileRangeBonus;100;-1"));
+			}
+			if(isOnSpeedTile){
+				this.addEffect(new Effect("tileSpeedBonus;100;-1"));
+			}
+
+			//towerArray[this.getXGrid()][this.getYGrid()] = this;
+			this.onStatUpdated();
+
+			return true;
+		}
+		return false;
 	}
 
 	getBaseRange(){
@@ -71,25 +98,19 @@ class Tower extends Unit{
 
 	getDamage(){
 		let multiplier = 1;
-		if(this.isOnDamageTile){
-			multiplier*=2;
-		}
+		multiplier+=this.tileDamageBonus/100;
 		return this.getBaseDamage() * multiplier;
 	}
 
 	getRange(){
 		let multiplier = 1;
-		if(this.isOnRangeTile){
-			multiplier*=2;
-		}
+		multiplier+=this.tileRangeBonus/100;
 		return this.getBaseRange() * multiplier;
 	}
 
 	getSpeed(){
 		let multiplier = 1;
-		if(this.isOnSpeedTile){
-			multiplier*=2;
-		}
+		multiplier+=this.tileSpeedBonus/100;
 		return this.getBaseSpeed() * multiplier;
 	}
 
@@ -102,6 +123,7 @@ class Tower extends Unit{
 		}
 		return false;
 	}
+
 
 	removeFromGame(){
 		super.removeFromGame();
