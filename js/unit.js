@@ -27,6 +27,7 @@ class Unit extends AdvancedDraw{
 		this.tileDamageBonus = 0;
 		this.tileRangeBonus = 0;
 		this.tileSpeedBonus = 0;
+		this.speedAura = 0;
 
 		unitList.push(this);
 	}
@@ -93,6 +94,9 @@ class Unit extends AdvancedDraw{
 			case "tileSpeedBonus":
 				this.tileSpeedBonus = magnitude;
 				break;
+			case "speedAura":
+				this.speedAura = magnitude;
+				break;
 		}
 		this.onStatUpdated();
 	}
@@ -114,6 +118,7 @@ class Unit extends AdvancedDraw{
 		this.tileDamageBonus = 0;
 		this.tileRangeBonus = 0;
 		this.tileSpeedBonus = 0;
+		this.speedAura = 0;
 		this.onStatUpdated();
 	}
 

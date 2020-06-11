@@ -5,7 +5,7 @@ class Explosion extends Projectile{
 		this.range = range;
 		this.speed = 0;
 
-		this.numberOfFrames = 10;
+		this.numberOfFrames = 1;
 
 		this.effect = effect;
 

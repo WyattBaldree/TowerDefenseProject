@@ -9,7 +9,7 @@ class BombTowerLevel1 extends CooldownTower{
 		classRef.speed = 6;
 		classRef.price = 100;
 		classRef.maxTargets = 1;
-		classRef.upgrades = [];
+		classRef.upgrades = [Acolyte];
 	}
 
 	constructor(x, y){

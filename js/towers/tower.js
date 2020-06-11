@@ -24,7 +24,11 @@ class Tower extends Unit{
 
 		this.canTargetMultiple = false;
 
+		this.targetType = "enemy";
+
 		this.cooldown = 0;
+
+		this.permanent = false;
 
 		this.move(x, y);
 		towerArray[this.getXGrid()][this.getYGrid()] = this;
@@ -111,7 +115,8 @@ class Tower extends Unit{
 	getSpeed(){
 		let multiplier = 1;
 		multiplier+=this.tileSpeedBonus/100;
-		return this.getBaseSpeed() * multiplier;
+
+		return (this.getBaseSpeed() + this.speedAura) * multiplier;
 	}
 
 	isOnTile(tileType){

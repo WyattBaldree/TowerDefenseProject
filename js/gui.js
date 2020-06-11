@@ -1470,8 +1470,14 @@ class TowerUpgradePanel extends GuiComponent{
 				this.towerButtonList[i].setActive(false);
 			}
 		}
-		this.sellButton.setActive(true)
-		this.sellButton.setTowerClass(towerInstance.getClass());
+
+		if(!towerInstance.permanent){
+			this.sellButton.setActive(true)
+			this.sellButton.setTowerClass(towerInstance.getClass());
+		}
+		else{
+			this.sellButton.setActive(false)
+		}
 	}
 }
 

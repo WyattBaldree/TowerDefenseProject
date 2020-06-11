@@ -67,6 +67,8 @@ class Art{
 		Art.warrior1 = loadImage('img/warrior1.png');
 		Art.ninja0 = loadImage('img/ninja0.png');
 		Art.ninja1 = loadImage('img/ninja1.png');
+		Art.acolyte0 = loadImage('img/acolyte0.png');
+		Art.acolyte1 = loadImage('img/acolyte1.png');
 
 		//map
 		Art.map = loadImage('levels/map.png');

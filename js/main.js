@@ -90,6 +90,7 @@ function setup() {
 	BombTowerLevel1.initializeClass();
 	EarthquakeTowerLevel1.initializeClass();
 	NinjaTower.initializeClass();
+	Acolyte.initializeClass();
 
 	makeMainMenu();
 	makeLevelSelectMenu();
@@ -281,7 +282,8 @@ function startLevel(){
 
 	for(let startingTower of levelData[currentLevelIndex].startingTowers){
 		let towerClass = getClass(startingTower.name)
-		new towerClass(startingTower.x, startingTower.y);
+		let towerInstance = new towerClass(startingTower.x, startingTower.y);
+		towerInstance.permanent = true;
 	}
 
 	towerDetailsPanel.setEmpty();
@@ -530,7 +532,9 @@ function placeTower(x, y, towerClass, force = false){
 
 function replaceTower(towerToReplace, newTowerClass){
 	towerToReplace.markForRemoval();
-	return placeTower(towerToReplace.getXGrid(), towerToReplace.getYGrid(), newTowerClass, true);
+	let newTower = placeTower(towerToReplace.getXGrid(), towerToReplace.getYGrid(), newTowerClass, true);
+	newTower.permanent = towerToReplace.permanent; 
+	return newTower;
 }
 
 function beginTowerPlacement(towerClass){

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="24" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="12" nextobjectid="292">
+<map version="1.2" tiledversion="1.3.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="24" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="12" nextobjectid="293">
  <editorsettings>
   <export target="level1.json" format="json"/>
  </editorsettings>
@@ -808,6 +808,9 @@
  </objectgroup>
  <objectgroup id="9" name="StartingTowers">
   <object id="287" name="NinjaTower" x="136" y="167">
+   <point/>
+  </object>
+  <object id="292" name="FrostArcher" x="138.364" y="151.273">
    <point/>
   </object>
  </objectgroup>

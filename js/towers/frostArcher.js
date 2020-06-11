@@ -21,6 +21,6 @@ class FrostArcher extends CooldownTower{
 		projectile.animationFrames = [Art.frostArrow];
 		projectile.texture = Art.frostArrow;
 		projectile.angleOffset = 315;
-		projectile.effect = "frost;33;30";
+		projectile.effect = "frost;40;30";
 	}
 }

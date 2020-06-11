@@ -70,7 +70,7 @@ function getListOfUnitsInRange(x, y, range, filter = "all"){
 
 	let inRangeList = new Array();
 	for(let u of listToSearch){
-		if(distanceFormula(x, y, u.x, u.y) <= range*gridScale){
+		if(distanceFormula(x, y, u.x + gridScale/2, u.y + gridScale/2) <= range*gridScale){
 			inRangeList.push(u);
 		}
 	}
@@ -84,9 +84,9 @@ function dealDamageInArea(x, y, range, damage){
 	}
 }
 
-function addEffectInArea(x, y, range, effect){
-	let enemyList = getListOfUnitsInRange(x, y, range, "enemy");
-	for(let enemy of enemyList){
-		enemy.addEffect(new Effect(effect));
+function addEffectInArea(x, y, range, effect, unitType = "enemy"){
+	let unitList = getListOfUnitsInRange(x, y, range, unitType);
+	for(let unit of unitList){
+		unit.addEffect(new Effect(effect));
 	}
 }

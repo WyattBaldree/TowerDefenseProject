@@ -57,16 +57,25 @@ class CooldownTower extends Tower{
 	}
 
 	findTarget(){
-		let potentialTargets = getListOfUnitsInRange(this.x, this.y, this.getRange(), "enemy");
+		let potentialTargets = getListOfUnitsInRange(this.x, this.y, this.getRange(), this.targetType);
 		let finalTarget;
 		let smallestDistanceFromGoal = Number.MAX_VALUE;
-		for(let enemy of potentialTargets){
-			if(this.targets.find(e => e == enemy)) continue;
-			if(enemy.untargetable) continue;
-			let distanceFromEnd = enemy.getDistanceToEndOfPath();
-			if(distanceFromEnd < smallestDistanceFromGoal){
-				finalTarget = enemy;
-				smallestDistanceFromGoal = distanceFromEnd;
+		for(let unit of potentialTargets){
+			if(this.targets.find(e => e == unit)) continue;
+
+			if(this.targetType == "enemy"){
+				if(unit.untargetable) continue;
+				let distanceFromEnd = unit.getDistanceToEndOfPath();
+				if(distanceFromEnd < smallestDistanceFromGoal){
+					finalTarget = unit;
+					smallestDistanceFromGoal = distanceFromEnd;
+				}
+			}
+			else if(this.targetType == "tower"){
+				if(getDistanceBetweenUnits(this, unit) < this.getRange()){
+					finalTarget = unit;
+					break;
+				}
 			}
 		}
 
