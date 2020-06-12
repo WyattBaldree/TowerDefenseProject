@@ -20,6 +20,13 @@ class Acolyte extends CooldownTower{
 	shoot(shootTarget){
 		super.shoot();
 		let effect = "speedAura;" + this.getDamage() + ";" + 100/this.getSpeed();
-		new Aura(this.getXGrid() + .5, this.getYGrid() + .5, this.getRange(), effect);
+		let aura = new Aura(this.getXGrid() + .5, this.getYGrid() + .5, this.getRange(), effect);
+		aura.drawSelf = function(){
+			strokeWeight(1);
+			//stroke(color('rgba(255,223, 0, 1)'));
+			noStroke();
+			fill(color('rgba(255, 223, 0, .125)'));
+			ellipse(this.x, this.y, this.range * 2 * gridScale * sin(this.numberOfFrames/this.numberOfFramesMax*90 + 90));
+		}
 	}
 }

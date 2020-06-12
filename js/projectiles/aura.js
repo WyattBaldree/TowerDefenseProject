@@ -4,7 +4,8 @@ class Aura extends Projectile{
 		this.range = range;
 		this.speed = 0;
 
-		this.numberOfFrames = 2;
+		this.numberOfFrames = 10;
+		this.numberOfFramesMax = this.numberOfFrames;
 
 		this.effect = effect;
 
