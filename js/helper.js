@@ -90,3 +90,10 @@ function addEffectInArea(x, y, range, effect, unitType = "enemy"){
 		unit.addEffect(new Effect(effect));
 	}
 }
+
+//https://www.w3resource.com/javascript-exercises/javascript-math-exercise-33.php
+function degrees_to_radians(degrees)
+{
+  var pi = Math.PI;
+  return degrees * (pi/180);
+}

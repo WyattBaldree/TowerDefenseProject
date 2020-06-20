@@ -24,6 +24,8 @@ var mouseGridY = 0;
 var mouseGridXPrev = mouseGridX;
 var mouseGridYPrev = mouseGridY;
 
+let hoveredThisFrame = false;
+
 let levelArray = new Array();
 
 let powerTileList = [];
@@ -148,12 +150,12 @@ function updateStep(dTime){
 	  		d.update(dTime*gameSpeed);
 		}
 	}
-	let hoveredThisFrame = false;
+	hoveredThisFrame = false;
 	for(let i = guiList.length - 1 ; i >= 0 ; i--){
   		let gui = guiList[i];
   		if(!gui.active) continue;
   		gui.update(dTime);
-  		if(!hoveredThisFrame && mouseX >= gui.x && mouseX < gui.x + gui.w && mouseY >= gui.y && mouseY < gui.y + gui.h){
+  		if(gui.stopClicks && !hoveredThisFrame && mouseX >= gui.x && mouseX < gui.x + gui.w && mouseY >= gui.y && mouseY < gui.y + gui.h){
   			if(!gui.hovered){
   				gui.beginHover();
   			}
@@ -347,7 +349,7 @@ function mousePressed(event) {
 	  	switch(controlMode){
 	  		case 0:
 	  			//Do stuff based off of the position of the mouse in the grid only if the mouse is in the grid.
-				if(mouseGridX != -1 && mouseGridY != -1){
+				if(mouseGridX != -1 && mouseGridY != -1 && !hoveredThisFrame){
 					let hoveredTower = towerArray[mouseGridX][mouseGridY];
 					// When we click a grid space with a tower, selectedUnit is set to that tower. Else selectedUnit becomes null;
 					if(hoveredTower != null){
@@ -384,7 +386,7 @@ function mousePressed(event) {
   		let gui = guiList[i];
   		if(!gui.active) continue;
   		if(!handled && mouseX >= gui.x && mouseX < gui.x + gui.w && mouseY >= gui.y && mouseY < gui.y + gui.h){
-  			handled = gui.press();
+  			if (gui.stopClicks) handled = gui.press();
   		}
   		else{
   			gui.pressAnywhere();
@@ -567,12 +569,15 @@ function setSelectedUnit(unit){
 		towerSelectPanel.setActive(true);
 		towerUpgradePanel.setActive(false);
 		towerDetailsPanel.setEmpty();
+		towerUpgradeRadial.setActive(false);
 	}
 	else if(selectedUnit instanceof Tower){
 		towerSelectPanel.setActive(false);
 		towerUpgradePanel.setActive(true);
 		towerUpgradePanel.setTowerClass(selectedUnit);
 		towerDetailsPanel.setTowerInstance(selectedUnit);
+		towerUpgradeRadial.setActive(true);
+		towerUpgradeRadial.setUnit(selectedUnit);
 	}
 }
 

@@ -236,6 +236,7 @@ let playerGoldDisplay;
 let playerDisplayPanel;
 let timelineDisplay;
 let speedButtonGroup;
+let towerUpgradeRadial;
 
 let sampleTextBox;
 
@@ -302,6 +303,9 @@ function makeLevelGUI(){
 
 	detailsPanelGuiGroup.addGui(towerDetailsPanel);
 
+	/////////////radial upgrade panel
+	towerUpgradeRadial = new TowerRadialSelector(0, 0, 6);
+
 	/////////////TOWER SELECT PANEL
 	towerSelectPanel = new TowerSelectPanel(playAreaWidth, 280);
 	towerUpgradePanel = new TowerUpgradePanel(playAreaWidth, 280);
@@ -314,6 +318,7 @@ function openLeveLGUI(){
 	towerUpgradePanel.setActive(false);
 	playerInfoGuiGroup.setActive(true);
 	timelineGuiGroup.setActive(true);
+	towerUpgradeRadial.setActive(false);
 }
 
 function closeLevelGUI(){
@@ -323,6 +328,7 @@ function closeLevelGUI(){
 	towerUpgradePanel.setActive(false);
 	playerInfoGuiGroup.setActive(false);
 	timelineGuiGroup.setActive(false);
+	towerUpgradeRadial.setActive(false);
 }
 
 //Classes
@@ -516,6 +522,7 @@ class Button extends NineSlice{
 		this.pressed = false;
 		this.outTexture = null;
 		this.inTexture = null;
+		this.stopClicks = true;
 
 		this.travelDistance = 4;
 		this.lockIn = false;
@@ -561,7 +568,9 @@ class Button extends NineSlice{
 		if(this.buttonDownCallback) this.buttonDownCallback();
 
 		this.pressed = true;
-		this.textComponent.setY(this.y + this.h/2 + this.travelDistance);
+		for(let child of this.guiList){
+			child.setY(child.y + this.travelDistance);
+		}
 		this.texture = this.inTexture;
 		if(this.onClickFunction && !this.disabled) this.onClickFunction();
 
@@ -577,13 +586,14 @@ class Button extends NineSlice{
 	release(){
 		if(this.buttonUpCallback) this.buttonUpCallback();
 		this.pressed = false;
-		this.textComponent.setY(this.y + this.h/2);
+		for(let child of this.guiList){
+			child.setY(child.y - this.travelDistance);
+		}
 		this.texture = this.outTexture;
 
 	}
 
 	drawSelf(){
-		//if(this.hovered) tint(color("yellow"));
 		super.drawSelf();
 		if(this.active){
 			if(this.disabled){
@@ -634,7 +644,7 @@ class RadioButtonGroup extends GuiComponent{
 
 	popOutAll(){
 		for(let button of this.buttonList){
-			button.release();
+			if( button.pressed ) button.release();
 		}
 	}
 }
@@ -1422,6 +1432,142 @@ class TowerSelectPanel extends GuiComponent{
 		this.bombTowerButton.setOutTexture(Art.yellowButton2Out);
 		this.bombTowerButton.setTowerClass(BombTowerLevel1);
 		this.addGui(this.bombTowerButton);
+	}
+}
+
+class TowerRadialSelector extends GuiComponent{
+	constructor(x, y, z = 0){
+		super(x, y, z);
+		this.draw = false;
+		this.margin = 8;
+
+		this.buttonMargin = 2;
+
+		this.upgradeButton1 = new RadialTowerButton(this.x - 36 - this.margin, this.y, 1);
+		this.upgradeButton1.setInTexture(Art.greenButton2In);
+		this.upgradeButton1.setOutTexture(Art.greenButton2Out);
+		this.addGui(this.upgradeButton1);
+
+		this.upgradeButton2 = new RadialTowerButton(this.x - this.buttonMargin, this.y - 36 - this.margin, 1);
+		this.upgradeButton2.setInTexture(Art.blueButton2In);
+		this.upgradeButton2.setOutTexture(Art.blueButton2Out);
+		this.addGui(this.upgradeButton2);
+
+		this.upgradeButton3 = new RadialTowerButton(this.x + gridScale + this.margin, this.y, 1);
+		this.upgradeButton3.setInTexture(Art.redButton2In);
+		this.upgradeButton3.setOutTexture(Art.redButton2Out);
+		this.addGui(this.upgradeButton3);
+
+		this.sellButton = new RadialTowerButton(this.x - this.buttonMargin, this.y + gridScale + this.margin, 1);
+		this.sellButton.setInTexture(Art.yellowButton2In);
+		this.sellButton.setOutTexture(Art.yellowButton2Out);
+		this.addGui(this.sellButton);
+
+		this.animationPercent = 0;
+	}
+
+	update(deltaTime){
+		if(this.animationPercent < 1){
+			this.animationPercent += deltaTime*.3;
+			this.updateAnimation(this.animationPercent);
+		}
+		else{
+			this.updateAnimation(1);
+		}
+	}
+
+	updateAnimation(progress){
+		let upgradeButton1TargetRot = 90;
+		let upgradeButton2TargetRot = 180;
+		let upgradeButton3TargetRot = 270;
+		let sellButtonTargetRot = 0;
+
+		let offset = 90;
+
+		let upgradeButton1CurrentRot = upgradeButton1TargetRot * progress;
+		let upgradeButton2CurrentRot = upgradeButton2TargetRot * progress;
+		let upgradeButton3CurrentRot = upgradeButton3TargetRot * progress;
+		let sellButtonCurrentRot = sellButtonTargetRot * progress;
+
+		let circleX = this.x - this.buttonMargin;
+		let circleY = this.y - this.buttonMargin;
+
+		let circleRadius = gridScale + this.margin + this.buttonMargin;
+
+		this.upgradeButton1.setX(circleX + Math.cos(degrees_to_radians(upgradeButton1CurrentRot + offset)) * circleRadius);
+		this.upgradeButton1.setY(circleY + Math.sin(degrees_to_radians(upgradeButton1CurrentRot + offset)) * circleRadius);
+		this.upgradeButton2.setX(circleX + Math.cos(degrees_to_radians(upgradeButton2CurrentRot + offset)) * circleRadius);
+		this.upgradeButton2.setY(circleY + Math.sin(degrees_to_radians(upgradeButton2CurrentRot + offset)) * circleRadius);
+		this.upgradeButton3.setX(circleX + Math.cos(degrees_to_radians(upgradeButton3CurrentRot + offset)) * circleRadius);
+		this.upgradeButton3.setY(circleY + Math.sin(degrees_to_radians(upgradeButton3CurrentRot + offset)) * circleRadius);
+		this.sellButton.setX(circleX + Math.cos(degrees_to_radians(sellButtonCurrentRot + offset)) * circleRadius);
+		this.sellButton.setY(circleY + Math.sin(degrees_to_radians(sellButtonCurrentRot + offset)) * circleRadius);
+	}
+
+	setUnit(unit){
+		this.setX(unit.x);
+		this.setY(unit.y);
+		this.animationPercent = 0;
+
+		let upgrades = unit.getUpgrades();
+		if(upgrades[0]){
+			this.upgradeButton1.setClass(upgrades[0]);
+			this.upgradeButton1.setActive(true);
+		}else{
+			this.upgradeButton1.setActive(false);
+		}
+
+		if(upgrades[1]){
+			this.upgradeButton2.setClass(upgrades[1]);
+			this.upgradeButton2.setActive(true);
+		}else{
+			this.upgradeButton2.setActive(false);
+		}
+
+		if(upgrades[2]){
+			this.upgradeButton3.setClass(upgrades[1]);
+			this.upgradeButton3.setActive(true);
+		}else{
+			this.upgradeButton3.setActive(false);
+		}
+
+		//this.sellButton.setClass(upgrades[1]);
+		this.sellButton.setActive(true);
+	}
+}
+
+class RadialTowerButton extends Button{
+	constructor(x, y, z){
+		super(x, y, 36, 36, 4, 4, 4, 4, z);
+		this.margin = 2
+		let textBackgroundColor = color("rgba(0,0,0,.6)");
+
+		let textBoxHeight = 12
+
+		//sprite
+		this.spriteComponent = new GuiComponent(this.x + this.margin, this.y + this.margin, gridScale, gridScale, z + 1);
+		this.spriteComponent.texture = Art.fireElementalist0;
+		this.spriteComponent.stopClicks = false;
+		this.addGui(this.spriteComponent);
+
+		//textBox
+		this.textComponent = new TextComponent(this.x + this.margin + gridScale/2, this.y + this.margin + gridScale - (textBoxHeight/2), z+3, "100");
+		this.textComponent.fontSize = 14;
+		this.textComponent.horizontalAlign = CENTER;
+		this.textComponent.verticalAlign = CENTER;
+		this.textComponent.fontColor = color("yellow");
+		this.textComponent.stopClicks = false;
+		this.addGui(this.textComponent);
+
+		this.textComponentBackground = new GuiComponent(this.x + this.margin, this.y + this.margin + gridScale - textBoxHeight, gridScale, textBoxHeight, z + 2);
+		this.textComponentBackground.drawColor = textBackgroundColor;
+		this.textComponentBackground.stopClicks = false;
+		this.addGui(this.textComponentBackground);
+	}
+
+	setClass(_class){
+		this.spriteComponent.texture = _class.animationFrames[0];
+		this.textComponent.text = _class.price;
 	}
 }
 
