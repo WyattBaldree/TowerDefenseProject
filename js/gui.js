@@ -1486,7 +1486,7 @@ class TowerRadialSelector extends GuiComponent{
 	}
 
 	update(deltaTime){
-		if(this.animationPercent < 1){
+		if(this.animationPercent < 1.05){
 			this.animationPercent += deltaTime*.3;
 			this.updateAnimation(this.animationPercent);
 		}
