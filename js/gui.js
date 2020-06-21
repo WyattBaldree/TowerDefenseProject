@@ -1568,6 +1568,10 @@ class RadialTowerButton extends Button{
 	setClass(_class){
 		this.spriteComponent.texture = _class.animationFrames[0];
 		this.textComponent.text = _class.price;
+
+		this.onClickFunction = function(){
+			upgradeSelectedTower(_class);
+		}
 	}
 }
 
@@ -1628,9 +1632,8 @@ class TowerUpgradePanel extends GuiComponent{
 }
 
 class FlagButton extends Button{
-
 	constructor(x, y, w, h, z){
-		super(x, y, w, h, 0, 0, 0, 0, z)
+		super(x, y, w, h, 0, 0, 0, 0, z);
 		this.setInTexture(null);
 		this.setOutTexture(null);
 	}
