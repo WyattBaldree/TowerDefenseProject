@@ -362,7 +362,10 @@ function mousePressed(event) {
 	  			break;
 	  		case 1:
 	  			if(mouseGridX != -1 && mouseGridY != -1){
-					if(player.gold >= towerBeingPlaced.getBasePrice() && canPlaceTowerHere(mouseGridX, mouseGridY)){
+	  				if(player.gold < towerBeingPlaced.getBasePrice()){
+	  					playerDisplayPanel.moneyAlert();
+	  				}
+					else if(canPlaceTowerHere(mouseGridX, mouseGridY)){
 						player.setGold(player.gold - towerBeingPlaced.getBasePrice());
 						towerArray[towerBeingPlaced.getXGrid()][towerBeingPlaced.getYGrid()] = towerBeingPlaced;
 						towerBeingPlaced.active = true;
@@ -526,6 +529,8 @@ function placeTower(x, y, towerClass, force = false){
 	if(player.gold >= cost && (canPlaceTowerHere(x, y) || force)){
 		player.setGold(player.gold - cost);
 		newTower = new towerClass(x, y);
+	}else{
+		playerDisplayPanel.moneyAlert();
 	}
 	controlMode = 0;
 	if(newTower) setSelectedUnit(null);
@@ -553,6 +558,9 @@ function upgradeSelectedTower(towerClass){
 	let cost = towerClass.price;
 	if(player.gold >= cost){
 		replaceTower(selectedUnit, towerClass);
+	}
+	else{
+		playerDisplayPanel.moneyAlert();
 	}
 }
 

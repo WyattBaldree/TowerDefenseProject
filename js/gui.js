@@ -1330,13 +1330,15 @@ class PlayerDisplayPanel extends GuiComponent{
 		let topMargin = 10;
 		let innerMargin = 4;
 
-		let fontColor = color("white");
+		this.fontColor = color("white");
 		let fontSize = 16;
 		let textBackgroundColor = color("rgba(0,0,0,.4)");
 		let textBackgroundSize = 20;
 
 		let statBoxOffset = 6;
 		let verticalSeparation = 8;
+
+		this.animationPercent = 1;
 
 		//background
 
@@ -1351,6 +1353,23 @@ class PlayerDisplayPanel extends GuiComponent{
 		this.healthComponent = new StatBlock(this.x + sideMargin, this.y + topMargin + verticalSeparation + textBackgroundSize, Art.heart, z + 2, panelWidth - sideMargin*2 - 32);
 		this.healthComponent.setText("???");
 		this.addGui(this.healthComponent);
+	}
+
+	update(deltaTime){
+		if(this.animationPercent < 1){
+			this.animationPercent += deltaTime*.07;
+			//this.goldComponent.setFontColor(color("rgba(" + Math.sin(this.animationPercent)*255 + ",0,0)"));
+			let lerp = (Math.sin(this.animationPercent*17)+1)/2;
+			console.log("AP: " + this.animationPercent);
+			console.log("Lerp: " + lerp);
+			this.goldComponent.setFontColor(lerpColor(this.fontColor, color("red"), lerp));
+		}else{
+			this.goldComponent.setFontColor(this.fontColor);
+		}
+	}
+
+	moneyAlert(){
+		this.animationPercent = 0;
 	}
 }
 
