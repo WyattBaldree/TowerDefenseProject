@@ -265,6 +265,8 @@ function startLevel(){
 	Timeline.currentSpawn = 0
 	Timeline.levelTimer = 0;
 
+	setSelectedUnit(null);
+
 	player = new Player(levelData[currentLevelIndex].startingGold);
 
 	for(var u of unitList){
