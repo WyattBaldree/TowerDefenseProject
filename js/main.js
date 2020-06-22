@@ -566,9 +566,9 @@ function upgradeSelectedTower(towerClass){
 	}
 }
 
-function sellSelectedTower(sellAmount){
+function sellSelectedTower(){
 	selectedUnit.markForRemoval();
-	player.setGold(player.gold + sellAmount);
+	player.setGold(player.gold + selectedUnit.getBasePrice());
 	setSelectedUnit(null);
 }
 

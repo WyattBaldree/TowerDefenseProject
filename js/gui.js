@@ -782,10 +782,9 @@ class TowerSellButton extends TowerButton{
 	setTowerClass(_towerClass){
 		this.towerClass = _towerClass;
 		if(this.towerClass){
-			let sellPrice = this.towerClass.price;
 			this.buttonComponent.onClickFunction = function(){
 				if(this.parent.confirm){
-					sellSelectedTower(sellPrice);
+					sellSelectedTower();
 					this.parent.confirm = false;
 				}
 				else{
@@ -1477,7 +1476,7 @@ class TowerRadialSelector extends GuiComponent{
 		this.upgradeButton3.setOutTexture(Art.redButton2Out);
 		this.addGui(this.upgradeButton3);
 
-		this.sellButton = new RadialTowerButton(this.x - this.buttonMargin, this.y + gridScale + this.margin, 1);
+		this.sellButton = new RadialSellButton(this.x - this.buttonMargin, this.y + gridScale + this.margin, 1);
 		this.sellButton.setInTexture(Art.yellowButton2In);
 		this.sellButton.setOutTexture(Art.yellowButton2Out);
 		this.addGui(this.sellButton);
@@ -1550,12 +1549,17 @@ class TowerRadialSelector extends GuiComponent{
 			this.upgradeButton3.setActive(false);
 		}
 
-		//this.sellButton.setClass(upgrades[1]);
-		this.sellButton.setActive(true);
+		if(!unit.permanent){
+			this.sellButton.setUnit(unit);
+			this.sellButton.setActive(true);
+		}
+		else{
+			this.sellButton.setActive(false);
+		}
 	}
 }
 
-class RadialTowerButton extends Button{
+class RadialButton extends Button{
 	constructor(x, y, z){
 		super(x, y, 36, 36, 4, 4, 4, 4, z);
 		this.margin = 2
@@ -1583,13 +1587,26 @@ class RadialTowerButton extends Button{
 		this.textComponentBackground.stopClicks = false;
 		this.addGui(this.textComponentBackground);
 	}
+}
 
+class RadialTowerButton extends RadialButton{
 	setClass(_class){
 		this.spriteComponent.texture = _class.animationFrames[0];
 		this.textComponent.text = _class.price;
 
 		this.onClickFunction = function(){
 			upgradeSelectedTower(_class);
+		}
+	}
+}
+
+class RadialSellButton extends RadialButton{
+	setUnit(unit){
+		this.spriteComponent.texture = Art.goldCoinStack;
+		this.textComponent.text = unit.getBasePrice();
+
+		this.onClickFunction = function(){
+			sellSelectedTower();
 		}
 	}
 }
