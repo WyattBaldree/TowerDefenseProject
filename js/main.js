@@ -407,7 +407,7 @@ function mouseReleased(event) {
   		if(!gui.active) continue;
   		if(mouseX >= gui.x && mouseX < gui.x + gui.w && mouseY >= gui.y && mouseY < gui.y + gui.h){
   			if(gui instanceof Button){
-  				if(!gui.lockIn && gui.pressed) gui.release();
+  				if(!gui.lockIn && gui.pressed) gui.release(true);
   			}
   			else{
   				gui.release();

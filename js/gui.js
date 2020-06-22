@@ -572,8 +572,6 @@ class Button extends NineSlice{
 			child.setY(child.y + this.travelDistance);
 		}
 		this.texture = this.inTexture;
-		if(this.onClickFunction && !this.disabled) this.onClickFunction();
-
 
 		let handled = true;
 		return handled;
@@ -583,14 +581,16 @@ class Button extends NineSlice{
 		if(this.onClickOffFunction) this.onClickOffFunction();
 	}
 
-	release(){
+	release(userRelease = false){
 		if(this.buttonUpCallback) this.buttonUpCallback();
 		this.pressed = false;
 		for(let child of this.guiList){
 			child.setY(child.y - this.travelDistance);
 		}
+
 		this.texture = this.outTexture;
 
+		if(userRelease && this.onClickFunction && !this.disabled) this.onClickFunction();
 	}
 
 	drawSelf(){
