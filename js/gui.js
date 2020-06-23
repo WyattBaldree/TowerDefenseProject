@@ -273,16 +273,16 @@ function makeLevelGUI(){
 	speedButtonGroup = new RadioButtonGroup(timelineGuiGroup.x + playAreaWidth, timelineGuiGroup.y, panelAreaWidth, panelAreaHeight, 5, 5, 5, 5, 1, 4, true);
 	speedButtonGroup.buttonList[0].textComponent.text = "ll";
 	speedButtonGroup.buttonList[0].textComponent.fontSize = 15;
-	speedButtonGroup.buttonList[0].onClickFunction = function(){gameSpeed = 0;}
+	speedButtonGroup.buttonList[0].onPressFunction = function(){gameSpeed = 0;}
 	speedButtonGroup.buttonList[1].textComponent.text = ">";
 	speedButtonGroup.buttonList[1].textComponent.fontSize = 15;
-	speedButtonGroup.buttonList[1].onClickFunction = function(){gameSpeed = .5;}
+	speedButtonGroup.buttonList[1].onPressFunction = function(){gameSpeed = .5;}
 	speedButtonGroup.buttonList[2].textComponent.text = ">>";
 	speedButtonGroup.buttonList[2].textComponent.fontSize = 15;
-	speedButtonGroup.buttonList[2].onClickFunction = function(){gameSpeed = 1;}
+	speedButtonGroup.buttonList[2].onPressFunction = function(){gameSpeed = 1;}
 	speedButtonGroup.buttonList[3].textComponent.text = ">>>";
 	speedButtonGroup.buttonList[3].textComponent.fontSize = 15;
-	speedButtonGroup.buttonList[3].onClickFunction = function(){gameSpeed = 3;}
+	speedButtonGroup.buttonList[3].onPressFunction = function(){gameSpeed = 3;}
 
 	speedButtonGroup.buttonList[2].press();
 
@@ -519,6 +519,7 @@ class Button extends NineSlice{
 		super(x, y, w, h, leftMargin, rightMargin, topMargin, bottomMargin, z);
 		this.onClickFunction = onClickFunction;
 		this.onClickOffFunction = null;
+		this.onPressFunction = null;
 		this.pressed = false;
 		this.outTexture = null;
 		this.inTexture = null;
@@ -566,6 +567,7 @@ class Button extends NineSlice{
 
 	press(){
 		if(this.buttonDownCallback) this.buttonDownCallback();
+		if(this.onPressFunction) this.onPressFunction();
 
 		this.pressed = true;
 		for(let child of this.guiList){
