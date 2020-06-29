@@ -298,7 +298,6 @@ function makeLevelGUI(){
 	detailsPanelGuiGroup = new GuiGroup(playAreaWidth, 108);
 
 	towerDetailsPanel = new TowerDisplayPanel(detailsPanelGuiGroup.x, detailsPanelGuiGroup.y);
-	towerDetailsPanel.setTowerClass(ArrowTowerLevel1);
 
 	detailsPanelGuiGroup.addGui(towerDetailsPanel);
 
@@ -345,6 +344,7 @@ class GuiComponent{
 		this.parent = null;
 		this.stopClicks = false;
 		this.draw = true;
+		this.outline = false;
 		this.onHoverBeginFunction = function(){};
 		this.onHoverEndFunction = function(){};
 		this.onMouseUpGlobalFunction = function(){};
@@ -438,8 +438,15 @@ class GuiComponent{
 				image(this.texture, this.x, this.y, this.w, this.h);
 			}
 			else{
-				noStroke();
-				fill(this.drawColor);
+				if(this.outline){
+					strokeWeight(2);
+					stroke(this.drawColor);
+					noFill();
+				}
+				else{
+					noStroke();
+					fill(this.drawColor);
+				}
 				rect(this.x, this.y, this.w, this.h);
 			}
 		}
@@ -1011,6 +1018,7 @@ class TowerDisplayPanel extends GuiComponent{
 		let fontSize = 16;
 		let textBackgroundSize = 20;
 
+		this.extraCameraSize = 4;
 		//background
 
 		this.backgroundComponent = new NineSlice(this.x, this.y, panelWidth, panelHeight, 5, 5, 5, 5, z);
@@ -1019,11 +1027,18 @@ class TowerDisplayPanel extends GuiComponent{
 
 		//sprite
 
-		this.spriteComponent = new GuiComponent(this.x + sideMargin, this.y + topMargin, spriteSize, spriteSize, z + 2);
+		this.spriteComponent = new GuiComponent(this.x + sideMargin, this.y + topMargin, spriteSize, spriteSize, z + 4);
+		this.spriteComponent.texture = Art.noSprite0;
 		this.spriteComponent.active = false;
 		this.addGui(this.spriteComponent);
 
-		this.cameraComponent = new Camera(0, 0, gridScale, gridScale, this.x + sideMargin, this.y + topMargin, spriteSize, spriteSize, z + 2);
+		this.outlineComponent = new GuiComponent(this.x + sideMargin - this.extraCameraSize, this.y + topMargin - this.extraCameraSize, spriteSize + this.extraCameraSize*2, spriteSize + this.extraCameraSize*2, z + 3);
+		this.outlineComponent.drawColor = color("black");
+		this.outlineComponent.outline = true;
+		this.addGui(this.outlineComponent);
+
+
+		this.cameraComponent = new Camera(0 - this.extraCameraSize, 0 - this.extraCameraSize, gridScale + this.extraCameraSize*2, gridScale + this.extraCameraSize*2, this.x + sideMargin - this.extraCameraSize, this.y + topMargin - this.extraCameraSize, spriteSize + this.extraCameraSize*2, spriteSize + this.extraCameraSize*2, z + 2);
 		this.cameraComponent.active = false;
 		this.addGui(this.cameraComponent);
 
@@ -1070,6 +1085,8 @@ class TowerDisplayPanel extends GuiComponent{
 		this.speedComponent = new StatBlock(this.x + panelWidth/2 + innerMargin, this.y + statBoxesYStart + textBackgroundSize + innerMargin + statBoxOffset, Art.ninjaStar0, z + 2);
 		this.speedComponent.setText("???");
 		this.addGui(this.speedComponent);
+
+		this.setEmpty();
 	}
 
 	setOutTexture(tex){
@@ -1112,9 +1129,9 @@ class TowerDisplayPanel extends GuiComponent{
 
 	setEmpty(){
 		this.cameraComponent.setActive(false);
-		this.spriteComponent.setActive(false);
+		this.spriteComponent.setActive(true);
+		this.spriteComponent.texture = Art.noSprite0;
 
-		this.spriteComponent.texture = null;
 		this.costComponent.setText("---");
 
 		this.damageComponent.setFontColor(color("white"));
@@ -1139,9 +1156,6 @@ class TowerDisplayPanel extends GuiComponent{
 		if(_towerInstance){
 			_towerInstance.onStatUpdated = this.updateInstanceValues.bind(this);
 
-			this.cameraComponent.srcX = _towerInstance.x;
-			this.cameraComponent.srcY = _towerInstance.y;
-
 			this.towerInstance = _towerInstance;
 			this.towerClass = null;
 			this.updateInstanceValues();
@@ -1155,8 +1169,8 @@ class TowerDisplayPanel extends GuiComponent{
 		if(this.towerInstance){
 			this.spriteComponent.texture = this.towerInstance.animationFrames[0];
 
-			this.cameraComponent.srcX = this.towerInstance.x;
-			this.cameraComponent.srcY = this.towerInstance.y;
+			this.cameraComponent.srcX = this.towerInstance.x - this.extraCameraSize;
+			this.cameraComponent.srcY = this.towerInstance.y - this.extraCameraSize;
 
 			this.costComponent.setText(this.towerInstance.getClass().price);
 

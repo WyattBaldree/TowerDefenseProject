@@ -163,10 +163,5 @@ class Tower extends Unit{
 		stroke(color('rgba(255,255,51, 1)'));
 		fill(color('rgba(255,255,51,.2)'));
 		ellipse(this.getXGridCenter(), this.getYGridCenter(), this.getRange() * 2 * gridScale);
-
-		// draw a red square around the tower.
-		stroke(color('rgba(255,0,0, 1)'));
-		fill(color('rgba(255,0,0,.2)'));
-		rect(this.x, this.y, gridScale, gridScale);
 	}
 }
