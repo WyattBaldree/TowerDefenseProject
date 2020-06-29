@@ -345,8 +345,16 @@ function setGameState(state){
 	}
 }
 
+function touchStarted(event) {
+	userPress(event);
+}
+
 function mousePressed(event) {
-  	console.log(event);
+  	userPress(event);
+}
+
+function userPress(event){
+	console.log(event);
 
   	if(gameState == 2){
 	  	switch(controlMode){
@@ -381,11 +389,18 @@ function mousePressed(event) {
   			gui.pressAnywhere();
   		}
   	}
+}
 
+function touchEnded(event){
+	userRelease(event);
 }
 
 function mouseReleased(event) {
-  	console.log(event);
+  	userRelease(event);
+}
+
+function userRelease(event){
+	console.log(event);
 
   	for(let gui of guiList){
   		if(!gui.active) continue;
