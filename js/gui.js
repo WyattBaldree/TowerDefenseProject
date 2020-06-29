@@ -224,7 +224,6 @@ function closeLoseLevelGui(){
 let menuButtonsGuiGroup;
 let detailsPanelGuiGroup;
 let towerSelectPanel;
-let towerUpgradePanel;
 let playerInfoGuiGroup;
 let timelineGuiGroup;
 
@@ -308,14 +307,12 @@ function makeLevelGUI(){
 
 	/////////////TOWER SELECT PANEL
 	towerSelectPanel = new TowerSelectPanel(playAreaWidth, 280);
-	towerUpgradePanel = new TowerUpgradePanel(playAreaWidth, 280);
 }
 
 function openLeveLGUI(){
 	menuButtonsGuiGroup.setActive(true);
 	detailsPanelGuiGroup.setActive(true);
 	towerSelectPanel.setActive(true);
-	towerUpgradePanel.setActive(false);
 	playerInfoGuiGroup.setActive(true);
 	timelineGuiGroup.setActive(true);
 	towerUpgradeRadial.setActive(false);
@@ -325,7 +322,6 @@ function closeLevelGUI(){
 	menuButtonsGuiGroup.setActive(false);
 	detailsPanelGuiGroup.setActive(false);
 	towerSelectPanel.setActive(false);
-	towerUpgradePanel.setActive(false);
 	playerInfoGuiGroup.setActive(false);
 	timelineGuiGroup.setActive(false);
 	towerUpgradeRadial.setActive(false);
@@ -351,6 +347,7 @@ class GuiComponent{
 		this.draw = true;
 		this.onHoverBeginFunction = function(){};
 		this.onHoverEndFunction = function(){};
+		this.onMouseUpGlobalFunction = function(){};
 		guiList.push(this);
 		guiList.sort((a, b) => (a.z > b.z) ? 1 : -1);
 
@@ -416,8 +413,12 @@ class GuiComponent{
 
 	}
 
-	release(){
-		
+	release(userRelease = false){
+
+	}
+
+	mouseUpGlobal(){
+		this.onMouseUpGlobalFunction();
 	}
 
 	beginHover(){
@@ -462,7 +463,7 @@ class NineSlice extends GuiComponent{
 	}
 
 	drawSelf(){
-		if(!this.active) return;
+		if(!this.active || !this.draw) return;
 
 		if(this.texture){
 			let textureCenterWidth = this.texture.width - this.leftMargin - this.rightMargin
@@ -597,7 +598,7 @@ class Button extends NineSlice{
 
 	drawSelf(){
 		super.drawSelf();
-		if(this.active){
+		if(this.active && this.draw){
 			if(this.disabled){
 				fill(color("rgba(0,0,0,.40)"));
 				noStroke();
@@ -668,6 +669,7 @@ class imageButton extends GuiComponent{
 	}
 }
 
+
 class TowerButton extends GuiComponent{
 	constructor(x, y, z = 0){
 		super(x, y, 0, 0, z);
@@ -675,10 +677,10 @@ class TowerButton extends GuiComponent{
 
 		this.towerClass = null;
 
-		this.buttonComponent = new Button(x, y, 64, 90, 7, 7, 7, 7, z);
+		this.buttonComponent = new Button(x, y, 154, 30, 7, 7, 7, 7, z);
 		this.addGui(this.buttonComponent);
 
-		let centerWidth = this.buttonComponent.w - this.buttonComponent.leftMargin - this.buttonComponent.rightMargin;
+		let centerWidth = this.buttonComponent.h - this.buttonComponent.topMargin - this.buttonComponent.bottomMargin;
 
 		this.spriteComponent = new GuiComponent(this.buttonComponent.x + this.buttonComponent.leftMargin, this.buttonComponent.y + this.buttonComponent.topMargin, centerWidth, centerWidth, z + 2);
 		this.addGui(this.spriteComponent);
@@ -704,7 +706,8 @@ class TowerButton extends GuiComponent{
 		super.press();
 	}
 
-	release(){
+	release(userRelease = false){
+		super.release(userRelease);
 		this.costComponent.setY(this.costComponent.y - this.buttonComponent.travelDistance);
 		this.spriteTextBackgroundComponent.setY(this.spriteTextBackgroundComponent.y - this.buttonComponent.travelDistance);
 		this.spriteComponent.setY(this.spriteComponent.y - this.buttonComponent.travelDistance);
@@ -721,6 +724,82 @@ class TowerButton extends GuiComponent{
 	}
 
 	setTowerClass(_towerClass){	}
+}
+
+
+/*Art.tanInlay
+
+Art.dragAndDropRed
+Art.dragAndDropGreen 
+Art.dragAndDropBlue
+Art.dragAndDropYellow*/
+
+class TowerDragAndDrop extends GuiComponent{
+	constructor(x, y, z = 0){
+		super(x, y, 0, 0, z);
+		this.draw = false;
+
+		this.towerClass = null;
+
+		this.buttonComponent = new Button(x, y, 40, 40, 10, 10, 10, 10, z);
+		this.addGui(this.buttonComponent);
+
+		this.spriteComponent = new GuiComponent(x+4, y+4, gridScale, gridScale, z+1)
+		this.spriteComponent.texture = Art.mage0;
+		this.spriteComponent.onMouseUpGlobalFunction = function(){
+			this.draw = true;
+		}
+		this.addGui(this.spriteComponent);
+
+		this.background = new NineSlice(x + this.buttonComponent.w, y, 174 - this.buttonComponent.w, this.buttonComponent.h, 5, 5, 5, 5, z, Art.darkGrayBackground);
+		this.addGui(this.background);
+
+		this.nameComponent = new TextComponent(this.background.x + (this.background.w/2), this.background.y + (this.background.h/2) - 8, z + 2, "- Tower -");
+		this.nameComponent.fontSize = 14;
+		this.nameComponent.fontColor = color("white");
+		this.nameComponent.horizontalAlign = CENTER;
+		this.nameComponent.verticalAlign = CENTER;
+		this.addGui(this.nameComponent);
+
+		this.costComponent = new TextComponent(this.background.x + (this.background.w/2), this.background.y + (this.background.h/2) + 8, z + 2, "$100");
+		this.costComponent.fontSize = 14;
+		this.costComponent.fontColor = color("yellow");
+		this.costComponent.horizontalAlign = CENTER;
+		this.costComponent.verticalAlign = CENTER;
+		this.addGui(this.costComponent);
+
+		this.buttonComponent.buttonDownCallback = this.press.bind(this);
+		this.buttonComponent.buttonUpCallback = this.release.bind(this);
+	}
+
+	setOutTexture(tex){
+		this.buttonComponent.outTexture = tex;
+		this.buttonComponent.updateTexture();
+	}
+
+	setInTexture(tex){
+		this.buttonComponent.inTexture = tex;
+		this.buttonComponent.updateTexture();
+	}
+
+	setTowerClass(_towerClass){
+		this.towerClass = _towerClass;
+		if(this.towerClass){
+			this.buttonComponent.onPressFunction = function(){
+				beginTowerPlacement(this.towerClass);
+				if(player.gold < towerBeingPlaced.getBasePrice()){
+					exitTowerPlacementMode();
+					playerDisplayPanel.moneyAlert();
+				}
+				else{
+					this.spriteComponent.draw = false;
+				}
+			}.bind(this);
+			this.nameComponent.text = this.towerClass.unitName;
+			this.costComponent.text = "$" + this.towerClass.price;
+			this.spriteComponent.texture = this.towerClass.animationFrames[0];
+		}
+	}
 }
 
 class TowerSelectButton extends TowerButton{
@@ -823,7 +902,7 @@ class TextComponent extends GuiComponent{
 	}
 
 	drawSelf(){
-		if(this.active){
+		if(this.active && this.draw){
 
 			textFont(this.font);
 			textSize(this.fontSize);
@@ -854,7 +933,7 @@ class SpriteAndText extends GuiComponent{
 
 	drawSelf(){
 		super.drawSelf();
-		if(this.active){
+		if(this.active && this.draw){
 			noStroke();
 	 		textSize(this.fontSize);
 	  		textAlign(LEFT, CENTER);
@@ -891,7 +970,7 @@ class StatBlock extends GuiGroup{
 		this.addGui(this.backgroundComponent);
 
 		//create textBox component
-		this.textBoxComponent = new TextBox(this.x + spriteSize + padding, this.y + (textBoxHeight - textHeight)/2 + textBoxverticalOffset, textBoxWidth - 2 * padding, textBoxHeight - 2 * padding, "", z+1, "horizontal");
+		this.textBoxComponent = new TextBox(this.x + spriteSize + padding, this.y + (textBoxHeight - textHeight)/2 + textBoxverticalOffset, textBoxWidth - 2 * padding, textBoxHeight - 2 * padding, "", z+2, "horizontal");
 		this.textBoxComponent.setFontSize(fontSize);
 		this.addGui(this.textBoxComponent);
 	}
@@ -948,9 +1027,9 @@ class TowerDisplayPanel extends GuiComponent{
 		this.cameraComponent.active = false;
 		this.addGui(this.cameraComponent);
 
-		this.spriteComponentBackground = new GuiComponent(this.x + sideMargin, this.y + topMargin, spriteSize, spriteSize, z + 1);
-		this.spriteComponentBackground.drawColor = textBackgroundColor;
-		this.addGui(this.spriteComponentBackground);
+		//this.spriteComponentBackground = new NineSlice(this.x + sideMargin-4, this.y + topMargin-4, spriteSize+8, spriteSize+8, 8, 8, 8, 8, z + 3);
+		//this.spriteComponentBackground.texture = Art.redBorder;
+		//this.addGui(this.spriteComponentBackground);
 
 		//title
 
@@ -1143,7 +1222,7 @@ class Camera extends GuiComponent{
 
 	drawSelf(){
 		super.drawSelf();
-		if(this.active){
+		if(this.active && this.draw){
 			let c = get(this.srcX, this.srcY, this.srcW, this.srcH);
 			image(c, this.destX, this.destY, this.destW, this.destH);
 		}
@@ -1161,6 +1240,8 @@ class TextBox extends GuiComponent{
 		this.scrollAxis = scrollAxis;
 		this.textHeight = 0;
 		this.textWidth = 0;
+
+		this.draw = true;
  
 		this.shadow = true;
 		this.shadowOffset = this.fontSize/10;
@@ -1232,7 +1313,7 @@ class TextBox extends GuiComponent{
 	setTextHorizontal(text){
 		this.textLines.push(text);
 		this.textHeight = this.fontSize;
-		this.textWidth = this.font.textBounds(this.textLines[0], 0, 0, this.fontSize).w;
+		this.textWidth = Math.max(this.font.textBounds(this.textLines[0], 0, 0, this.fontSize).w, 0);
 	}
 
 	update(dTime){
@@ -1286,7 +1367,7 @@ class TextBox extends GuiComponent{
 	}
 
 	drawSelf(){
-		if(this.active){
+		if(this.active && this.draw){
 			this.textCanvas.clear();
 			this.textCanvas.textFont(this.font);
 			this.textCanvas.textSize(this.fontSize);
@@ -1322,7 +1403,7 @@ class TextBox extends GuiComponent{
 class PlayerDisplayPanel extends GuiComponent{
 	constructor(x, y, z = 0){
 		super(x, y);
-		this.draw = false;
+		this.draw = true;
 
 		let panelWidth = screenWidth - playAreaWidth;
 		let panelHeight = 77;
@@ -1377,7 +1458,7 @@ class PlayerDisplayPanel extends GuiComponent{
 class TimelineDisplay extends GuiComponent{
 	constructor(x, y, z = 0){
 		super(x, y, z);
-		this.draw = false;
+		this.draw = true;
 
 		let panelWidth = playAreaWidth;
 		let panelHeight = screenHeight - playAreaHeight;
@@ -1392,7 +1473,7 @@ class TimelineDisplay extends GuiComponent{
 	}
 
 	drawSelf(){
-		if(this.active){
+		if(this.active && this.draw){
 			let width = this.backgroundComponent.w;
 			let height = this.backgroundComponent.h;
 			let lineWidth = width - (this.sideMargin * 2);
@@ -1426,30 +1507,44 @@ class TowerSelectPanel extends GuiComponent{
 		this.draw = false;
 		let panelWidth = screenWidth - playAreaWidth;
 
-		this.panelBackground = new NineSlice(this.x, this.y, panelWidth, playAreaHeight - 280, 8, 8, 8, 8, 0, Art.grayBackground);
+		this.panelBackground = new NineSlice(this.x, this.y + 40, panelWidth, playAreaHeight - 280 - 40, 8, 8, 8, 8, z, Art.grayBackground);
 		this.addGui(this.panelBackground);
 
-		this.arrowTowerButton = new TowerSelectButton(this.x + 20, this.y + 20, 1);
-		this.arrowTowerButton.setInTexture(Art.greenButton2In);
-		this.arrowTowerButton.setOutTexture(Art.greenButton2Out);
+		this.titleBackground = new NineSlice(this.x + 25, this.y, panelWidth - 50, 40, 8, 8, 8, 8, z+1, Art.grayBackground);
+		this.addGui(this.titleBackground);
+
+		this.titleTextBackground = new GuiComponent(this.x + 35, this.y + 8, panelWidth - 70, 24, z + 1);
+		this.titleTextBackground.drawColor = color("rgba(0,0,0,.4)");;
+		this.addGui(this.titleTextBackground);
+
+		this.title = new TextComponent(this.x + panelWidth/2, this.y + 20, z + 2, "- drag & drop -");
+		this.title.fontSize = 15;
+		this.title.fontColor = color("white");
+		this.title.horizontalAlign = CENTER;
+		this.title.verticalAlign = CENTER;
+		this.addGui(this.title);
+
+		this.arrowTowerButton = new TowerDragAndDrop(this.x + 10, this.y + 49, z + 1);
+		this.arrowTowerButton.setInTexture(Art.dragAndDropGreen);
+		this.arrowTowerButton.setOutTexture(Art.dragAndDropGreen);
 		this.arrowTowerButton.setTowerClass(ArrowTowerLevel1);
 		this.addGui(this.arrowTowerButton);
 
-		this.beamTowerButton = new TowerSelectButton(this.x + 20, this.y + 124, 1);
-		this.beamTowerButton.setInTexture(Art.blueButton2In);
-		this.beamTowerButton.setOutTexture(Art.blueButton2Out);
+		this.beamTowerButton = new TowerDragAndDrop(this.x + 10, this.y + 94, z + 1);
+		this.beamTowerButton.setInTexture(Art.dragAndDropBlue);
+		this.beamTowerButton.setOutTexture(Art.dragAndDropBlue);
 		this.beamTowerButton.setTowerClass(BeamTowerLevel1);
 		this.addGui(this.beamTowerButton);
 
-		this.earthquakeTowerButton = new TowerSelectButton(this.x + 110, this.y + 20, 1);
-		this.earthquakeTowerButton.setInTexture(Art.redButton2In);
-		this.earthquakeTowerButton.setOutTexture(Art.redButton2Out);
+		this.earthquakeTowerButton = new TowerDragAndDrop(this.x + 10, this.y + 139, z + 1);
+		this.earthquakeTowerButton.setInTexture(Art.dragAndDropRed);
+		this.earthquakeTowerButton.setOutTexture(Art.dragAndDropRed);
 		this.earthquakeTowerButton.setTowerClass(EarthquakeTowerLevel1);
 		this.addGui(this.earthquakeTowerButton);
 
-		this.bombTowerButton = new TowerSelectButton(this.x + 110, this.y + 124, 1);
-		this.bombTowerButton.setInTexture(Art.yellowButton2In);
-		this.bombTowerButton.setOutTexture(Art.yellowButton2Out);
+		this.bombTowerButton = new TowerDragAndDrop(this.x + 10, this.y + 184, z + 1);
+		this.bombTowerButton.setInTexture(Art.dragAndDropYellow);
+		this.bombTowerButton.setOutTexture(Art.dragAndDropYellow);
 		this.bombTowerButton.setTowerClass(BombTowerLevel1);
 		this.addGui(this.bombTowerButton);
 	}
@@ -1609,62 +1704,6 @@ class RadialSellButton extends RadialButton{
 
 		this.onClickFunction = function(){
 			sellSelectedTower();
-		}
-	}
-}
-
-class TowerUpgradePanel extends GuiComponent{
-	constructor(x, y, z = 0){
-		super(x, y, z);
-		this.draw = false;
-		let panelWidth = screenWidth - playAreaWidth;
-		this.towerButtonList = [];
-
-		this.panelBackground = new NineSlice(this.x, this.y, panelWidth, playAreaHeight - 280, 8, 8, 8, 8, 0, Art.grayBackground);
-		this.addGui(this.panelBackground);
-
-		this.towerButton1 = new TowerUpgradeButton(this.x + 20, this.y + 20, 1);
-		this.towerButton1.setInTexture(Art.greenButton2In);
-		this.towerButton1.setOutTexture(Art.greenButton2Out);
-		this.addGui(this.towerButton1);
-		this.towerButtonList.push(this.towerButton1);
-
-		this.towerButton2 = new TowerUpgradeButton(this.x + 20, this.y + 124, 1);
-		this.towerButton2.setInTexture(Art.blueButton2In);
-		this.towerButton2.setOutTexture(Art.blueButton2Out);
-		this.addGui(this.towerButton2);
-		this.towerButtonList.push(this.towerButton2);
-
-		this.towerButton3 = new TowerUpgradeButton(this.x + 110, this.y + 20, 1);
-		this.towerButton3.setInTexture(Art.redButton2In);
-		this.towerButton3.setOutTexture(Art.redButton2Out);
-		this.addGui(this.towerButton3);
-		this.towerButtonList.push(this.towerButton3);
-
-		this.sellButton = new TowerSellButton(this.x + 110, this.y + 124, 1);
-		this.sellButton.setInTexture(Art.yellowButton2In);
-		this.sellButton.setOutTexture(Art.yellowButton2Out);
-		this.addGui(this.sellButton);
-	}
-
-	setTowerClass(towerInstance){
-		let upgradeList = towerInstance.getUpgrades();
-		for(let i = 0 ; i < this.towerButtonList.length ; i++){
-			if(i < upgradeList.length){
-				this.towerButtonList[i].setActive(true);
-				this.towerButtonList[i].setTowerClass(upgradeList[i]);
-			}
-			else{
-				this.towerButtonList[i].setActive(false);
-			}
-		}
-
-		if(!towerInstance.permanent){
-			this.sellButton.setActive(true)
-			this.sellButton.setTowerClass(towerInstance.getClass());
-		}
-		else{
-			this.sellButton.setActive(false)
 		}
 	}
 }

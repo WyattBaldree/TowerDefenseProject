@@ -53,6 +53,18 @@ class AdvancedDraw{
 		}		
 	}
 
+	drawAtPosition(x, y){
+		let oldX = this.x;
+		let oldY = this.y;
+		this.x = x;
+		this.y = y;
+
+		this.drawSelf();
+
+		this.x = oldX;
+		this.y = oldY;
+	}
+
 	getAnimationSpeed(){
 		return this.animationSpeed;
 	}

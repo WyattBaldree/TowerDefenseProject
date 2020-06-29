@@ -22,10 +22,18 @@ class Art{
 		Art.yellowButton2Out = loadImage('img/yellow_button09.png');
 		Art.yellowButton2In = loadImage('img/yellow_button10.png');
 
-		Art.grayBackground = loadImage('img/grey_panel.png');
+		Art.grayBackground = loadImage('img/gray_panel.png');
+		Art.darkGrayBackground = loadImage('img/darkGray_panel.png');
 		Art.yellowBackground = loadImage('img/yellow_panel.png');
 		Art.blueLineBackground = loadImage('img/blue_line.png');
 		Art.tanInlay = loadImage("img/tan_inlay.png");
+
+		Art.dragAndDropRed = loadImage("img/dragAndDropRed.png");
+		Art.dragAndDropGreen = loadImage("img/dragAndDropGreen.png");
+		Art.dragAndDropBlue = loadImage("img/dragAndDropBlue.png");
+		Art.dragAndDropYellow = loadImage("img/dragAndDropYellow.png");
+
+		Art.redBorder = loadImage("img/redBorder.png");
 
 		Art.noSprite0 = loadImage('img/noSprite0.png');
 		Art.noSprite1 = loadImage('img/noSprite1.png');

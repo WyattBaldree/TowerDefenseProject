@@ -184,10 +184,6 @@ function drawStep(){
 			selectedUnit.drawSelected();
 		}
 
-		for(var u of unitList){
-  			u.drawSelf();
-		}
-
 		for(var d of decalList){
   			d.drawSelf();
 		}
@@ -219,15 +215,20 @@ function drawStep(){
 				break;
 		}
 
-
 		noStroke();
 		fill(color('rgba(255, 127, 0, .5)'));
 		drawSelectionSquare();
+
+		for(var u of unitList){
+  			u.drawSelf();
+		}
 	}
 
 	for(var gui of guiList){
   		gui.drawSelf();
 	}
+
+	if(towerBeingPlaced && (mouseGridX == -1 || mouseGridY == -1)) towerBeingPlaced.drawAtPosition(mouseX - gridScale/2, mouseY - gridScale/2);
 }
 
 function drawPowerTiles(){
@@ -350,6 +351,7 @@ function mousePressed(event) {
   	if(gameState == 2){
 	  	switch(controlMode){
 	  		case 0:
+	  		//regular mode
 	  			//Do stuff based off of the position of the mouse in the grid only if the mouse is in the grid.
 				if(mouseGridX != -1 && mouseGridY != -1 && !hoveredThisFrame){
 					let hoveredTower = towerArray[mouseGridX][mouseGridY];
@@ -363,25 +365,7 @@ function mousePressed(event) {
 				}
 	  			break;
 	  		case 1:
-	  			if(mouseGridX != -1 && mouseGridY != -1){
-	  				if(player.gold < towerBeingPlaced.getBasePrice()){
-	  					playerDisplayPanel.moneyAlert();
-	  				}
-					else if(canPlaceTowerHere(mouseGridX, mouseGridY)){
-						player.setGold(player.gold - towerBeingPlaced.getBasePrice());
-						towerArray[towerBeingPlaced.getXGrid()][towerBeingPlaced.getYGrid()] = towerBeingPlaced;
-						towerBeingPlaced.active = true;
-						towerBeingPlaced = null
-						controlMode = 0;
-						towerDetailsPanel.setEmpty();
-					}
-				}
-				else{
-					towerBeingPlaced.markForRemoval();
-					towerBeingPlaced = null
-					controlMode = 0;
-					towerDetailsPanel.setEmpty();
-				}
+	  			//tower placement mode
 	  			break;
 	  	}
   	}
@@ -413,7 +397,42 @@ function mouseReleased(event) {
   				gui.release();
   			}
   		}
+  		gui.mouseUpGlobal();
   	}
+
+  	if(gameState == 2){
+	  	switch(controlMode){
+	  		case 0:
+	  			//regular mode
+	  			break;
+	  		case 1:
+	  			//tower placement mode
+	  			if(mouseGridX != -1 && mouseGridY != -1){
+					if(canPlaceTowerHere(mouseGridX, mouseGridY)){
+						player.setGold(player.gold - towerBeingPlaced.getBasePrice());
+						towerArray[towerBeingPlaced.getXGrid()][towerBeingPlaced.getYGrid()] = towerBeingPlaced;
+						towerBeingPlaced.active = true;
+						towerBeingPlaced = null
+						controlMode = 0;
+						towerDetailsPanel.setEmpty();
+					}
+					else{
+						exitTowerPlacementMode();
+					}
+				}
+				else{
+					exitTowerPlacementMode();
+				}
+	  			break;
+	  	}
+	}
+}
+
+function exitTowerPlacementMode(){
+	towerBeingPlaced.markForRemoval();
+	towerBeingPlaced = null
+	controlMode = 0;
+	towerDetailsPanel.setEmpty();
 }
 
 function getSelectionSquareX(){
@@ -455,7 +474,10 @@ function drawSelectionSquare(){
 	let x = getSelectionSquareX();
 	let y = getSelectionSquareY();
 
-	drawFilledGridSpace(x, y);
+	strokeWeight(1);
+	stroke(color("red"));
+	noFill();
+	rect(x * gridScale, y * gridScale, gridScale, gridScale);
 }
 
 function setGameSpeed(newSpeed){
@@ -576,15 +598,10 @@ function setSelectedUnit(unit){
 	selectedUnit = unit;
 
 	if(selectedUnit == null){
-		towerSelectPanel.setActive(true);
-		towerUpgradePanel.setActive(false);
 		towerDetailsPanel.setEmpty();
 		towerUpgradeRadial.setActive(false);
 	}
 	else if(selectedUnit instanceof Tower){
-		towerSelectPanel.setActive(false);
-		towerUpgradePanel.setActive(true);
-		towerUpgradePanel.setTowerClass(selectedUnit);
 		towerDetailsPanel.setTowerInstance(selectedUnit);
 		towerUpgradeRadial.setActive(true);
 		towerUpgradeRadial.setUnit(selectedUnit);
