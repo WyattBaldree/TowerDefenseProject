@@ -150,20 +150,29 @@ function updateStep(dTime){
 	  		d.update(dTime*gameSpeed);
 		}
 	}
+
+	// The purpose of this list is to ensure that all hover/over ends happen before the hover/over begins every frame.
+	let delayedHoverOverList = [];
 	hoveredThisFrame = false;
 	for(let i = guiList.length - 1 ; i >= 0 ; i--){
   		let gui = guiList[i];
   		if(!gui.active) continue;
   		gui.update(dTime);
-  		if(gui.stopClicks && !hoveredThisFrame && mouseX >= gui.x && mouseX < gui.x + gui.w && mouseY >= gui.y && mouseY < gui.y + gui.h){
-  			if(!gui.hovered){
-  				gui.beginHover();
-  			}
-  			hoveredThisFrame = true;
+  		if(mouseX >= gui.x && mouseX < gui.x + gui.w && mouseY >= gui.y && mouseY < gui.y + gui.h){
+  			delayedHoverOverList.push(gui);
   		}
   		else{
   			if(gui.hovered) gui.endHover();
+  			if(gui.over) gui.endOver();
   		}
+  	}
+  	
+  	for(let gui of delayedHoverOverList){
+  		if(gui.stopClicks && !hoveredThisFrame){
+  			if(!gui.hovered) gui.beginHover();
+  			hoveredThisFrame = true;
+  		}
+  		if(!gui.over) gui.beginOver();
   	}
 }
 
@@ -228,7 +237,15 @@ function drawStep(){
   		gui.drawSelf();
 	}
 
-	if(towerBeingPlaced && (mouseGridX == -1 || mouseGridY == -1)) towerBeingPlaced.drawAtPosition(mouseX - gridScale/2, mouseY - gridScale/2);
+	if(towerBeingPlaced){
+		if(mouseGridX == -1 || mouseGridY == -1){
+			towerBeingPlaced.drawAtPosition(mouseX - gridScale/2, mouseY - gridScale/2);
+			towerBeingPlaced.draw = false;
+		}
+		else{
+			towerBeingPlaced.draw = true;
+		}
+	}
 }
 
 function drawPowerTiles(){

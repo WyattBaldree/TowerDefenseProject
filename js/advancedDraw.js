@@ -22,6 +22,7 @@ class AdvancedDraw{
 		this.flipY = 0;
 		this.drawOffsetX = 0;
 		this.drawOffsetY = 0;
+		this.draw = true;
 	}
 
 	getAnimationFrames(){
@@ -33,6 +34,7 @@ class AdvancedDraw{
 	}
 
 	drawSelf(){
+		if(!this.draw) return;
 		if(this.texture){
 			push();
 			noSmooth();
@@ -59,7 +61,12 @@ class AdvancedDraw{
 		this.x = x;
 		this.y = y;
 
+		let d = this.draw;
+		this.draw = true;
+
 		this.drawSelf();
+
+		this.draw = d;
 
 		this.x = oldX;
 		this.y = oldY;

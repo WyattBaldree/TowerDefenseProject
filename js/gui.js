@@ -339,6 +339,7 @@ class GuiComponent{
 		this.z = z;
 		this.texture = tex;
 		this.hovered = false;
+		this.over = false;
 		this.active = true;
 		this.drawColor = color("black");
 		this.parent = null;
@@ -347,6 +348,8 @@ class GuiComponent{
 		this.outline = false;
 		this.onHoverBeginFunction = function(){};
 		this.onHoverEndFunction = function(){};
+		this.onOverBeginFunction = function(){};
+		this.onOverEndFunction = function(){};
 		this.onMouseUpGlobalFunction = function(){};
 		guiList.push(this);
 		guiList.sort((a, b) => (a.z > b.z) ? 1 : -1);
@@ -429,6 +432,16 @@ class GuiComponent{
 	endHover(){
 		this.hovered = false;
 		this.onHoverEndFunction();
+	}
+
+	beginOver(){
+		this.over = true;
+		this.onOverBeginFunction();
+	}
+
+	endOver(){
+		this.over = false;
+		this.onOverEndFunction();
 	}
 
 	drawSelf(){
@@ -743,12 +756,13 @@ Art.dragAndDropYellow*/
 
 class TowerDragAndDrop extends GuiComponent{
 	constructor(x, y, z = 0){
-		super(x, y, 0, 0, z);
+		super(x, y, 174, 40, z);
 		this.draw = false;
 
 		this.towerClass = null;
 
-		this.buttonComponent = new Button(x, y, 40, 40, 10, 10, 10, 10, z);
+		this.buttonComponent = new Button(x, y, this.h, this.h, 10, 10, 10, 10, z);
+		this.buttonComponent.stopClicks = true;
 		this.addGui(this.buttonComponent);
 
 		this.spriteComponent = new GuiComponent(x+4, y+4, gridScale, gridScale, z+1)
@@ -758,7 +772,7 @@ class TowerDragAndDrop extends GuiComponent{
 		}
 		this.addGui(this.spriteComponent);
 
-		this.background = new NineSlice(x + this.buttonComponent.w, y, 174 - this.buttonComponent.w, this.buttonComponent.h, 5, 5, 5, 5, z, Art.darkGrayBackground);
+		this.background = new NineSlice(x + this.buttonComponent.w, y, this.w - this.buttonComponent.w, this.buttonComponent.h, 5, 5, 5, 5, z, Art.darkGrayBackground);
 		this.addGui(this.background);
 
 		this.nameComponent = new TextComponent(this.background.x + (this.background.w/2), this.background.y + (this.background.h/2) - 8, z + 2, "- Tower -");
@@ -777,6 +791,19 @@ class TowerDragAndDrop extends GuiComponent{
 
 		this.buttonComponent.buttonDownCallback = this.press.bind(this);
 		this.buttonComponent.buttonUpCallback = this.release.bind(this);
+
+		this.onOverBeginFunction = function(){
+			towerDetailsPanel.setTowerClass(this.towerClass);
+		};
+
+		this.onOverEndFunction = function(){
+			if(selectedUnit instanceof Tower){
+				towerDetailsPanel.setTowerInstance(selectedUnit);
+			}
+			else{
+				towerDetailsPanel.setEmpty();
+			}
+		};
 	}
 
 	setOutTexture(tex){
@@ -1086,6 +1113,11 @@ class TowerDisplayPanel extends GuiComponent{
 		this.speedComponent.setText("???");
 		this.addGui(this.speedComponent);
 
+		this.setEmpty();
+	}
+
+	setActive(active){
+		super.setActive(active);
 		this.setEmpty();
 	}
 
