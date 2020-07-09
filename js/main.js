@@ -81,17 +81,26 @@ function setup() {
 	SmallEgg.initializeClass();
 	Snail.initializeClass();
 	Slug.initializeClass();
+
 	Tower.initializeClass();
 	CooldownTower.initializeClass();
+
+	//elves
+	Elf.initializeClass();
 	ArrowTowerLevel1.initializeClass();
 	FrostArcher.initializeClass();
+	NinjaTower.initializeClass();
 	FireElementalist.initializeClass();
 	FireElemental.initializeClass();
 	BeamTowerLevel1.initializeClass();
 	BeamTowerLevel2.initializeClass();
+
+	//dwarves
 	BombTowerLevel1.initializeClass();
+
+	//humans
+	Human.initializeClass();
 	EarthquakeTowerLevel1.initializeClass();
-	NinjaTower.initializeClass();
 	Acolyte.initializeClass();
 
 	makeMainMenu();
@@ -166,7 +175,7 @@ function updateStep(dTime){
   			if(gui.over) gui.endOver();
   		}
   	}
-  	
+
   	for(let gui of delayedHoverOverList){
   		if(gui.stopClicks && !hoveredThisFrame){
   			if(!gui.hovered) gui.beginHover();
@@ -191,10 +200,6 @@ function drawStep(){
 
 		if(selectedUnit != null){
 			selectedUnit.drawSelected();
-		}
-
-		for(var d of decalList){
-  			d.drawSelf();
 		}
 
 		switch(controlMode){
@@ -230,6 +235,10 @@ function drawStep(){
 
 		for(var u of unitList){
   			u.drawSelf();
+		}
+
+		for(var d of decalList){
+			d.drawSelf();
 		}
 	}
 

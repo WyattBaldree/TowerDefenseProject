@@ -97,3 +97,8 @@ function degrees_to_radians(degrees)
   var pi = Math.PI;
   return degrees * (pi/180);
 }
+
+function getUnitVector(x, y){
+	let mag = distanceFormula(0, 0, x, y);
+	return {"x":x/mag,"y":y/mag};
+}

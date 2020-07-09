@@ -4,7 +4,7 @@ var projectileList = new Array(); // holda all projectile objects.
 class Projectile extends Unit{
 	constructor(x, y){
 		super(x, y)
-		this.speed = 45;
+		this.speed = 55;
 		this.damage = 1;
 		this.angleOffset = 0;
 		this.doUpdateAngle = true;

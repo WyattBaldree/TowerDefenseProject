@@ -77,6 +77,10 @@ class Art{
 		Art.ninja1 = loadImage('img/ninja1.png');
 		Art.acolyte0 = loadImage('img/acolyte0.png');
 		Art.acolyte1 = loadImage('img/acolyte1.png');
+		Art.elf0 = loadImage('img/elf0.png');
+		Art.elf1 = loadImage('img/elf1.png');
+		Art.human0 = loadImage('img/human0.png');
+		Art.human1 = loadImage('img/human1.png');
 
 		//map
 		Art.map = loadImage('levels/map.png');
@@ -114,5 +118,7 @@ class Art{
 		Art.crownSilver = loadImage('img/crownSilver.png');
 		Art.crownSilverHighlighted = loadImage('img/crownSilverHighlighted.png');
 		Art.iceEffect = loadImage('img/iceEffect.png');
+		Art.rock = loadImage('img/rock.png');
+		Art.fist = loadImage('img/fist.png');
 	}
 }

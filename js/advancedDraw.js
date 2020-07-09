@@ -43,8 +43,10 @@ class AdvancedDraw{
 			tint(this.tint);
 			translate(this.x + gridScale/2, this.y + gridScale/2);
 			rotate(this.angle);
-			scale(1 - 2 * this.flipX,1 - 2 * this.flipY);
-			image(this.texture, -gridScale/2 + this.drawOffsetX, -gridScale/2 + this.drawOffsetY, gridScale, gridScale);
+			let xFlipSign = 1 - 2 * this.flipX;
+			let yFlipSign = 1 - 2 * this.flipY;
+			scale(xFlipSign, yFlipSign);
+			image(this.texture, -gridScale/2 + (this.drawOffsetX*xFlipSign), -gridScale/2 + (this.drawOffsetY*yFlipSign), gridScale, gridScale);
 			pop();
 		}
 		else{
@@ -84,8 +86,8 @@ class AdvancedDraw{
 	update(dTime){
 		this.updateAnimation(dTime);
 
-		this.drawOffsetX -= this.drawOffsetX - this.drawOffsetX*3/4*dTime;
-		this.drawOffsetY -= this.drawOffsetY - this.drawOffsetY*3/4*dTime;
+		this.drawOffsetX -= this.drawOffsetX - this.drawOffsetX*3/5*dTime;
+		this.drawOffsetY -= this.drawOffsetY - this.drawOffsetY*3/5*dTime;
 	}
 
 	setXGrid(x){

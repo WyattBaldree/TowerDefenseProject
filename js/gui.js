@@ -331,7 +331,7 @@ function closeLevelGUI(){
 var guiList = new Array(); //holds all guis
 
 class GuiComponent{
-	constructor(x, y, w, h, z = 0, tex = null){
+	constructor(x, y, w = 0, h = 0, z = 0, tex = null){
 		this.x = x;
 		this.y = y;
 		this.w = w;
@@ -427,6 +427,7 @@ class GuiComponent{
 	beginHover(){
 		this.hovered = true;
 		this.onHoverBeginFunction();
+		console.log(this);
 	}
 
 	endHover(){
@@ -635,7 +636,7 @@ class Button extends NineSlice{
 
 class RadioButtonGroup extends GuiComponent{
 	constructor(x, y, w, h, leftMargin = 0, rightMargin = 0, topMargin = 0, bottomMargin = 0, z = 0, numButtons = 1, horizontal = true){
-		super(x, y, z);
+		super(x, y, 0, 0, z);
 		this.buttonList = [];
 		this.draw = false;
 
@@ -674,7 +675,7 @@ class RadioButtonGroup extends GuiComponent{
 
 class imageButton extends GuiComponent{
 	constructor(x, y, w, h, leftMargin = 0, rightMargin = 0, topMargin = 0, bottomMargin = 0, z = 0, onClickFunction = null, image = null){
-		super(x, y, z);
+		super(x, y, 0, 0, z);
 		this.draw = false;
 
 		this.buttonComponent = new Button(x, y, w, h, leftMargin, rightMargin, topMargin, bottomMargin, z, onClickFunction);
@@ -791,6 +792,19 @@ class TowerDragAndDrop extends GuiComponent{
 
 		this.buttonComponent.buttonDownCallback = this.press.bind(this);
 		this.buttonComponent.buttonUpCallback = this.release.bind(this);
+
+		this.onOverBeginFunction = function(){
+			towerDetailsPanel.setTowerClass(this.towerClass);
+		};
+
+		this.onOverEndFunction = function(){
+			if(selectedUnit instanceof Tower){
+				towerDetailsPanel.setTowerInstance(selectedUnit);
+			}
+			else{
+				towerDetailsPanel.setEmpty();
+			}
+		};
 	}
 
 	setOutTexture(tex){
@@ -1007,7 +1021,7 @@ class StatBlock extends GuiGroup{
 
 class TowerDisplayPanel extends GuiComponent{
 	constructor(x, y, z = 0){
-		super(x, y);
+		super(x, y, 0, 0, z);
 		this.draw = false;
 
 		this.towerClass = null;
@@ -1105,7 +1119,9 @@ class TowerDisplayPanel extends GuiComponent{
 
 	setActive(active){
 		super.setActive(active);
-		this.setEmpty();
+		if(active){
+			this.setEmpty();
+		}
 	}
 
 	setOutTexture(tex){
@@ -1435,7 +1451,7 @@ class TextBox extends GuiComponent{
 
 class PlayerDisplayPanel extends GuiComponent{
 	constructor(x, y, z = 0){
-		super(x, y);
+		super(x, y, 0, 0, z);
 		this.draw = true;
 
 		let panelWidth = screenWidth - playAreaWidth;
@@ -1490,7 +1506,7 @@ class PlayerDisplayPanel extends GuiComponent{
 
 class TimelineDisplay extends GuiComponent{
 	constructor(x, y, z = 0){
-		super(x, y, z);
+		super(x, y, 0, 0, z);
 		this.draw = true;
 
 		let panelWidth = playAreaWidth;
@@ -1536,7 +1552,7 @@ class TimelineDisplay extends GuiComponent{
 
 class TowerSelectPanel extends GuiComponent{
 	constructor(x, y, z = 0){
-		super(x, y, z);
+		super(x, y, 0, 0, z);
 		this.draw = false;
 		let panelWidth = screenWidth - playAreaWidth;
 
@@ -1557,25 +1573,25 @@ class TowerSelectPanel extends GuiComponent{
 		this.title.verticalAlign = CENTER;
 		this.addGui(this.title);
 
-		this.arrowTowerButton = new TowerDragAndDrop(this.x + 10, this.y + 49, z + 1);
-		this.arrowTowerButton.setInTexture(Art.dragAndDropGreen);
-		this.arrowTowerButton.setOutTexture(Art.dragAndDropGreen);
-		this.arrowTowerButton.setTowerClass(ArrowTowerLevel1);
-		this.addGui(this.arrowTowerButton);
+		this.elfButton = new TowerDragAndDrop(this.x + 10, this.y + 49, z + 3);
+		this.elfButton.setInTexture(Art.dragAndDropGreen);
+		this.elfButton.setOutTexture(Art.dragAndDropGreen);
+		this.elfButton.setTowerClass(Elf);
+		this.addGui(this.elfButton);
 
-		this.beamTowerButton = new TowerDragAndDrop(this.x + 10, this.y + 94, z + 1);
+		this.beamTowerButton = new TowerDragAndDrop(this.x + 10, this.y + 94, z + 3);
 		this.beamTowerButton.setInTexture(Art.dragAndDropBlue);
 		this.beamTowerButton.setOutTexture(Art.dragAndDropBlue);
 		this.beamTowerButton.setTowerClass(BeamTowerLevel1);
 		this.addGui(this.beamTowerButton);
 
-		this.earthquakeTowerButton = new TowerDragAndDrop(this.x + 10, this.y + 139, z + 1);
-		this.earthquakeTowerButton.setInTexture(Art.dragAndDropRed);
-		this.earthquakeTowerButton.setOutTexture(Art.dragAndDropRed);
-		this.earthquakeTowerButton.setTowerClass(EarthquakeTowerLevel1);
-		this.addGui(this.earthquakeTowerButton);
+		this.humanTowerButton = new TowerDragAndDrop(this.x + 10, this.y + 139, z + 3);
+		this.humanTowerButton.setInTexture(Art.dragAndDropRed);
+		this.humanTowerButton.setOutTexture(Art.dragAndDropRed);
+		this.humanTowerButton.setTowerClass(Human);
+		this.addGui(this.humanTowerButton);
 
-		this.bombTowerButton = new TowerDragAndDrop(this.x + 10, this.y + 184, z + 1);
+		this.bombTowerButton = new TowerDragAndDrop(this.x + 10, this.y + 184, z + 3);
 		this.bombTowerButton.setInTexture(Art.dragAndDropYellow);
 		this.bombTowerButton.setOutTexture(Art.dragAndDropYellow);
 		this.bombTowerButton.setTowerClass(BombTowerLevel1);
@@ -1585,7 +1601,7 @@ class TowerSelectPanel extends GuiComponent{
 
 class TowerRadialSelector extends GuiComponent{
 	constructor(x, y, z = 0){
-		super(x, y, z);
+		super(x, y, 0, 0, z);
 		this.draw = false;
 		this.margin = 8;
 
@@ -1773,7 +1789,7 @@ class FlagButton extends Button{
 
 class Flag extends GuiComponent{
 	constructor(x, y, z, levelName){
-		super(x, y, 2);
+		super(x, y, 0, 0, z);
 		this.draw = false;
 
 		this.levelName = levelName;
@@ -1827,7 +1843,7 @@ class Flag extends GuiComponent{
 
 class LevelPrompt extends GuiComponent{
 	constructor(x, y, z){
-		super(x, y, z);
+		super(x, y, 0, 0, z);
 		this.draw = false;
 
 		let backgroundWidth = 250;
