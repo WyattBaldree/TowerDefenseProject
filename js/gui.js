@@ -791,19 +791,6 @@ class TowerDragAndDrop extends GuiComponent{
 
 		this.buttonComponent.buttonDownCallback = this.press.bind(this);
 		this.buttonComponent.buttonUpCallback = this.release.bind(this);
-
-		this.onOverBeginFunction = function(){
-			towerDetailsPanel.setTowerClass(this.towerClass);
-		};
-
-		this.onOverEndFunction = function(){
-			if(selectedUnit instanceof Tower){
-				towerDetailsPanel.setTowerInstance(selectedUnit);
-			}
-			else{
-				towerDetailsPanel.setEmpty();
-			}
-		};
 	}
 
 	setOutTexture(tex){
@@ -1733,7 +1720,25 @@ class RadialButton extends Button{
 }
 
 class RadialTowerButton extends RadialButton{
+	constructor(x, y, z){
+		super(x, y, z);
+		this.towerClass = null;
+
+		this.onOverBeginFunction = function(){
+			if(this.towerClass) towerDetailsPanel.setTowerClass(this.towerClass);
+		};
+
+		this.onOverEndFunction = function(){
+			if(selectedUnit instanceof Tower){
+				towerDetailsPanel.setTowerInstance(selectedUnit);
+			}
+			else{
+				towerDetailsPanel.setEmpty();
+			}
+		};
+	}
 	setClass(_class){
+		this.towerClass = _class
 		this.spriteComponent.texture = _class.animationFrames[0];
 		this.textComponent.text = _class.price;
 
