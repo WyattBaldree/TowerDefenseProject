@@ -86,8 +86,8 @@ class AdvancedDraw{
 	update(dTime){
 		this.updateAnimation(dTime);
 
-		this.drawOffsetX -= this.drawOffsetX - this.drawOffsetX*3/5*dTime;
-		this.drawOffsetY -= this.drawOffsetY - this.drawOffsetY*3/5*dTime;
+		this.drawOffsetX -= (this.drawOffsetX - this.drawOffsetX*1/2)*dTime;
+		this.drawOffsetY -= (this.drawOffsetY - this.drawOffsetY*1/2)*dTime;
 	}
 
 	setXGrid(x){

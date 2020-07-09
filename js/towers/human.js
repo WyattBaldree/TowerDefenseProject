@@ -17,11 +17,11 @@ class Human extends CooldownTower{
 
 		let u = getUnitVector(shootTarget.x - this.x, shootTarget.y - this.y);
 
-		this.drawOffsetX = u.x*10;
-		this.drawOffsetY = u.y*10;
+		this.drawOffsetX = u.x*16;
+		this.drawOffsetY = u.y*16;
 
 		shootTarget.takeDamage(this.getDamage());
-		let punchDecal = new Decal(shootTarget.x, shootTarget.y, 1.5);
+		let punchDecal = new Decal(shootTarget.x, shootTarget.y, 1);
 		punchDecal.animationFrames = [Art.fist];
 
 		let a =  Math.atan2(u.y, u.x)
