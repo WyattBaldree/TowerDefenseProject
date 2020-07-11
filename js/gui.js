@@ -1579,22 +1579,22 @@ class TowerSelectPanel extends GuiComponent{
 		this.elfButton.setTowerClass(Elf);
 		this.addGui(this.elfButton);
 
-		this.beamTowerButton = new TowerDragAndDrop(this.x + 10, this.y + 94, z + 3);
-		this.beamTowerButton.setInTexture(Art.dragAndDropBlue);
-		this.beamTowerButton.setOutTexture(Art.dragAndDropBlue);
-		this.beamTowerButton.setTowerClass(BeamTowerLevel1);
-		this.addGui(this.beamTowerButton);
+		this.dwarfButton = new TowerDragAndDrop(this.x + 10, this.y + 94, z + 3);
+		this.dwarfButton.setInTexture(Art.dragAndDropRed);
+		this.dwarfButton.setOutTexture(Art.dragAndDropRed);
+		this.dwarfButton.setTowerClass(Dwarf);
+		this.addGui(this.dwarfButton);
 
 		this.humanTowerButton = new TowerDragAndDrop(this.x + 10, this.y + 139, z + 3);
-		this.humanTowerButton.setInTexture(Art.dragAndDropRed);
-		this.humanTowerButton.setOutTexture(Art.dragAndDropRed);
+		this.humanTowerButton.setInTexture(Art.dragAndDropBlue);
+		this.humanTowerButton.setOutTexture(Art.dragAndDropBlue);
 		this.humanTowerButton.setTowerClass(Human);
 		this.addGui(this.humanTowerButton);
 
 		this.bombTowerButton = new TowerDragAndDrop(this.x + 10, this.y + 184, z + 3);
 		this.bombTowerButton.setInTexture(Art.dragAndDropYellow);
 		this.bombTowerButton.setOutTexture(Art.dragAndDropYellow);
-		this.bombTowerButton.setTowerClass(BombTowerLevel1);
+		//this.bombTowerButton.setTowerClass(BombTowerLevel1);
 		this.addGui(this.bombTowerButton);
 	}
 }

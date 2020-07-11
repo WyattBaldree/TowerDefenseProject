@@ -96,6 +96,7 @@ function setup() {
 	BeamTowerLevel2.initializeClass();
 
 	//dwarves
+	Dwarf.initializeClass();
 	BombTowerLevel1.initializeClass();
 
 	//humans

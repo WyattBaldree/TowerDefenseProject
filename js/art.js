@@ -81,6 +81,8 @@ class Art{
 		Art.elf1 = loadImage('img/elf1.png');
 		Art.human0 = loadImage('img/human0.png');
 		Art.human1 = loadImage('img/human1.png');
+		Art.dwarf0 = loadImage('img/dwarf0.png');
+		Art.dwarf1 = loadImage('img/dwarf1.png');
 
 		//map
 		Art.map = loadImage('levels/map.png');
