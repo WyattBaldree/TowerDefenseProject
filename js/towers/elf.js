@@ -7,7 +7,7 @@ class Elf extends CooldownTower{
 		classRef.range = 3.5;
 		classRef.damage = 3;
 		classRef.speed = 4;
-		classRef.price = 50;
+		classRef.price = 100;
 		classRef.maxTargets = 1;
 		classRef.upgrades = [ArrowTowerLevel1];
 	}
