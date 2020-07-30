@@ -403,7 +403,6 @@ class GuiComponent{
 		let handled;
 		if(this.stopClicks && this.active){
 			handled = true;
-			console.log(this);
 		}
 		else{
 			handled = false;
@@ -427,7 +426,6 @@ class GuiComponent{
 	beginHover(){
 		this.hovered = true;
 		this.onHoverBeginFunction();
-		console.log(this);
 	}
 
 	endHover(){
@@ -1489,10 +1487,8 @@ class PlayerDisplayPanel extends GuiComponent{
 	update(deltaTime){
 		if(this.animationPercent < 1){
 			this.animationPercent += deltaTime*.07;
-			//this.goldComponent.setFontColor(color("rgba(" + Math.sin(this.animationPercent)*255 + ",0,0)"));
+
 			let lerp = (Math.sin(this.animationPercent*17)+1)/2;
-			console.log("AP: " + this.animationPercent);
-			console.log("Lerp: " + lerp);
 			this.goldComponent.setFontColor(lerpColor(this.fontColor, color("red"), lerp));
 		}else{
 			this.goldComponent.setFontColor(this.fontColor);
@@ -1823,7 +1819,6 @@ class Flag extends GuiComponent{
 		this.flagButton.onHoverEndFunction = this.flagHoverEnd.bind(this);
 
 		this.flagButton.onClickFunction = function(){
-			console.log(this.levelName);
 		}.bind(this);
 	}
 

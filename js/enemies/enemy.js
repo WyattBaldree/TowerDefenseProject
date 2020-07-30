@@ -185,7 +185,7 @@ class Enemy extends Unit{
 		scale(1 - 2 * this.flipX,1 - 2 * this.flipY);
 
 		if(this.frost > 0){
-			this.tint.setAlpha(((this.frost+50)/300) * 255);
+			this.tint.setAlpha(((this.frost+120)/300) * 255);
 			tint(this.tint);
 
 			image(Art.iceEffect, -gridScale/2 + this.drawOffsetX, -gridScale/2 + this.drawOffsetY, gridScale, gridScale);

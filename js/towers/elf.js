@@ -12,6 +12,13 @@ class Elf extends CooldownTower{
 		classRef.upgrades = [ArrowTowerLevel1];
 	}
 
+	constructor(x, y){
+		super(x, y);
+		this.ability = function(){
+			beginTargetingMode();
+		}
+	}
+
 	shoot(shootTarget){
 		super.shoot();
 		let projectile = new ProjectileToUnitDamage(this.getXGrid(), this.getYGrid(), shootTarget, this.getDamage());

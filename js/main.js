@@ -26,6 +26,12 @@ var mouseGridYPrev = mouseGridY;
 
 let hoveredThisFrame = false;
 
+let skipNextUserRelease = false;
+
+let chargeProgress = 0;
+let isChargingTower = false;
+let towerBeingCharged = null;
+
 let levelArray = new Array();
 
 let powerTileList = [];
@@ -144,6 +150,9 @@ function updateStep(dTime){
 					if(towerBeingPlaced) towerBeingPlaced.move(mouseGridX, mouseGridY);
 				}
 				break;
+			case 2:
+				//targeting mode
+				break;
 		}
 	}
 
@@ -184,6 +193,25 @@ function updateStep(dTime){
   		}
   		if(!gui.over) gui.beginOver();
   	}
+
+  	if(isChargingTower){
+  		if(chargeProgress <= 100){
+  			chargeProgress += deltaTime*.12;
+  		}
+  		else{
+  			towerBeingCharged.ability();
+  			chargeProgress = 0;
+  			isChargingTower = false;
+  			towerBeingCharged = null;
+
+  			skipNextUserRelease = true;
+  		}
+  	}
+  	else{
+  		if(chargeProgress >= 0){
+  			chargeProgress -= deltaTime*.12;
+  		}
+  	}
 }
 
 // Draw everything in the game here.
@@ -205,7 +233,7 @@ function drawStep(){
 
 		switch(controlMode){
 			case 0:
-
+				//normal mode
 				//Do stuff based off of the position of the mouse in the grid only if the mouse is in the grid.
 				if(mouseGridX != -1 && mouseGridY != -1){
 					let hoveredTower = towerArray[mouseGridX][mouseGridY];
@@ -218,15 +246,22 @@ function drawStep(){
 				//Path.draw();
 				break;
 			case 1:
+				//tower placement mode
 				drawTowerPlacementGrid();
-
-				// draw the tower we intend to place
-				//image(placeTowerClass.animationFrames[0], mouseX - mouseX%gridScale, mouseY - mouseY%gridScale, gridScale, gridScale);
 
 				// draw the range of the tower.
 				stroke(color('rgba(255,255,51, 1)'));
 				fill(color('rgba(255,255,51,.2)'));
 				ellipse(mouseX - mouseX%gridScale + gridScale/2, mouseY - mouseY%gridScale + gridScale/2, placeTowerClass.range * 2 * gridScale);
+				break;
+			case 2:
+				//targeting mode
+				drawTowerPlacementGrid();
+
+				// draw targeting reticle
+				stroke(color('rgba(255,55,51, 1)'));
+				fill(color('rgba(255,55,51,.2)'));
+				ellipse(mouseX - mouseX%gridScale + gridScale/2, mouseY - mouseY%gridScale + gridScale/2, 6 * gridScale);
 				break;
 		}
 
@@ -256,6 +291,8 @@ function drawStep(){
 			towerBeingPlaced.draw = true;
 		}
 	}
+
+	drawChargeProgress(chargeProgress);
 }
 
 function drawPowerTiles(){
@@ -381,26 +418,27 @@ function mousePressed(event) {
 }
 
 function userPress(event){
-	console.log(event);
-
   	if(gameState == 2){
 	  	switch(controlMode){
 	  		case 0:
-	  		//regular mode
+	  			//regular mode
 	  			//Do stuff based off of the position of the mouse in the grid only if the mouse is in the grid.
 				if(mouseGridX != -1 && mouseGridY != -1 && !hoveredThisFrame){
 					let hoveredTower = towerArray[mouseGridX][mouseGridY];
 					// When we click a grid space with a tower, selectedUnit is set to that tower. Else selectedUnit becomes null;
 					if(hoveredTower != null){
-						setSelectedUnit(hoveredTower);
-					}
-					else{
-						setSelectedUnit(null);
+						if(hoveredTower.ability != null){
+							isChargingTower = true;
+							towerBeingCharged = hoveredTower;
+						}
 					}
 				}
 	  			break;
 	  		case 1:
 	  			//tower placement mode
+	  			break;
+	  		case 2:
+	  			//targeting mode
 	  			break;
 	  	}
   	}
@@ -427,7 +465,12 @@ function mouseReleased(event) {
 }
 
 function userRelease(event){
-	console.log(event);
+	if(skipNextUserRelease){
+		skipNextUserRelease = false;
+		return;
+	}
+
+	isChargingTower = false;
 
   	for(let gui of guiList){
   		if(!gui.active) continue;
@@ -446,6 +489,17 @@ function userRelease(event){
 	  	switch(controlMode){
 	  		case 0:
 	  			//regular mode
+	  			//Do stuff based off of the position of the mouse in the grid only if the mouse is in the grid.
+				if(mouseGridX != -1 && mouseGridY != -1 && !hoveredThisFrame){
+					let hoveredTower = towerArray[mouseGridX][mouseGridY];
+					// When we click a grid space with a tower, selectedUnit is set to that tower. Else selectedUnit becomes null;
+					if(hoveredTower != null){
+						setSelectedUnit(hoveredTower);
+					}
+					else{
+						setSelectedUnit(null);
+					}
+				}
 	  			break;
 	  		case 1:
 	  			//tower placement mode
@@ -466,6 +520,16 @@ function userRelease(event){
 					exitTowerPlacementMode();
 				}
 	  			break;
+	  		case 2:
+	  			//targeting mode
+	  			if(mouseGridX != -1 && mouseGridY != -1){
+					//shoot spell
+					exitTargetingMode();
+				}
+				else{
+					exitTargetingMode();
+				}
+	  			break;
 	  	}
 	}
 }
@@ -475,6 +539,10 @@ function exitTowerPlacementMode(){
 	towerBeingPlaced = null
 	controlMode = 0;
 	towerDetailsPanel.setEmpty();
+}
+
+function exitTargetingMode(){
+	controlMode = 0;
 }
 
 function getSelectionSquareX(){
@@ -620,6 +688,10 @@ function beginTowerPlacement(towerClass){
 	towerDetailsPanel.setTowerInstance(towerBeingPlaced);
 }
 
+function beginTargetingMode(){
+	controlMode = 2; //How we are currently controlling the game. 0 - normal, 1 - placing tower
+}
+
 function upgradeSelectedTower(towerClass){
 	let cost = towerClass.price;
 	if(player.gold >= cost){
@@ -694,4 +766,48 @@ function keyPressed() {
 		console.log("M pressed");
     	loseLevel();
  	}
+}
+
+function drawChargeProgress(progress = 50){
+	if(progress<=0) return;
+	let perimeterLength = playAreaWidth*2 + playAreaHeight*2;
+	let targetLength = perimeterLength * progress/100;
+
+
+	strokeWeight(5);
+	stroke(color('rgb(255,233,147)'));
+	//bottom
+	if(targetLength < playAreaWidth){
+		line(playAreaWidth, playAreaHeight, playAreaWidth - targetLength, playAreaHeight);
+		return;
+	}
+
+	line(playAreaWidth, playAreaHeight, 0, playAreaHeight);
+	targetLength -= playAreaWidth;
+
+	//left
+	if(targetLength < playAreaHeight){
+		line(1, playAreaHeight, 1, playAreaHeight - targetLength);
+		return;
+	}
+
+	line(1, playAreaHeight, 1, 0);
+	targetLength -= playAreaHeight;
+
+	//top
+	if(targetLength < playAreaWidth){
+		line(0, 1, targetLength, 1);
+		return;
+	}
+
+	line(0, 1, playAreaWidth, 1);
+	targetLength -= playAreaWidth;
+
+	//right
+	if(targetLength < playAreaHeight){
+		line(playAreaWidth, 0, playAreaWidth, targetLength);
+		return;
+	}
+
+	line(playAreaWidth, 0, playAreaWidth, playAreaHeight);
 }

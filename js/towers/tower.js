@@ -30,6 +30,8 @@ class Tower extends Unit{
 
 		this.permanent = false;
 
+		this.ability = null;
+
 		this.move(x, y);
 		towerArray[this.getXGrid()][this.getYGrid()] = this;
 		towerList.push(this);
