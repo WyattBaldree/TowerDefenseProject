@@ -122,5 +122,13 @@ class Art{
 		Art.iceEffect = loadImage('img/iceEffect.png');
 		Art.rock = loadImage('img/rock.png');
 		Art.fist = loadImage('img/fist.png');
+
+		//Animations
+		Art.explosion0 = loadImage('img/explosion0.png');
+		Art.explosion1 = loadImage('img/explosion1.png');
+		Art.explosion2 = loadImage('img/explosion2.png');
+		Art.explosion3 = loadImage('img/explosion3.png');
+		Art.explosion4 = loadImage('img/explosion4.png');
+		Art.explosion5 = loadImage('img/explosion5.png');
 	}
 }

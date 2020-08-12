@@ -32,6 +32,11 @@ let chargeProgress = 0;
 let isChargingTower = false;
 let towerBeingCharged = null;
 
+let targetingSpell = null;
+
+//used to make it so explosions will still register even if they are no over the center of the unit.
+let unitRangeBuffer = gridScale/2;
+
 let levelArray = new Array();
 
 let powerTileList = [];
@@ -197,9 +202,12 @@ function updateStep(dTime){
   	if(isChargingTower){
   		if(chargeProgress <= 100){
   			chargeProgress += deltaTime*.12;
+
   		}
   		else{
   			towerBeingCharged.ability();
+  			towerBeingCharged.drawOffsetX = 0;
+			towerBeingCharged.drawOffsetY = 0;
   			chargeProgress = 0;
   			isChargingTower = false;
   			towerBeingCharged = null;
@@ -209,9 +217,14 @@ function updateStep(dTime){
   	}
   	else{
   		if(chargeProgress >= 0){
-  			chargeProgress -= deltaTime*.12;
+  			chargeProgress -= deltaTime*.24;
   		}
   	}
+
+  	if(towerBeingCharged && chargeProgress >= 0){
+		towerBeingCharged.drawOffsetX = (Math.random() * 30 - 15)*(chargeProgress/100);
+		towerBeingCharged.drawOffsetY = (Math.random() * 30 - 15)*(chargeProgress/100);
+	}
 }
 
 // Draw everything in the game here.
@@ -256,12 +269,12 @@ function drawStep(){
 				break;
 			case 2:
 				//targeting mode
-				drawTowerPlacementGrid();
+				drawTargetingOverlay();
 
 				// draw targeting reticle
 				stroke(color('rgba(255,55,51, 1)'));
 				fill(color('rgba(255,55,51,.2)'));
-				ellipse(mouseX - mouseX%gridScale + gridScale/2, mouseY - mouseY%gridScale + gridScale/2, 6 * gridScale);
+				ellipse(mouseX, mouseY, targetingSpell.range * 2 * gridScale);
 				break;
 		}
 
@@ -524,6 +537,7 @@ function userRelease(event){
 	  			//targeting mode
 	  			if(mouseGridX != -1 && mouseGridY != -1){
 					//shoot spell
+					targetingSpell.activate(mouseX, mouseY);
 					exitTargetingMode();
 				}
 				else{
@@ -542,6 +556,7 @@ function exitTowerPlacementMode(){
 }
 
 function exitTargetingMode(){
+	targetingSpell = null;
 	controlMode = 0;
 }
 
@@ -574,9 +589,14 @@ function drawLevel(){
 	image(levelData[currentLevelIndex].topCanvas, 0, 0);
 }
 
-function drawFilledGridSpace(x, y){
-	strokeWeight(1);
-	stroke(color("black"));
+function drawFilledGridSpace(x, y, border = true){
+	if(border){
+		strokeWeight(1);
+		stroke(color("black"));
+	}
+	else{
+		noStroke();
+	}
 	rect(x * gridScale, y * gridScale, gridScale, gridScale);
 }
 
@@ -604,6 +624,15 @@ function drawTowerPlacementGrid(){
 				fill(color('rgba(200, 0, 0, .5)'));
 			}
 			drawFilledGridSpace(i, j);
+		}
+	}
+}
+
+function drawTargetingOverlay(){
+	for(let i = 0 ; i < playAreaGridWidth ; i++){
+		for(let j = 0 ; j < playAreaGridHeight ; j++){
+			fill(color('rgba(0, 200, 0, .3)'));
+			drawFilledGridSpace(i, j, false);
 		}
 	}
 }
@@ -688,7 +717,8 @@ function beginTowerPlacement(towerClass){
 	towerDetailsPanel.setTowerInstance(towerBeingPlaced);
 }
 
-function beginTargetingMode(){
+function beginTargetingMode(spell){
+	targetingSpell = spell;
 	controlMode = 2; //How we are currently controlling the game. 0 - normal, 1 - placing tower
 }
 

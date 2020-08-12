@@ -9,14 +9,7 @@ class Elf extends CooldownTower{
 		classRef.speed = 4;
 		classRef.price = 100;
 		classRef.maxTargets = 1;
-		classRef.upgrades = [ArrowTowerLevel1];
-	}
-
-	constructor(x, y){
-		super(x, y);
-		this.ability = function(){
-			beginTargetingMode();
-		}
+		classRef.upgrades = [ArrowTowerLevel1, FireElementalist];
 	}
 
 	shoot(shootTarget){

@@ -4,25 +4,30 @@ class Explosion extends Projectile{
 		this.damage = damage;
 		this.range = range;
 		this.speed = 0;
+		this.animationSpeed = 1;
 
-		this.numberOfFrames = 1;
+		this.animationFrames = [];
+		this.texture = null;
 
 		this.effect = effect;
+
+		this.timer = 0;
 
 		dealDamageInArea(this.x, this.y, this.range, this.damage);
 		if (this.effect != null) addEffectInArea(this.x, this.y, this.range, this.effect);
 	}
 	
 	update(dTime){
-		super.update(dTime);
-		if(this.numberOfFrames <= 0) this.die();
-		this.numberOfFrames -= dTime;
+		if(this.timer > 3) this.die();
+		this.timer += dTime;
 	}
 
 	drawSelf(){
-		strokeWeight(1);
-		stroke(color('rgba(255,0,0, 1)'));
-		fill(color('rgba(255,0,0,.2)'));
-		ellipse(this.x, this.y, this.range * 2 * gridScale);
+		if(DEBUG){
+			strokeWeight(1);
+			stroke(color('rgba(255,0,0, 1)'));
+			fill(color('rgba(255,0,0,.2)'));
+			ellipse(this.x, this.y, this.range * 2 * gridScale);
+		}
 	}
 }

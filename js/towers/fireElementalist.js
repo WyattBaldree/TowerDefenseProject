@@ -11,4 +11,11 @@ class FireElementalist extends BeamTowerLevel1{
 		classRef.maxTargets = 2;
 		classRef.upgrades = [FireElemental];
 	}
+
+	constructor(x, y){
+		super(x, y);
+		this.ability = function(){
+			beginTargetingMode(new Fireball());
+		}
+	}
 }

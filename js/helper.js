@@ -40,6 +40,14 @@ function getYGridCenter(y){
 	return y + gridScale/2;
 }
 
+function getXGrid(x){
+	return x/gridScale;
+}
+
+function getYGrid(y){
+	return y/gridScale;
+}
+
 function getDistanceBetweenUnits(u1, u2){
 	return distanceFormula(u1.x, u1.y, u2.x, u2.y);
 }
@@ -70,7 +78,7 @@ function getListOfUnitsInRange(x, y, range, filter = "all"){
 
 	let inRangeList = new Array();
 	for(let u of listToSearch){
-		if(distanceFormula(x, y, u.x + gridScale/2, u.y + gridScale/2) <= range*gridScale){
+		if(distanceFormula(x, y, u.x + gridScale/2, u.y + gridScale/2) <= range*gridScale + unitRangeBuffer){
 			inRangeList.push(u);
 		}
 	}
