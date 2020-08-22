@@ -12,8 +12,21 @@ class EarthquakeTowerLevel1 extends CooldownTower{
 		classRef.upgrades = [NinjaTower];
 	}
 
+	constructor(x, y){
+		super(x, y);
+		this.arcAngle = 70;
+	}
+
 	shoot(shootTarget){
-		super.shoot();
-		new Explosion(this.getXGrid() + .5, this.getYGrid() + .5, this.getRange(), this.getDamage());
+		super.shoot(shootTarget);
+
+		let u = getUnitVector(shootTarget.x - this.x, shootTarget.y - this.y);
+
+		this.drawOffsetX = u.x*16;
+		this.drawOffsetY = u.y*16;
+
+		let directionToTarget = pointsToDegrees(this.x, this.y, shootTarget.x, shootTarget.y);
+
+		new Arc(this.getXGrid() + .5, this.getYGrid() + .5, directionToTarget, this.arcAngle, this.getRange(), this.getDamage());
 	}
 }

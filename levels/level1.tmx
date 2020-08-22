@@ -806,13 +806,6 @@
    <text wrap="1">King's Path</text>
   </object>
  </objectgroup>
- <objectgroup id="9" name="StartingTowers">
-  <object id="287" name="NinjaTower" x="136" y="167">
-   <point/>
-  </object>
-  <object id="292" name="FrostArcher" x="138.364" y="151.273">
-   <point/>
-  </object>
- </objectgroup>
+ <objectgroup id="9" name="StartingTowers"/>
  <objectgroup id="10" name="PowerTiles"/>
 </map>

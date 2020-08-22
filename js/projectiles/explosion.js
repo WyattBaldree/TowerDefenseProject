@@ -1,5 +1,5 @@
 class Explosion extends Projectile{
-	constructor(x, y, range, damage, effect = null){
+	constructor(x, y, range, damage, effect = null, filter = "enemy"){
 		super(x, y);
 		this.damage = damage;
 		this.range = range;
@@ -14,7 +14,7 @@ class Explosion extends Projectile{
 		this.timer = 0;
 
 		dealDamageInArea(this.x, this.y, this.range, this.damage);
-		if (this.effect != null) addEffectInArea(this.x, this.y, this.range, this.effect);
+		if (this.effect != null) addEffectInArea(this.x, this.y, this.range, this.effect, filter);
 	}
 	
 	update(dTime){

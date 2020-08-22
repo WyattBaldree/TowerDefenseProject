@@ -20,6 +20,8 @@ class CooldownTower extends Tower{
 	update(dTime){
 		super.update(dTime);
 
+		let hasShot = false;
+
 		// check if our current target is still valid
 		for(let i = 0; i < this.getBaseMaxTargets() ; i++){
 
@@ -47,9 +49,11 @@ class CooldownTower extends Tower{
 			// if we have a target, try to shoot at it.
 			if(this.targets[i] != null && this.cooldown <= 0){
 				this.shoot(this.targets[i]);
+				hasShot = true;
 			}
 		}
-		if(this.cooldown <= 0){
+
+		if(hasShot && this.cooldown <= 0){
 			this.cooldown += 100;
 		}
 
@@ -57,7 +61,9 @@ class CooldownTower extends Tower{
 	}
 
 	findTarget(){
-		let potentialTargets = getListOfUnitsInRange(this.x, this.y, this.getRange(), this.targetType);
+
+		let range = this.getRange();
+		let potentialTargets = getListOfUnitsInRange(this.x  + (gridScale/2), this.y + (gridScale/2), range, this.targetType);
 		let finalTarget;
 		let smallestDistanceFromGoal = Number.MAX_VALUE;
 		for(let unit of potentialTargets){
@@ -72,10 +78,8 @@ class CooldownTower extends Tower{
 				}
 			}
 			else if(this.targetType == "tower"){
-				if(getDistanceBetweenUnits(this, unit) < this.getRange()){
-					finalTarget = unit;
-					break;
-				}
+				finalTarget = unit;
+				break;
 			}
 		}
 

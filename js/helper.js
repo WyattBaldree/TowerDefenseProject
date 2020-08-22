@@ -78,11 +78,31 @@ function getListOfUnitsInRange(x, y, range, filter = "all"){
 
 	let inRangeList = new Array();
 	for(let u of listToSearch){
-		if(distanceFormula(x, y, u.x + gridScale/2, u.y + gridScale/2) <= range*gridScale + unitRangeBuffer){
+		if(distanceFormula(x, y, u.x + (gridScale/2), u.y + (gridScale/2)) <= (range*gridScale) + unitRangeBuffer){
 			inRangeList.push(u);
 		}
 	}
 	return inRangeList;
+}
+
+function getListOfUnitsInArc(x, y, direction, angle, range, filter = "all"){
+
+	let unitsInRange = getListOfUnitsInRange(x, y, range, filter);
+
+	let unitsInArc = [];
+	for(let u of unitsInRange){
+
+		let directionToUnit = pointsToDegrees(x, y, u.x + (gridScale/2), u.y + (gridScale/2));
+
+		let directionDifference = Math.abs(direction - directionToUnit);
+
+		//here we ensure we take the smaller of the 2 angles between the vectors.
+		if(directionDifference > 180) directionDifference = 360 - directionDifference;
+		if(directionDifference < angle/2){
+			unitsInArc.push(u);
+		}
+	}
+	return unitsInArc;
 }
 
 function dealDamageInArea(x, y, range, damage){
@@ -99,14 +119,39 @@ function addEffectInArea(x, y, range, effect, unitType = "enemy"){
 	}
 }
 
+function dealDamageInArc(x, y, direction, angle, range, damage){
+	let enemyList = getListOfUnitsInArc(x, y, direction, angle, range, "enemy");
+	for(let enemy of enemyList){
+		enemy.takeDamage(damage);
+	}
+}
+
+function addEffectInArc(x, y, direction, angle, range, effect, unitType = "enemy"){
+	let unitList = getListOfUnitsInArc(x, y, direction, angle, range, unitType);
+	for(let unit of unitList){
+		unit.addEffect(new Effect(effect));
+	}
+}
+
 //https://www.w3resource.com/javascript-exercises/javascript-math-exercise-33.php
 function degrees_to_radians(degrees)
 {
-  var pi = Math.PI;
-  return degrees * (pi/180);
+  return degrees * (Math.PI/180);
+}
+
+function radians_to_degrees(radians)
+{
+  return radians * (180/Math.PI);
 }
 
 function getUnitVector(x, y){
 	let mag = distanceFormula(0, 0, x, y);
 	return {"x":x/mag,"y":y/mag};
+}
+
+function pointsToDegrees(x1, y1, x2, y2){
+	let xdif = x2 - x1;
+	let rads = Math.atan((y2 - y1)/xdif);
+	if(xdif < 0) rads+=PI;
+	return directionToTarget = radians_to_degrees(rads);
 }

@@ -53,7 +53,7 @@ let fontKennyThin;
 let fontVCR;
 let fontMinecraft;
 
-let DEBUG = false;
+let DEBUG = true;
 
 // load all artwork and json data before the game begins.
 function preload(){
