@@ -28,8 +28,6 @@ let hoveredThisFrame = false;
 
 let skipNextUserRelease = false;
 
-let chargeProgress = 0;
-let isChargingTower = false;
 let towerBeingCharged = null;
 
 let targetingSpell = null;
@@ -200,32 +198,7 @@ function updateStep(dTime){
   		if(!gui.over) gui.beginOver();
   	}
 
-  	if(isChargingTower){
-  		if(chargeProgress <= 100){
-  			chargeProgress += deltaTime*.12;
-
-  		}
-  		else{
-  			towerBeingCharged.ability();
-  			towerBeingCharged.drawOffsetX = 0;
-			towerBeingCharged.drawOffsetY = 0;
-  			chargeProgress = 0;
-  			isChargingTower = false;
-  			towerBeingCharged = null;
-
-  			skipNextUserRelease = true;
-  		}
-  	}
-  	else{
-  		if(chargeProgress >= 0){
-  			chargeProgress -= deltaTime*.24;
-  		}
-  	}
-
-  	if(towerBeingCharged && chargeProgress >= 0){
-		towerBeingCharged.drawOffsetX = (Math.random() * 30 - 15)*(chargeProgress/100);
-		towerBeingCharged.drawOffsetY = (Math.random() * 30 - 15)*(chargeProgress/100);
-	}
+  	if(towerBeingCharged) towerBeingCharged.updateCharge(dTime);
 }
 
 // Draw everything in the game here.
@@ -304,8 +277,9 @@ function drawStep(){
 			towerBeingPlaced.draw = true;
 		}
 	}
+	console.log(towerBeingCharged);
 
-	drawChargeProgress(chargeProgress);
+	if(towerBeingCharged) drawChargeProgress();
 }
 
 function drawPowerTiles(){
@@ -440,10 +414,7 @@ function userPress(event){
 					let hoveredTower = towerArray[mouseGridX][mouseGridY];
 					// When we click a grid space with a tower, selectedUnit is set to that tower. Else selectedUnit becomes null;
 					if(hoveredTower != null){
-						if(hoveredTower.ability != null){
-							isChargingTower = true;
-							towerBeingCharged = hoveredTower;
-						}
+						hoveredTower.beginCharging();
 					}
 				}
 	  			break;
@@ -483,7 +454,7 @@ function userRelease(event){
 		return;
 	}
 
-	isChargingTower = false;
+	if(towerBeingCharged) towerBeingCharged.endCharging();
 
   	for(let gui of guiList){
   		if(!gui.active) continue;
@@ -785,21 +756,9 @@ function winLevel(){
 	}
 }
 
-function keyPressed() {
-	if (keyCode === 32)
-	{
-		console.log("space pressed");
-    	winLevel();
- 	}
-
- 	if (keyCode === 77)
-	{
-		console.log("M pressed");
-    	loseLevel();
- 	}
-}
-
-function drawChargeProgress(progress = 50){
+function drawChargeProgress(){
+	progress = towerBeingCharged.chargeProgress;
+	console.log(progress);
 	if(progress<=0) return;
 	let perimeterLength = playAreaWidth*2 + playAreaHeight*2;
 	let targetLength = perimeterLength * progress/100;

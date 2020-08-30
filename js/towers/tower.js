@@ -30,7 +30,17 @@ class Tower extends Unit{
 
 		this.permanent = false;
 
+		this.chargingAbility = false;
+
+		this.chargeSpeed = 1;
+
+		this.chargeProgress = 0;
+
 		this.ability = null;
+
+		this.abilityCooldown = 0;
+
+		this.abilityCooldownSpeed = 1;
 
 		this.move(x, y);
 		towerArray[this.getXGrid()][this.getYGrid()] = this;
@@ -39,7 +49,6 @@ class Tower extends Unit{
 
 	move(x, y){
 		if(x >= 0 && y >= 0 && x < towerArray.length && y < towerArray[0].length){
-			//towerArray[this.getXGrid()][this.getYGrid()] = null;
 			this.removeAllEffects();
 
 			this.setPosGrid(x, y);
@@ -58,7 +67,6 @@ class Tower extends Unit{
 				this.addEffect(new Effect("tileSpeedBonus;100;-1"));
 			}
 
-			//towerArray[this.getXGrid()][this.getYGrid()] = this;
 			this.onStatUpdated();
 
 			return true;
@@ -92,6 +100,14 @@ class Tower extends Unit{
 
 	update(dTime){
 		super.update(dTime);
+
+		//update our ability cooldown
+		if(this.abilityCooldown<100){
+			this.abilityCooldown+=dTime*this.abilityCooldownSpeed;
+		}
+		else{
+			this.abilityCooldown = 100
+		}
 	}
 
 	shoot(shootTarget){
@@ -165,5 +181,46 @@ class Tower extends Unit{
 		stroke(color('rgba(255,255,51, 1)'));
 		fill(color('rgba(255,255,51,.2)'));
 		ellipse(this.getXGridCenter(), this.getYGridCenter(), this.getRange() * 2 * gridScale);
+	}
+
+	updateCharge(dTime){
+		//handle the charging
+		if(this.chargingAbility){
+	  		if(this.chargeProgress <= 100){
+	  			this.chargeProgress += dTime*12;
+
+	  		}
+	  		else{
+	  			this.ability();
+				this.abilityCooldown = 0;
+	  			this.endCharging();
+	  			skipNextUserRelease = true;
+	  		}
+	  	}
+	  	else{
+	  		if(this.chargeProgress >= 0){
+	  			this.chargeProgress -= dTime*24;
+	  		}
+	  	}
+
+	  	if(this.chargeProgress > 0){
+			this.drawOffsetX = (Math.random() * 30 - 15)*(this.chargeProgress/100);
+			this.drawOffsetY = (Math.random() * 30 - 15)*(this.chargeProgress/100);
+		}
+	}
+
+	beginCharging(){
+		if(this.ability != null && this.abilityCooldown >= 100){
+			this.chargingAbility = true;
+			towerBeingCharged = this;
+		}
+	}
+
+	endCharging(){
+		this.drawOffsetX = 0;
+		this.drawOffsetY = 0;
+		this.chargeProgress = 0;
+		this.chargingAbility = false;
+		towerBeingCharged = null;
 	}
 }
