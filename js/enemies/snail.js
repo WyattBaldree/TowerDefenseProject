@@ -14,6 +14,6 @@ class Snail extends Enemy{
 	die(){
 		super.die();
 		//spawn 5 - snail
-		spawnInPath(6, this.pathID, this.getCurrentDistanceOfPath());
+		spawnInPath(Slug, this.pathID, this.getCurrentDistanceOfPath());
 	}
 }

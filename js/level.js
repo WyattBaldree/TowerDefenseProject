@@ -107,19 +107,66 @@ function setPaths(levelPaths){
 }
 
 function setTimeline(levelWaves){
+	// Here we parse the spawn syntax. The objective is to take a list of spawn 
+	// functions and convert them to a timeline of creature spawns. The spawn 
+	// functions are meant to simplify spawning many of the same creature in
+	// a row.
 	selectedLevel.waves = [];
+	let currentSpawnTime = 0;
+	let postWaveTime = 0;
 	for(var i = 0 ; i < levelWaves.length ; i++){
+		let currentWave = levelWaves.find(element => parseInt(element.name) == i);
+
+		if(!currentWave) break;
+
 		selectedLevel.waves[i] = [];
-		var waveText = levelWaves[i].text.text;
+		var waveText = currentWave.text.text;
 		var waveTextSplit = waveText.split("\n");
 		for(var j = 0 ; j < waveTextSplit.length ; j++){
+			if(waveTextSplit[j].charAt(0) == '#') continue;
+
 			var enemyInfoSplit = waveTextSplit[j].split(",");
 
-			selectedLevel.waves[i][j] = {};
-			selectedLevel.waves[i][j].time = parseInt(enemyInfoSplit[0]);
-			selectedLevel.waves[i][j].enemyId = parseInt(enemyInfoSplit[1]);
-			selectedLevel.waves[i][j].pathId = parseInt(enemyInfoSplit[2]);
+			switch(enemyInfoSplit[0]){
+				case "spawn":
+					let newSpawn = {};
+					newSpawn.time = currentSpawnTime;
+					newSpawn.enemyClass = getClassFromEnemyName(enemyInfoSplit[1]);
+					newSpawn.pathId = parseInt(enemyInfoSplit[2]);
+
+					selectedLevel.waves[i].push(newSpawn);
+					break;
+				case "wave":
+					let enemyClass = getClassFromEnemyName(enemyInfoSplit[1]);
+					let pathId = parseInt(enemyInfoSplit[2]);
+					let numEnemies = parseInt(enemyInfoSplit[3]);
+					let delay = parseInt(enemyInfoSplit[4]);
+
+					for(let k = 0 ; k < numEnemies ; k++){
+						let newSpawn = {};
+						newSpawn.time = currentSpawnTime + (k*delay);
+						newSpawn.enemyClass = enemyClass;
+						newSpawn.pathId = pathId;
+
+						selectedLevel.waves[i].push(newSpawn);
+					}
+
+					postWaveTime = currentSpawnTime + ((numEnemies-1)*delay);
+					break;
+				case "hold":
+					currentSpawnTime = postWaveTime;
+					break;
+				case "wait":
+					currentSpawnTime += parseInt(enemyInfoSplit[1]);
+					break;
+				default:
+					console.log("Wave syntax '" + enemyInfoSplit[0] + "' unrecognized.");
+			}
 		}
+
+		console.log(selectedLevel.waves);
+		selectedLevel.waves[i].sort((a, b) => (a.time > b.time) ? 1 : -1);
+		console.log(selectedLevel.waves);
 	}
 }
 

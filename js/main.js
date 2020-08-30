@@ -175,6 +175,7 @@ function updateStep(dTime){
 		}
 	}
 
+
 	// The purpose of this list is to ensure that all hover/over ends happen before the hover/over begins every frame.
 	let delayedHoverOverList = [];
 	hoveredThisFrame = false;
@@ -240,10 +241,6 @@ function drawStep(){
 		drawLevel();
 		drawPowerTiles();
 
-		if(selectedUnit != null){
-			selectedUnit.drawSelected();
-		}
-
 		switch(controlMode){
 			case 0:
 				//normal mode
@@ -256,7 +253,10 @@ function drawStep(){
 						}
 					}
 				}
-				//Path.draw();
+
+				if(selectedUnit != null){
+					selectedUnit.drawSelected();
+				}
 				break;
 			case 1:
 				//tower placement mode
@@ -524,6 +524,7 @@ function userRelease(event){
 						towerBeingPlaced = null
 						controlMode = 0;
 						towerDetailsPanel.setEmpty();
+						setSelectedUnit(null);
 					}
 					else{
 						exitTowerPlacementMode();
@@ -642,37 +643,35 @@ function canPlaceTowerHere(x, y){
 	return a && ((towerArray[x][y] == towerBeingPlaced || towerArray[x][y] == null) && levelData[currentLevelIndex].solidArray[x][y] == null); 
 }
 
-function spawn(_enemyID, _pathID){
+function spawn(enemyClass, _pathID){
 	let startPathX = Path.getX(_pathID,0);
 	let startPathY = Path.getY(_pathID,0);
 
-
-	let enemyClass = getClassFromEnemyID(_enemyID);
 	return new enemyClass(startPathX,startPathY,_pathID)
 }
 
-function getClassFromEnemyID(_enemyID){
+function getClassFromEnemyName(enemyName){
 	let enemyClass;
-	switch(_enemyID) {
-		case 0:
+	switch(enemyName) {
+		case "orc":
 		    enemyClass = RegularEnemy;
 		    break;
-		case 1:
+		case "orog":
 		    enemyClass = ArmoredEnemy;
 			break;
-		case 2:
+		case "kobold":
 		    enemyClass = FastEnemy;
 			break;
-		case 3:
+		case "ghost":
 		    enemyClass = UntargetableEnemy;
 			break;
-		case 4:
+		case "smallEgg":
 		    enemyClass = SmallEgg;
 			break;
-		case 5:
+		case "snail":
 		    enemyClass = Snail;
 			break;
-		case 6:
+		case "slug":
 		    enemyClass = Slug;
 			break;
 		default:
@@ -681,8 +680,8 @@ function getClassFromEnemyID(_enemyID){
 	return enemyClass;
 }
 
-function spawnInPath(_enemyID, _pathID, pathprogress){
-	let enemy = spawn(_enemyID, _pathID);
+function spawnInPath(enemyClass, _pathID, pathprogress){
+	let enemy = spawn(enemyClass, _pathID);
 	enemy.move(pathprogress, true);	
 }
 
@@ -715,11 +714,13 @@ function beginTowerPlacement(towerClass){
 	towerBeingPlaced = new towerClass(0, 0);
 	towerBeingPlaced.active = false;
 	towerDetailsPanel.setTowerInstance(towerBeingPlaced);
+	setSelectedUnit(null);
 }
 
 function beginTargetingMode(spell){
 	targetingSpell = spell;
 	controlMode = 2; //How we are currently controlling the game. 0 - normal, 1 - placing tower
+	setSelectedUnit(null);
 }
 
 function upgradeSelectedTower(towerClass){
@@ -739,17 +740,17 @@ function sellSelectedTower(){
 }
 
 function setSelectedUnit(unit){
-	selectedUnit = unit;
-
-	if(selectedUnit == null){
+	if(unit == null){
 		towerDetailsPanel.setEmpty();
 		towerUpgradeRadial.setActive(false);
 	}
-	else if(selectedUnit instanceof Tower){
-		towerDetailsPanel.setTowerInstance(selectedUnit);
+	else if(unit instanceof Tower && unit != selectedUnit){
+		towerDetailsPanel.setTowerInstance(unit);
 		towerUpgradeRadial.setActive(true);
-		towerUpgradeRadial.setUnit(selectedUnit);
+		towerUpgradeRadial.setUnit(unit);
 	}
+
+	selectedUnit = unit;
 }
 
 function setLevel(i){

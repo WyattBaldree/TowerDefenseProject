@@ -76,7 +76,7 @@
   </object>
  </objectgroup>
  <objectgroup id="5" name="Waves" locked="1">
-  <object id="90" name="Wave0" x="-144" y="4" width="138" height="733.5">
+  <object id="90" name="0" x="-144" y="4" width="138" height="733.5">
    <text wrap="1">100,0,0
 105,0,0
 110,0,0

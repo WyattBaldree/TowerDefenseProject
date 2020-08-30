@@ -14,6 +14,6 @@ class SmallEgg extends Enemy{
 	die(){
 		super.die();
 		//spawn 5 - snail
-		spawnInPath(5, this.pathID, this.getCurrentDistanceOfPath());
+		spawnInPath(Snail, this.pathID, this.getCurrentDistanceOfPath());
 	}
 }

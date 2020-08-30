@@ -48,6 +48,10 @@ function getYGrid(y){
 	return y/gridScale;
 }
 
+function clamp(min, val, max){
+	return Math.min(Math.max(min, val), max)
+}
+
 function getDistanceBetweenUnits(u1, u2){
 	return distanceFormula(u1.x, u1.y, u2.x, u2.y);
 }
@@ -133,15 +137,15 @@ function addEffectInArc(x, y, direction, angle, range, effect, unitType = "enemy
 	}
 }
 
-//https://www.w3resource.com/javascript-exercises/javascript-math-exercise-33.php
 function degrees_to_radians(degrees)
 {
-  return degrees * (Math.PI/180);
+	//https://www.w3resource.com/javascript-exercises/javascript-math-exercise-33.php
+ 	return degrees * (Math.PI/180);
 }
 
 function radians_to_degrees(radians)
 {
-  return radians * (180/Math.PI);
+	return radians * (180/Math.PI);
 }
 
 function getUnitVector(x, y){
@@ -152,6 +156,10 @@ function getUnitVector(x, y){
 function pointsToDegrees(x1, y1, x2, y2){
 	let xdif = x2 - x1;
 	let rads = Math.atan((y2 - y1)/xdif);
+
+	//Here we account for the fact that we want to measure from
+	//the positive x axis not just the x axis.
 	if(xdif < 0) rads+=PI;
+
 	return directionToTarget = radians_to_degrees(rads);
 }

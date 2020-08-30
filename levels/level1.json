@@ -101,11 +101,11 @@
                 {
                  "height":15,
                  "id":90,
-                 "name":"Wave0",
+                 "name":"1",
                  "rotation":0,
                  "text":
                     {
-                     "text":"100,0,0\n115,0,0\n130,0,0\n230,2,0\n240,2,0\n250,2,0\n350,0,0\n365,0,0\n380,0,0\n395,0,0\n410,0,0\n425,0,0",
+                     "text":"",
                      "wrap":true
                     },
                  "type":"",
@@ -117,11 +117,11 @@
                 {
                  "height":15,
                  "id":89,
-                 "name":"Wave1",
+                 "name":"0",
                  "rotation":0,
                  "text":
                     {
-                     "text":"0,1,1\n0,1,0\n100,0,1\n100,0,0\n200,2,1\n200,2,0\n300,3,1\n300,3,0\n400,1,0\n400,0,1\n500,0,0\n500,2,1\n600,2,0\n600,3,1",
+                     "text":"wait,100\nwave,orc,0,3,15\nhold\nwait,100\nwave,orc,0,3,10\nhold\nwait,100\nwave,orc,0,6,15\nhold\nwait,15\nspawn,orog,0",
                      "wrap":true
                     },
                  "type":"",

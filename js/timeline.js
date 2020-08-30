@@ -8,7 +8,7 @@ class Timeline{
 		if (Timeline.currentSpawn < Timeline.totalSpawns()){
 			
 			while (Timeline.levelTimer > Timeline.time(Timeline.currentSpawn)){
-				spawn(Timeline.enemyID(Timeline.currentSpawn), Timeline.pathID(Timeline.currentSpawn));
+				spawn(Timeline.enemyClass(Timeline.currentSpawn), Timeline.pathID(Timeline.currentSpawn));
 				Timeline.currentSpawn++
 				if(Timeline.currentSpawn >= Timeline.totalSpawns()){
 					break;
@@ -20,8 +20,8 @@ class Timeline{
 	static time(index){ //getTimelineTime
 		return levelData[currentLevelIndex].waves[Timeline.currentWave][index].time;
 	}
-	static enemyID(index){ //getTimelineEnemyID
-		return levelData[currentLevelIndex].waves[Timeline.currentWave][index].enemyId;
+	static enemyClass(index){ //getTimelineEnemyClass
+		return levelData[currentLevelIndex].waves[Timeline.currentWave][index].enemyClass;
 	}
 	static pathID(index){ //getTimelinePathID
 		return levelData[currentLevelIndex].waves[Timeline.currentWave][index].pathId;

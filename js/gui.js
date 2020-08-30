@@ -305,7 +305,7 @@ function makeLevelGUI(){
 	towerUpgradeRadial = new TowerRadialSelector(0, 0, 6);
 
 	/////////////TOWER SELECT PANEL
-	towerSelectPanel = new TowerSelectPanel(playAreaWidth, 280);
+	towerSelectPanel = new TowerSelectPanel(playAreaWidth, 364);
 }
 
 function openLeveLGUI(){
@@ -999,7 +999,7 @@ class StatBlock extends GuiGroup{
 
 		//create text background
 		this.backgroundComponent = new GuiComponent(this.x + spriteSize, this.y + textBoxverticalOffset, textBoxWidth, textBoxHeight, z);
-		this.backgroundComponent.drawColor = color("rgba(0,0,0,.4)");
+		this.backgroundComponent.drawColor = color("rgba(0,0,0,.6)");
 		this.addGui(this.backgroundComponent);
 
 		//create textBox component
@@ -1034,7 +1034,7 @@ class TowerDisplayPanel extends GuiComponent{
 		let sideMargin = 10;
 		let topMargin = 10;
 		let fontColor = color("white");
-		let textBackgroundColor = color("rgba(0,0,0,.4)");
+		let textBackgroundColor = color("rgba(0,0,0,.6)");
 		let textBoxHeight = 60;
 		let textBoxFontSize = 15;
 		let innerMargin = 4;
@@ -1508,13 +1508,14 @@ class TimelineDisplay extends GuiComponent{
 		let panelWidth = playAreaWidth;
 		let panelHeight = screenHeight - playAreaHeight;
 
-		this.timelineTimeLength = 500;
+		this.timelineTimeLength = 300;
 		this.spriteSize = 16;
 		this.sideMargin = 10;
 
 		this.backgroundComponent = new NineSlice(this.x, this.y, panelWidth, panelHeight, 5, 5, 5, 5, z-2);
 		this.backgroundComponent.texture = Art.grayBackground;
 		this.addGui(this.backgroundComponent);
+
 	}
 
 	drawSelf(){
@@ -1529,19 +1530,44 @@ class TimelineDisplay extends GuiComponent{
 
 			let spawns = Timeline.spawns();
 
+			if(this.backgroundComponent.over) {
+				Path.draw();
+				let pathColorArray = [color("rgb(255,0,0)"), color("rgb(0,255,0)"), color("rgb(0,0,255)"), color("rgb(255,255,0)")];
+				for(let i = 0 ; i < Timeline.totalSpawns() ; i++){
+					let time = Timeline.time(i);
+					if(time > Timeline.levelTimer && time < Timeline.levelTimer + this.timelineTimeLength){
+						let ratio = (time - Timeline.levelTimer)/this.timelineTimeLength;
+						let enemyPath = Timeline.pathID(i);
+						
+						push();
+						translate(this.x + width - this.sideMargin - (lineWidth * ratio), this.y + height/2);
+						noStroke();
+
+
+						fill(pathColorArray[enemyPath]);
+						
+						ellipse(0, 0, this.spriteSize+2);
+						pop();
+					}
+				}
+			}	
+
 			for(let i = 0 ; i < Timeline.totalSpawns() ; i++){
 				let time = Timeline.time(i);
 				if(time > Timeline.levelTimer && time < Timeline.levelTimer + this.timelineTimeLength){
 					let ratio = (time - Timeline.levelTimer)/this.timelineTimeLength;
-					let enemyClass = getClassFromEnemyID(Timeline.enemyID(i));
-					push()
+					let enemyClass = Timeline.enemyClass(i);
+
+					push();
 					translate(this.x + width - this.sideMargin - (lineWidth * ratio), this.y + height/2);
 					scale(-1,1);
 					image(enemyClass.animationFrames[0], -this.spriteSize/2, -this.spriteSize/2, this.spriteSize, this.spriteSize);
-					pop()
+					pop();
 				}
 			}
 		}
+
+		
 		super.drawSelf();
 	}
 }
@@ -1552,46 +1578,26 @@ class TowerSelectPanel extends GuiComponent{
 		this.draw = false;
 		let panelWidth = screenWidth - playAreaWidth;
 
-		this.panelBackground = new NineSlice(this.x, this.y + 40, panelWidth, playAreaHeight - 280 - 40, 8, 8, 8, 8, z, Art.grayBackground);
+		this.panelBackground = new NineSlice(this.x, this.y, panelWidth, 148, 8, 8, 8, 8, z, Art.grayBackground);
 		this.addGui(this.panelBackground);
 
-		this.titleBackground = new NineSlice(this.x + 25, this.y, panelWidth - 50, 40, 8, 8, 8, 8, z+1, Art.grayBackground);
-		this.addGui(this.titleBackground);
-
-		this.titleTextBackground = new GuiComponent(this.x + 35, this.y + 8, panelWidth - 70, 24, z + 1);
-		this.titleTextBackground.drawColor = color("rgba(0,0,0,.4)");;
-		this.addGui(this.titleTextBackground);
-
-		this.title = new TextComponent(this.x + panelWidth/2, this.y + 20, z + 2, "- drag & drop -");
-		this.title.fontSize = 15;
-		this.title.fontColor = color("white");
-		this.title.horizontalAlign = CENTER;
-		this.title.verticalAlign = CENTER;
-		this.addGui(this.title);
-
-		this.elfButton = new TowerDragAndDrop(this.x + 10, this.y + 49, z + 3);
+		this.elfButton = new TowerDragAndDrop(this.x + 10, this.y + 9, z + 3);
 		this.elfButton.setInTexture(Art.dragAndDropGreen);
 		this.elfButton.setOutTexture(Art.dragAndDropGreen);
 		this.elfButton.setTowerClass(Elf);
 		this.addGui(this.elfButton);
 
-		this.dwarfButton = new TowerDragAndDrop(this.x + 10, this.y + 94, z + 3);
+		this.dwarfButton = new TowerDragAndDrop(this.x + 10, this.y + 54, z + 3);
 		this.dwarfButton.setInTexture(Art.dragAndDropRed);
 		this.dwarfButton.setOutTexture(Art.dragAndDropRed);
 		this.dwarfButton.setTowerClass(Dwarf);
 		this.addGui(this.dwarfButton);
 
-		this.humanTowerButton = new TowerDragAndDrop(this.x + 10, this.y + 139, z + 3);
+		this.humanTowerButton = new TowerDragAndDrop(this.x + 10, this.y + 99, z + 3);
 		this.humanTowerButton.setInTexture(Art.dragAndDropBlue);
 		this.humanTowerButton.setOutTexture(Art.dragAndDropBlue);
 		this.humanTowerButton.setTowerClass(Human);
 		this.addGui(this.humanTowerButton);
-
-		this.bombTowerButton = new TowerDragAndDrop(this.x + 10, this.y + 184, z + 3);
-		this.bombTowerButton.setInTexture(Art.dragAndDropYellow);
-		this.bombTowerButton.setOutTexture(Art.dragAndDropYellow);
-		//this.bombTowerButton.setTowerClass(BombTowerLevel1);
-		this.addGui(this.bombTowerButton);
 	}
 }
 
