@@ -163,3 +163,23 @@ function pointsToDegrees(x1, y1, x2, y2){
 
 	return directionToTarget = radians_to_degrees(rads);
 }
+
+function drawBar(x, y, w, h, percent, fillColor = color("rgb(0,255,0)"), emptyColor = color("rgb(255,0,0)"), backgroundColor = color("black")){
+	let margin = 2;
+	let innerX = x + margin;
+	let innerY = y + margin;
+	let innerW = w - 2*margin;
+	let innerH = h - 2*margin;
+
+	push();
+	noStroke();
+	fill(backgroundColor);
+	rect(x, y, w, h);
+
+	fill(emptyColor);
+	rect(innerX, innerY, innerW, innerH);
+
+	fill(fillColor);
+	rect(innerX, innerY, innerW * percent, innerH);
+	pop();
+}

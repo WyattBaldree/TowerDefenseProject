@@ -157,16 +157,8 @@ class Tower extends Unit{
 	}
 
 	drawSelf(){
-		if(this.isOnDamageTile){
-			this.tint = color("red");
-		}
-		else if(this.isOnRangeTile){
-			this.tint = color("green");
-		}
-		else if(this.isOnSpeedTile){
-			this.tint = color("yellow");
-		}
 		super.drawSelf();
+		if(this.ability) drawBar(this.x, this.y + gridScale - 6, gridScale, 6, this.abilityCooldown/100, color("rgb(255,215,0)"), color("rgb(230,149,0)"));
 	}
 
 	drawHovered(){
