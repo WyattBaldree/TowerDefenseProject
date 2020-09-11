@@ -9,7 +9,7 @@ class Human extends CooldownTower{
 		classRef.speed = 9;
 		classRef.price = 100;
 		classRef.maxTargets = 1;
-		classRef.upgrades = [EarthquakeTowerLevel1];
+		classRef.upgrades = [Fighter];
 	}
 
 	shoot(shootTarget){
@@ -24,8 +24,7 @@ class Human extends CooldownTower{
 		let punchDecal = new Decal(shootTarget.x, shootTarget.y, 1);
 		punchDecal.animationFrames = [Art.fist];
 
-		let a =  Math.atan2(u.y, u.x)
-		punchDecal.angle = a * 180 / Math.PI;
+		punchDecal.angle = pointsToDegrees(0, 0, u.x, u.y)
 
 		punchDecal.doUpdateAngle = false;
 	}

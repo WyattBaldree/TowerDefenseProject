@@ -10,7 +10,7 @@ function makeMainMenu(){
 	mainMenuGuiGroup = new GuiGroup(0, 0);
 
 	let bgScale = 1.8;
-	mainMenuBackground = new GuiComponent(0, 0, Art.castleBackground.width * bgScale, Art.castleBackground.height * bgScale, 0, Art.castleBackground);
+	mainMenuBackground = new GuiComponent(0, 0, Art.castleCartoonBackground.width * bgScale, Art.castleCartoonBackground.height * bgScale, 0, Art.castleCartoonBackground);
 	mainMenuGuiGroup.addGui(mainMenuBackground);
 
 	mainMenuPlate = new NineSlice(screenWidth/2 - 120, screenHeight/2 - 70, 240, 260, 8, 8, 8, 8, 1, Art.grayBackground);

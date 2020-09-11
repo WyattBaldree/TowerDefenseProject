@@ -25,7 +25,7 @@ class EarthquakeTowerLevel1 extends CooldownTower{
 		this.drawOffsetX = u.x*16;
 		this.drawOffsetY = u.y*16;
 
-		let directionToTarget = pointsToDegrees(this.x, this.y, shootTarget.x, shootTarget.y);
+		let directionToTarget = pointsToDegrees(0, 0, u.x, u.y);
 
 		new Arc(this.getXGrid() + .5, this.getYGrid() + .5, directionToTarget, this.arcAngle, this.getRange(), this.getDamage());
 	}
