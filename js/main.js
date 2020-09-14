@@ -111,6 +111,7 @@ function setup() {
 	//humans
 	Human.initializeClass();
 	Fighter.initializeClass();
+	Brawler.initializeClass();
 	EarthquakeTowerLevel1.initializeClass();
 	Acolyte.initializeClass();
 

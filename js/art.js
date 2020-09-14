@@ -13,6 +13,8 @@ class Art{
 		Art.blueButtonOut = loadImage('img/blueButtonOut.png');
 		Art.blueLineBackground = loadImage('img/blueLineBackground.png');
 		Art.boot = loadImage('img/boot.png');
+		Art.brawler0 = loadImage('img/brawler0.png');
+		Art.brawler1 = loadImage('img/brawler1.png');
 		Art.castleCartoonBackground = loadImage('img/castleCartoonBackground.jpg');
 		Art.checkMark = loadImage('img/checkMark.png');
 		Art.crossedSwords = loadImage('img/crossedSwords.png');

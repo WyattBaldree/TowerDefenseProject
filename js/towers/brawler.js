@@ -1,15 +1,15 @@
-class Fighter extends CooldownTower{
+class Brawler extends CooldownTower{
 	static initializeClass(){
 		let classRef = this;
-		classRef.animationFrames = [Art.fighter0, Art.fighter1];
-		classRef.unitName = "Fighter";
-		classRef.description = "Occasionally kicks dealing extra damage.";
+		classRef.animationFrames = [Art.brawler0, Art.brawler1];
+		classRef.unitName = "Brawler";
+		classRef.description = "Attacks incredibly fast.";
 		classRef.range = 2;
-		classRef.damage = 2;
-		classRef.speed = 18;
+		classRef.damage = 3;
+		classRef.speed = 27;
 		classRef.price = 100;
 		classRef.maxTargets = 1;
-		classRef.upgrades = [Brawler];
+		classRef.upgrades = [];
 	}
 
 	constructor(x, y){
