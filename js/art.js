@@ -32,12 +32,16 @@ class Art{
 		Art.dragAndDropGreen = loadImage('img/dragAndDropGreen.png');
 		Art.dragAndDropRed = loadImage('img/dragAndDropRed.png');
 		Art.dragAndDropYellow = loadImage('img/dragAndDropYellow.png');
+		Art.druid0 = loadImage('img/druid0.png');
+		Art.druid1 = loadImage('img/druid1.png');
 		Art.dwarf0 = loadImage('img/dwarf0.png');
 		Art.dwarf1 = loadImage('img/dwarf1.png');
 		Art.egg0 = loadImage('img/egg0.png');
 		Art.egg1 = loadImage('img/egg1.png');
 		Art.eggSmall0 = loadImage('img/eggSmall0.png');
 		Art.eggSmall1 = loadImage('img/eggSmall1.png');
+		Art.elephant0 = loadImage('img/elephant0.png');
+		Art.elephant1 = loadImage('img/elephant1.png');
 		Art.elf0 = loadImage('img/elf0.png');
 		Art.elf1 = loadImage('img/elf1.png');
 		Art.engineer0 = loadImage('img/engineer0.png');
@@ -97,6 +101,8 @@ class Art{
 		Art.redButtonIn = loadImage('img/redButtonIn.png');
 		Art.redButtonOut = loadImage('img/redButtonOut.png');
 		Art.redLineBackground = loadImage('img/redLineBackground.png');
+		Art.rhino0 = loadImage('img/rhino0.png');
+		Art.rhino1 = loadImage('img/rhino1.png');
 		Art.rock = loadImage('img/rock.png');
 		Art.ruby = loadImage('img/ruby.png');
 		Art.rubyOff = loadImage('img/rubyOff.png');

@@ -112,6 +112,9 @@ function setup() {
 	Human.initializeClass();
 	Fighter.initializeClass();
 	Brawler.initializeClass();
+	Druid.initializeClass();
+	Rhino.initializeClass();
+	Elephant.initializeClass();
 	EarthquakeTowerLevel1.initializeClass();
 	Acolyte.initializeClass();
 
@@ -658,11 +661,11 @@ function spawnInPath(enemyClass, _pathID, pathprogress){
 	enemy.move(pathprogress, true);	
 }
 
-function placeTower(x, y, towerClass, force = false){
+function placeTower(x, y, towerClass, force = false, overridePrice = false){
 	let cost = towerClass.price;
 	let newTower = null;
-	if(player.gold >= cost && (canPlaceTowerHere(x, y) || force)){
-		player.setGold(player.gold - cost);
+	if((player.gold >= cost || overridePrice) && (canPlaceTowerHere(x, y) || force)){
+		if(!overridePrice) player.setGold(player.gold - cost);
 		newTower = new towerClass(x, y);
 	}else{
 		playerDisplayPanel.moneyAlert();
@@ -672,9 +675,9 @@ function placeTower(x, y, towerClass, force = false){
 	return newTower;
 }
 
-function replaceTower(towerToReplace, newTowerClass){
+function replaceTower(towerToReplace, newTowerClass, overridePrice = false){
 	towerToReplace.markForRemoval();
-	let newTower = placeTower(towerToReplace.getXGrid(), towerToReplace.getYGrid(), newTowerClass, true);
+	let newTower = placeTower(towerToReplace.getXGrid(), towerToReplace.getYGrid(), newTowerClass, true, overridePrice);
 	newTower.permanent = towerToReplace.permanent; 
 	return newTower;
 }

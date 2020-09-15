@@ -1,19 +1,24 @@
-class Brawler extends CooldownTower{
+class Rhino extends CooldownTower{
 	static initializeClass(){
 		let classRef = this;
-		classRef.animationFrames = [Art.brawler0, Art.brawler1];
-		classRef.unitName = "Brawler";
-		classRef.description = "Attacks incredibly fast.";
+		classRef.animationFrames = [Art.rhino0, Art.rhino1];
+		classRef.unitName = "Rhino";
+		classRef.description = "Attacks with unmatched force.";
 		classRef.range = 2;
 		classRef.damage = 3;
 		classRef.speed = 27;
-		classRef.price = 100;
+		classRef.price = 0;
 		classRef.maxTargets = 1;
-		classRef.upgrades = [Druid];
+		classRef.upgrades = [];
 	}
 
 	constructor(x, y){
 		super(x, y);
+		this.ability = this.devolve;
+	}
+
+	devolve(){
+		replaceTower(this, Druid, true);
 	}
 
 	shoot(shootTarget){
