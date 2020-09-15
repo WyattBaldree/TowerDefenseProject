@@ -15,16 +15,41 @@ class Elephant extends CooldownTower{
 	constructor(x, y){
 		super(x, y);
 		this.ability = this.devolve;
+		this.attackAnimationToggle = false;
+		this.attackAnimationProgress = 0.0;
 	}
 
 	devolve(){
 		replaceTower(this, Druid, true);
 	}
 
+	updateOffset(dTime){
+		if(!this.targets[0]){
+			this.attackAnimationProgress = 0;
+		}else{
+			this.attackAnimationProgress += dTime*.4;
+		}
+		
+
+		if(this.attackAnimationProgress > 1.0){
+			this.attackAnimationProgress -= 1.0;
+			this.attackAnimationToggle = !this.attackAnimationToggle;
+		}
+
+		let attackAnimation = Math.sin(this.attackAnimationProgress * Math.PI);
+
+		this.drawOffsetY = attackAnimation * -4;
+		if(this.attackAnimationToggle){
+			this.drawOffsetX = attackAnimation * -4;
+			this.angle = attackAnimation * -15;
+		}else{
+			this.drawOffsetX = attackAnimation * 4;
+			this.angle = attackAnimation * 15;
+		}
+	}
+
 	shoot(shootTarget){
 		super.shoot();
-
-		this.drawOffsetY = -.5*16;
 
 		new Explosion(this.getXGrid() + .5, this.getYGrid() + .5, this.getRange(), this.getDamage());
 	}
