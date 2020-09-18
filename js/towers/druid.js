@@ -7,6 +7,7 @@ class Druid extends CooldownTower{
 		classRef.range = 2;
 		classRef.damage = 3;
 		classRef.speed = 27;
+		classRef.magic = 0;
 		classRef.price = 100;
 		classRef.maxTargets = 1;
 		classRef.upgrades = [Rhino, Elephant];

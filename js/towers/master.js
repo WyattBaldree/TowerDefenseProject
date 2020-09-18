@@ -1,16 +1,15 @@
-class Human extends CooldownTower{
+class Master extends CooldownTower{
 	static initializeClass(){
 		let classRef = this;
-		classRef.animationFrames = [Art.human0, Art.human1];
-		classRef.unitName = "Human";
-		classRef.description = "Humans are known for their devotion and flexibility.";
-		classRef.range = 2;
-		classRef.damage = 2;
-		classRef.speed = 9;
-		classRef.magic = 0;
+		classRef.animationFrames = [Art.master0, Art.master1];
+		classRef.unitName = "Master";
+		classRef.description = "The master has harnessed the power of chi to incredible levels.";
+		classRef.range = 3;
+		classRef.damage = 3;
+		classRef.speed = 50;
 		classRef.price = 100;
 		classRef.maxTargets = 1;
-		classRef.upgrades = [Fighter];
+		classRef.upgrades = [];
 	}
 
 	shoot(shootTarget){

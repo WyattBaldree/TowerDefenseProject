@@ -12,6 +12,7 @@ class Tower extends Unit{
 		classRef.range = 3;
 		classRef.damage = 5;
 		classRef.speed = 5;
+		classRef.magic = 0;
 		classRef.price = 100;
 		classRef.maxTargets = 1;
 		classRef.upgrades = [];
@@ -40,8 +41,6 @@ class Tower extends Unit{
 
 		this.abilityCooldown = 0;
 
-		this.abilityCooldownSpeed = 1;
-
 		this.move(x, y);
 		towerArray[this.getXGrid()][this.getYGrid()] = this;
 		towerList.push(this);
@@ -56,6 +55,7 @@ class Tower extends Unit{
 			let isOnDamageTile = this.isOnTile("Damage");
 			let isOnRangeTile = this.isOnTile("Range");
 			let isOnSpeedTile = this.isOnTile("Speed");
+			let isOnMagicTile = this.isOnTile("Magic");
 
 			if(isOnDamageTile){
 				this.addEffect(new Effect("tileDamageBonus;100;-1"));
@@ -66,12 +66,19 @@ class Tower extends Unit{
 			if(isOnSpeedTile){
 				this.addEffect(new Effect("tileSpeedBonus;100;-1"));
 			}
+			if(isOnMagicTile){
+				this.addEffect(new Effect("tileMagicBonus;100;-1"));
+			}
 
 			this.onStatUpdated();
 
 			return true;
 		}
 		return false;
+	}
+
+	onPlace(){
+		this.abilityCooldown = 0;
 	}
 
 	getBaseRange(){
@@ -84,6 +91,10 @@ class Tower extends Unit{
 
 	getBaseSpeed(){
 		return this.constructor.speed;
+	}
+
+	getBaseMagic(){
+		return this.constructor.magic;
 	}
 
 	getBasePrice(){
@@ -103,7 +114,7 @@ class Tower extends Unit{
 
 		//update our ability cooldown
 		if(this.abilityCooldown<100){
-			this.abilityCooldown+=dTime*this.abilityCooldownSpeed;
+			this.abilityCooldown+=dTime*this.getMagic()/30;
 		}
 		else{
 			this.abilityCooldown = 100
@@ -135,6 +146,13 @@ class Tower extends Unit{
 		multiplier+=this.tileSpeedBonus/100;
 
 		return (this.getBaseSpeed() + this.speedAura) * multiplier;
+	}
+
+	getMagic(){
+		let multiplier = 1;
+		multiplier+=this.tileMagicBonus/100;
+
+		return this.getBaseMagic() * multiplier;
 	}
 
 	isOnTile(tileType){

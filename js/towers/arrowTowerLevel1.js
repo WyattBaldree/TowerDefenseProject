@@ -7,6 +7,7 @@ class ArrowTowerLevel1 extends CooldownTower{
 		classRef.range = 4;
 		classRef.damage = 4;
 		classRef.speed = 6;
+		classRef.magic = 0;
 		classRef.price = 100;
 		classRef.maxTargets = 1;
 		classRef.upgrades = [FrostArcher];

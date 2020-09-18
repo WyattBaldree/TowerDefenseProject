@@ -112,6 +112,7 @@ function setup() {
 	Human.initializeClass();
 	Fighter.initializeClass();
 	Brawler.initializeClass();
+	Master.initializeClass();
 	Druid.initializeClass();
 	Rhino.initializeClass();
 	Elephant.initializeClass();
@@ -282,7 +283,6 @@ function drawStep(){
 			towerBeingPlaced.draw = true;
 		}
 	}
-	console.log(towerBeingCharged);
 
 	if(towerBeingCharged) drawChargeProgress();
 }
@@ -667,6 +667,7 @@ function placeTower(x, y, towerClass, force = false, overridePrice = false){
 	if((player.gold >= cost || overridePrice) && (canPlaceTowerHere(x, y) || force)){
 		if(!overridePrice) player.setGold(player.gold - cost);
 		newTower = new towerClass(x, y);
+		newTower.onPlace();
 	}else{
 		playerDisplayPanel.moneyAlert();
 	}
@@ -763,7 +764,6 @@ function winLevel(){
 
 function drawChargeProgress(){
 	progress = towerBeingCharged.chargeProgress;
-	console.log(progress);
 	if(progress<=0) return;
 	let perimeterLength = playAreaWidth*2 + playAreaHeight*2;
 	let targetLength = perimeterLength * progress/100;

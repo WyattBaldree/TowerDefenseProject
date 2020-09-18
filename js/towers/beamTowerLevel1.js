@@ -7,6 +7,7 @@ class BeamTowerLevel1 extends CooldownTower{
 		classRef.range = 4;
 		classRef.damage = 1;
 		classRef.speed = 30;
+		classRef.magic = 0;
 		classRef.price = 100;
 		classRef.maxTargets = 1;
 		classRef.upgrades = [BeamTowerLevel2, FireElementalist];

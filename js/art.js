@@ -85,6 +85,10 @@ class Art{
 		Art.mage0 = loadImage('img/mage0.png');
 		Art.mage1 = loadImage('img/mage1.png');
 		Art.map = loadImage('img/map.png');
+		Art.master0 = loadImage('img/master0.png');
+		Art.master1 = loadImage('img/master1.png');
+		Art.masterPowered0 = loadImage('img/masterPowered0.png');
+		Art.masterPowered1 = loadImage('img/masterPowered1.png');
 		Art.ninja0 = loadImage('img/ninja0.png');
 		Art.ninja1 = loadImage('img/ninja1.png');
 		Art.ninjaStar0 = loadImage('img/ninjaStar0.png');
@@ -119,10 +123,12 @@ class Art{
 		Art.tileDamage = loadImage('img/tileDamage.png');
 		Art.tileRange = loadImage('img/tileRange.png');
 		Art.tileSpeed = loadImage('img/tileSpeed.png');
+		Art.wand = loadImage('img/wand.png');
 		Art.warrior0 = loadImage('img/warrior0.png');
 		Art.warrior1 = loadImage('img/warrior1.png');
 		Art.wizard0 = loadImage('img/wizard0.png');
 		Art.wizard1 = loadImage('img/wizard1.png');
+		Art.wizardHat = loadImage('img/wizardHat.png');
 		Art.yellowBackground = loadImage('img/yellowBackground.png');
 		Art.yellowButton2In = loadImage('img/yellowButton2In.png');
 		Art.yellowButton2Out = loadImage('img/yellowButton2Out.png');

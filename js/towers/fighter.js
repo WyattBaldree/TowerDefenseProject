@@ -7,6 +7,7 @@ class Fighter extends CooldownTower{
 		classRef.range = 2;
 		classRef.damage = 2;
 		classRef.speed = 18;
+		classRef.magic = 0;
 		classRef.price = 100;
 		classRef.maxTargets = 1;
 		classRef.upgrades = [Brawler];

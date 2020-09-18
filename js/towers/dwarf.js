@@ -7,6 +7,7 @@ class Dwarf extends CooldownTower{
 		classRef.range = 2;
 		classRef.damage = 1;
 		classRef.speed = 7;
+		classRef.magic = 0;
 		classRef.price = 100;
 		classRef.maxTargets = 1;
 		classRef.upgrades = [BombTowerLevel1];

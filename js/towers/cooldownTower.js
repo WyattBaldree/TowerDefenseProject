@@ -7,6 +7,7 @@ class CooldownTower extends Tower{
 		classRef.range = 3;
 		classRef.damage = 5;
 		classRef.speed = 10;
+		classRef.magic = 0;
 		classRef.price = 100;
 		classRef.maxTargets = 1;
 		classRef.upgrades = [];

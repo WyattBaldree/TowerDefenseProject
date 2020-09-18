@@ -7,6 +7,7 @@ class EarthquakeTowerLevel1 extends CooldownTower{
 		classRef.range = 2.5;
 		classRef.damage = 3;
 		classRef.speed = 8;
+		classRef.magic = 0;
 		classRef.price = 100;
 		classRef.maxTargets = 1;
 		classRef.upgrades = [NinjaTower];

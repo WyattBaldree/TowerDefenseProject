@@ -7,6 +7,7 @@ class FrostArcher extends CooldownTower{
 		classRef.range = 5;
 		classRef.damage = 5;
 		classRef.speed = 7;
+		classRef.magic = 0;
 		classRef.price = 150;
 		classRef.maxTargets = 1;
 		classRef.upgrades = [];

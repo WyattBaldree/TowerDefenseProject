@@ -6,11 +6,12 @@ class Path{
 			//draw line from node a to node b
 			stroke(pathColorArray[i]);
 			strokeWeight(4);
+			let offset = 4;
 			for(let j = 0; j < Path.length(i) - 1; j++ ){
-				let x1 = clamp(0, Path.getX(i, j) * gridScale + gridScale * 0.5, playAreaWidth);
-				let y1 = clamp(0, Path.getY(i, j) * gridScale + gridScale * 0.5, playAreaHeight);
-				let x2 = clamp(0, Path.getX(i, j+1) * gridScale + gridScale * 0.5, playAreaWidth);
-				let y2 = clamp(0, Path.getY(i, j+1) * gridScale + gridScale * 0.5, playAreaHeight);
+				let x1 = clamp(0, Path.getX(i, j) * gridScale + gridScale * 0.5, playAreaWidth) + offset*i;
+				let y1 = clamp(0, Path.getY(i, j) * gridScale + gridScale * 0.5, playAreaHeight) - offset*i;
+				let x2 = clamp(0, Path.getX(i, j+1) * gridScale + gridScale * 0.5, playAreaWidth) + offset*i;
+				let y2 = clamp(0, Path.getY(i, j+1) * gridScale + gridScale * 0.5, playAreaHeight) - offset*i;
 
 				line(x1, y1, x2, y2);
 			}

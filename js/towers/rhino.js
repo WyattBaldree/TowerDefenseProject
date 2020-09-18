@@ -7,6 +7,7 @@ class Rhino extends CooldownTower{
 		classRef.range = 2;
 		classRef.damage = 3;
 		classRef.speed = 27;
+		classRef.magic = 30;
 		classRef.price = 0;
 		classRef.maxTargets = 1;
 		classRef.upgrades = [];

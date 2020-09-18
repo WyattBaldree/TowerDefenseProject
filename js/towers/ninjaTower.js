@@ -7,6 +7,7 @@ class NinjaTower extends CooldownTower{
 		classRef.range = 6;
 		classRef.damage = 5;
 		classRef.speed = 12;
+		classRef.magic = 0;
 		classRef.price = 200;
 		classRef.maxTargets = 1;
 		classRef.upgrades = [];

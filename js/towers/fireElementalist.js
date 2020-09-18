@@ -7,6 +7,7 @@ class FireElementalist extends BeamTowerLevel1{
 		classRef.range = 6;
 		classRef.damage = 1;
 		classRef.speed = 30;
+		classRef.magic = 10;
 		classRef.price = 150;
 		classRef.maxTargets = 2;
 		classRef.upgrades = [FireElemental];

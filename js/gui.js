@@ -362,8 +362,6 @@ class GuiComponent{
 
 	}
 
-
-
 	addGui(gui){
 		this.guiList.push(gui);
 		gui.parent = this;
@@ -1026,7 +1024,7 @@ class TowerDisplayPanel extends GuiComponent{
 		this.towerInstance = null;
 
 		let panelWidth = screenWidth - playAreaWidth;
-		let panelHeight = 172;
+		let panelHeight = 172 + 30;
 
 		let spriteSize = gridScale;
 		let textSpriteSize = gridScale;
@@ -1036,13 +1034,14 @@ class TowerDisplayPanel extends GuiComponent{
 		let fontColor = color("white");
 		let textBackgroundColor = color("rgba(0,0,0,.6)");
 		let textBoxHeight = 60;
-		let textBoxFontSize = 15;
+		let textBoxFontSize = 16;
 		let innerMargin = 4;
 
-		let statBoxesYStart = topMargin + spriteSize + 2*innerMargin + textBoxHeight + 2*innerMargin;
-		let statBoxOffset = -6;
 		let fontSize = 16;
 		let textBackgroundSize = 20;
+		let statBoxesYStart = -6 + topMargin + spriteSize + 2*innerMargin + textBoxHeight + 2*innerMargin;
+		let statBoxesYStart2 = statBoxesYStart + textBackgroundSize + innerMargin + 4;
+		let statBoxesYStart3 = statBoxesYStart2 + textBackgroundSize + innerMargin + 4;
 
 		this.extraCameraSize = 4;
 		//background
@@ -1068,10 +1067,6 @@ class TowerDisplayPanel extends GuiComponent{
 		this.cameraComponent.active = false;
 		this.addGui(this.cameraComponent);
 
-		//this.spriteComponentBackground = new NineSlice(this.x + sideMargin-4, this.y + topMargin-4, spriteSize+8, spriteSize+8, 8, 8, 8, 8, z + 3);
-		//this.spriteComponentBackground.texture = Art.redBorder;
-		//this.addGui(this.spriteComponentBackground);
-
 		//title
 
 		this.titleComponent = new TextBox(this.x + sideMargin + spriteSize + innerMargin*2, this.y + topMargin + innerMargin, panelWidth - sideMargin*2 - innerMargin*3 - spriteSize, fontSize, "title", z + 2);
@@ -1085,7 +1080,7 @@ class TowerDisplayPanel extends GuiComponent{
 
 		//description
 
-		this.descriptionTextBox = new TextBox(this.x + sideMargin + innerMargin, this.y + topMargin + spriteSize + 2*innerMargin, panelWidth - 2*sideMargin - innerMargin, textBoxHeight, "", z+2);
+		this.descriptionTextBox = new TextBox(this.x + sideMargin + innerMargin, this.y + topMargin + spriteSize + 2*innerMargin, panelWidth - 2*sideMargin - 2*innerMargin, textBoxHeight, "", z+2);
 		this.descriptionTextBox.setFontSize(textBoxFontSize);
 		this.descriptionTextBox.fontColor = fontColor;
 		this.addGui(this.descriptionTextBox);
@@ -1096,21 +1091,25 @@ class TowerDisplayPanel extends GuiComponent{
 
 		//stat boxes
 
-		this.costComponent = new StatBlock(this.x + sideMargin, this.y + statBoxesYStart + statBoxOffset, Art.goldCoinStack, z + 2);
-		this.costComponent.setText("???");
-		this.addGui(this.costComponent);
-
-		this.damageComponent = new StatBlock(this.x + sideMargin, this.y + statBoxesYStart + textBackgroundSize + innerMargin + statBoxOffset, Art.sword,z + 2);
+		this.damageComponent = new StatBlock(this.x + sideMargin, this.y + statBoxesYStart, Art.sword, z + 2);
 		this.damageComponent.setText("???");
 		this.addGui(this.damageComponent);
 
-		this.rangeComponent = new StatBlock(this.x + panelWidth/2 + innerMargin, this.y + statBoxesYStart + statBoxOffset, Art.eyeball, z + 2);
+		this.rangeComponent = new StatBlock(this.x + panelWidth/2 + innerMargin, this.y + statBoxesYStart, Art.eyeball, z + 2);
 		this.rangeComponent.setText("???");
 		this.addGui(this.rangeComponent);
 
-		this.speedComponent = new StatBlock(this.x + panelWidth/2 + innerMargin, this.y + statBoxesYStart + textBackgroundSize + innerMargin + statBoxOffset, Art.ninjaStar0, z + 2);
+		this.speedComponent = new StatBlock(this.x + sideMargin, this.y + statBoxesYStart2, Art.ninjaStar0,z + 2);
 		this.speedComponent.setText("???");
 		this.addGui(this.speedComponent);
+
+		this.magicComponent = new StatBlock(this.x + panelWidth/2 + innerMargin, this.y + statBoxesYStart2, Art.wand, z + 2);
+		this.magicComponent.setText("???");
+		this.addGui(this.magicComponent);
+
+		this.costComponent = new StatBlock(this.x + panelWidth/2 - 40, this.y + statBoxesYStart3, Art.goldCoinStack, z + 2);
+		this.costComponent.setText("???");
+		this.addGui(this.costComponent);
 
 		this.setEmpty();
 	}
@@ -1153,6 +1152,14 @@ class TowerDisplayPanel extends GuiComponent{
 			this.speedComponent.setFontColor(color("white"));
 			this.speedComponent.setText(this.towerClass.speed);
 
+			this.magicComponent.setFontColor(color("white"));
+			if(this.towerClass.magic == 0){
+				this.magicComponent.setText("---");
+			}
+			else{
+				this.magicComponent.setText(this.towerClass.magic);
+			}
+
 			this.titleComponent.setText(this.towerClass.unitName);
 			this.descriptionTextBox.setText(this.towerClass.description);
 		}else{
@@ -1175,6 +1182,9 @@ class TowerDisplayPanel extends GuiComponent{
 
 		this.speedComponent.setFontColor(color("white"));
 		this.speedComponent.setText("---");
+
+		this.magicComponent.setFontColor(color("white"));
+		this.magicComponent.setText("---");
 
 		this.titleComponent.setText("---");
 		this.descriptionTextBox.setText("");
@@ -1248,6 +1258,26 @@ class TowerDisplayPanel extends GuiComponent{
 				this.speedComponent.setFontColor(color("white"));
 			}
 			this.speedComponent.setText(this.towerInstance.getSpeed());
+
+			let finalMagic = this.towerInstance.getMagic();
+			let baseMagic = this.towerInstance.getBaseMagic()
+
+			if(finalMagic > baseMagic){
+				this.magicComponent.setFontColor(color("rgb(0,255,0)"));
+			}
+			else if(finalMagic < baseMagic){
+				this.magicComponent.setFontColor(color("red"));
+			}
+			else{
+				this.magicComponent.setFontColor(color("white"));
+			}
+			if(this.towerInstance.getBaseMagic() == 0){
+				this.magicComponent.setText("---");
+			}
+			else{
+				this.magicComponent.setText(this.towerInstance.getMagic());
+			}
+
 			this.titleComponent.setText(this.towerInstance.unitName);
 			this.descriptionTextBox.setText(this.towerInstance.description);
 		}
