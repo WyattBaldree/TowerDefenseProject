@@ -11,9 +11,6 @@ class FrostArcher extends CooldownTower{
 		classRef.price = 150;
 		classRef.maxTargets = 1;
 		classRef.upgrades = [];
-
-		this.slowAmount
-		this.slowDuration
 	}
 
 	shoot(shootTarget){

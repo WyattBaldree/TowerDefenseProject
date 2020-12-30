@@ -7,9 +7,29 @@ class Master extends CooldownTower{
 		classRef.range = 3;
 		classRef.damage = 3;
 		classRef.speed = 50;
+		classRef.magic = 50;
 		classRef.price = 100;
 		classRef.maxTargets = 1;
 		classRef.upgrades = [];
+	}
+
+	constructor(x, y){
+		super(x, y);
+		this.ability = this.goSuperSaiyan;
+	}
+
+	goSuperSaiyan(){
+		this.addEffect(new Effect("superSaiyan;1;50"));
+		this.animationFrames = [Art.masterPowered0, Art.masterPowered1];
+		this.texture = Art.masterPowered0;
+	}
+
+	removeEffect(effect){
+		if(effect.name = "superSaiyan"){
+			this.animationFrames = [Art.master0, Art.master1];
+			this.texture = Art.master0;
+		}
+		super.removeEffect(effect);
 	}
 
 	shoot(shootTarget){

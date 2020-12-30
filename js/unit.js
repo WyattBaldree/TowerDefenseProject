@@ -29,6 +29,7 @@ class Unit extends AdvancedDraw{
 		this.tileSpeedBonus = 0;
 		this.tileMagicBonus = 0;
 		this.speedAura = 0;
+		this.superSaiyan = 0;
 
 		unitList.push(this);
 	}
@@ -95,8 +96,14 @@ class Unit extends AdvancedDraw{
 			case "tileSpeedBonus":
 				this.tileSpeedBonus = magnitude;
 				break;
+			case "tileMagicBonus":
+				this.tileSpeedBonus = magnitude;
+				break;
 			case "speedAura":
 				this.speedAura = magnitude;
+				break;
+			case "superSaiyan":
+				this.superSaiyan = magnitude;
 				break;
 		}
 		this.onStatUpdated();
@@ -170,7 +177,7 @@ class Effect{
 		this.magnitude = parseInt(this.effectArray[1]);
 		this.duration = parseInt(this.effectArray[2]);
 
-		if(this.duration = -1){
+		if(this.duration == -1){
 			this.permanent = true;
 		}
 

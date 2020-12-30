@@ -144,6 +144,7 @@ class Tower extends Unit{
 	getSpeed(){
 		let multiplier = 1;
 		multiplier+=this.tileSpeedBonus/100;
+		if(this.superSaiyan > 0) multiplier*=2;
 
 		return (this.getBaseSpeed() + this.speedAura) * multiplier;
 	}
