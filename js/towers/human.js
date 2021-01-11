@@ -10,7 +10,7 @@ class Human extends CooldownTower{
 		classRef.magic = 0;
 		classRef.price = 100;
 		classRef.maxTargets = 1;
-		classRef.upgrades = [Fighter];
+		classRef.upgrades = [Fighter, Acolyte];
 	}
 
 	shoot(shootTarget){

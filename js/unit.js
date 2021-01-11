@@ -2,7 +2,6 @@ var unitList = new Array(); // holds all unit objects.
 var toBeRemovedList = new Array(); //holds all objects which are waiting to be removed from the game at the end of the step.
 
 class Unit extends AdvancedDraw{
-
 	static initializeClass(){
 		let classRef = this;
 		classRef.animationFrames = [Art.noSprite0, Art.noSprite1];
@@ -22,8 +21,14 @@ class Unit extends AdvancedDraw{
 
 		////////////////EFFECTS
 		this.effectStack = [];
+
+		//curse
+		this.stun = 0;
 		this.frost = 0;
 		this.shock = 0;
+		this.burn = 0;
+
+		//buff
 		this.tileDamageBonus = 0;
 		this.tileRangeBonus = 0;
 		this.tileSpeedBonus = 0;
@@ -81,11 +86,18 @@ class Unit extends AdvancedDraw{
 
 	setStatus(effectName, magnitude){
 		switch(effectName){
+
+			case "stun":
+				this.stun = magnitude;
+				break;
 			case "frost":
 				this.frost = magnitude;
 				break;
 			case "shock":
 				this.shock = magnitude;
+				break;
+			case "burn":
+				this.burn = magnitude;
 				break;
 			case "tileDamageBonus":
 				this.tileDamageBonus = magnitude;
@@ -121,8 +133,10 @@ class Unit extends AdvancedDraw{
 
 	removeAllEffects(){
 		this.effectStack = [];
+		this.stun = 0;
 		this.frost = 0;
 		this.shock = 0;
+		this.burn = 0;
 		this.tileDamageBonus = 0;
 		this.tileRangeBonus = 0;
 		this.tileSpeedBonus = 0;

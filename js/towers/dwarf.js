@@ -10,7 +10,7 @@ class Dwarf extends CooldownTower{
 		classRef.magic = 0;
 		classRef.price = 100;
 		classRef.maxTargets = 1;
-		classRef.upgrades = [BombTowerLevel1];
+		classRef.upgrades = [Engineer];
 	}
 
 	constructor(x, y){

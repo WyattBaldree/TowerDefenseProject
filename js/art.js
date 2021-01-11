@@ -12,6 +12,7 @@ class Art{
 		Art.blueButtonIn = loadImage('img/blueButtonIn.png');
 		Art.blueButtonOut = loadImage('img/blueButtonOut.png');
 		Art.blueLineBackground = loadImage('img/blueLineBackground.png');
+		Art.bolt = loadImage('img/bolt.png');
 		Art.boot = loadImage('img/boot.png');
 		Art.brawler0 = loadImage('img/brawler0.png');
 		Art.brawler1 = loadImage('img/brawler1.png');
@@ -26,6 +27,8 @@ class Art{
 		Art.cyclops0 = loadImage('img/cyclops0.png');
 		Art.cyclops1 = loadImage('img/cyclops1.png');
 		Art.darkGrayBackground = loadImage('img/darkGrayBackground.png');
+		Art.demonHunter0 = loadImage('img/demonHunter0.png');
+		Art.demonHunter1 = loadImage('img/demonHunter1.png');
 		Art.diamond = loadImage('img/diamond.png');
 		Art.diamondOff = loadImage('img/diamondOff.png');
 		Art.dragAndDropBlue = loadImage('img/dragAndDropBlue.png');
@@ -63,6 +66,8 @@ class Art{
 		Art.frostArcher0 = loadImage('img/frostArcher0.png');
 		Art.frostArcher1 = loadImage('img/frostArcher1.png');
 		Art.frostArrow = loadImage('img/frostArrow.png');
+		Art.frostElementalist0 = loadImage('img/frostElementalist0.png');
+		Art.frostElementalist1 = loadImage('img/frostElementalist1.png');
 		Art.ghost0 = loadImage('img/ghost0.png');
 		Art.ghost1 = loadImage('img/ghost1.png');
 		Art.glasses = loadImage('img/glasses.png');
@@ -79,11 +84,11 @@ class Art{
 		Art.human0 = loadImage('img/human0.png');
 		Art.human1 = loadImage('img/human1.png');
 		Art.iceEffect = loadImage('img/iceEffect.png');
+		Art.knight0 = loadImage('img/knight0.png');
+		Art.knight1 = loadImage('img/knight1.png');
 		Art.kobold0 = loadImage('img/kobold0.png');
 		Art.kobold1 = loadImage('img/kobold1.png');
 		Art.logo = loadImage('img/logo.png');
-		Art.mage0 = loadImage('img/mage0.png');
-		Art.mage1 = loadImage('img/mage1.png');
 		Art.map = loadImage('img/map.png');
 		Art.master0 = loadImage('img/master0.png');
 		Art.master1 = loadImage('img/master1.png');
@@ -98,7 +103,8 @@ class Art{
 		Art.orc0 = loadImage('img/orc0.png');
 		Art.orc1 = loadImage('img/orc1.png');
 		Art.potion = loadImage('img/potion.png');
-		Art.rabbit = loadImage('img/rabbit.png');
+		Art.rabbit0 = loadImage('img/rabbit0.png');
+		Art.rabbit1 = loadImage('img/rabbit1.png');
 		Art.redBorder = loadImage('img/redBorder.png');
 		Art.redButton2In = loadImage('img/redButton2In.png');
 		Art.redButton2Out = loadImage('img/redButton2Out.png');
@@ -124,8 +130,6 @@ class Art{
 		Art.tileRange = loadImage('img/tileRange.png');
 		Art.tileSpeed = loadImage('img/tileSpeed.png');
 		Art.wand = loadImage('img/wand.png');
-		Art.warrior0 = loadImage('img/warrior0.png');
-		Art.warrior1 = loadImage('img/warrior1.png');
 		Art.wizard0 = loadImage('img/wizard0.png');
 		Art.wizard1 = loadImage('img/wizard1.png');
 		Art.wizardHat = loadImage('img/wizardHat.png');

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="24" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="12" nextobjectid="293">
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="24" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="12" nextobjectid="293">
  <editorsettings>
   <export target="level1.json" format="json"/>
  </editorsettings>
@@ -76,17 +76,17 @@
    <text wrap="1"></text>
   </object>
   <object id="89" name="0" x="0" y="0" width="83" height="15">
-   <text wrap="1">wait,100
-wave,orc,0,3,15
+   <text wrap="1">wait,50
+wave,rabbit,0,5,10
 hold
-wait,100
-wave,orc,0,3,10
+wait,50
+wave,rabbit,0,5,10
 hold
-wait,100
-wave,orc,0,6,15
+wait,50
+wave,rabbit,0,5,10
 hold
-wait,15
-spawn,orog,0</text>
+wait,50
+wave,orc,0,5,15</text>
   </object>
  </objectgroup>
  <objectgroup id="4" name="Solid">
@@ -780,7 +780,7 @@ spawn,orog,0</text>
  </objectgroup>
  <objectgroup id="8" name="LevelInfo">
   <object id="291" name="StartingGold" x="140.833" y="-58.1667" width="105" height="19">
-   <text wrap="1">400</text>
+   <text wrap="1">200</text>
   </object>
   <object id="129" name="MapY" x="319.167" y="-78.6667" width="36" height="19">
    <text wrap="1">10</text>

@@ -1,9 +1,9 @@
-class BeamTowerLevel2 extends BeamTowerLevel1{
+class FrostElementalist extends Wizard{
 	static initializeClass(){
 		let classRef = this;
-		classRef.animationFrames = [Art.wizard0, Art.wizard1];
-		classRef.unitName = "Mage LV.2";
-		classRef.description = "Beam Tower Stronger";
+		classRef.animationFrames = [Art.frostElementalist0, Art.frostElementalist1];
+		classRef.unitName = "Frost Elementalist";
+		classRef.description = "WIP";
 		classRef.range = 5;
 		classRef.damage = 1;
 		classRef.speed = 60;

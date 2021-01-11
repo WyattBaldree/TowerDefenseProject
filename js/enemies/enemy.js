@@ -1,6 +1,7 @@
 var enemyList = new Array(); // holds all enemy objects.
 
 class Enemy extends Unit{
+	burnIncrement = 3;
 	static initializeClass(){
 		let classRef = this;
 		classRef.animationFrames = [Art.noSprite0, Art.noSprite1];
@@ -48,9 +49,19 @@ class Enemy extends Unit{
 		this.untargetable = false;
 		this.currentDistanceOnPath = 0;
 
+		this.burnTimer = this.burnIncrement;
+
 		//this.addEffect(new Effect("frost;75;30"));
 		
 		enemyList.push(this);
+	}
+
+	getSpeed(){
+		if(this.shock > 0 || this.stun > 0) return 0;
+		let multiplier = 1;
+		multiplier *= (100-this.frost)/100;
+
+		return this.getBaseSpeed() * multiplier;
 	}
 
 	update(dTime){
@@ -58,7 +69,17 @@ class Enemy extends Unit{
 
 		this.currentDistanceOnPath = this.getCurrentDistanceOfPath();
 
-		this.move(this.speed*dTime);
+		this.move(this.getSpeed()*dTime);
+
+		this.burnTick();
+	}
+
+	burnTick(dTime){
+		this.burnTimer -= dTime;
+		if(this.burnTimer <= 0){
+			this.burnTimer = this.burnIncrement;
+			this.takeDamage(this.burn);
+		}
 	}
 
 	getAnimationSpeed(){
@@ -84,10 +105,9 @@ class Enemy extends Unit{
 		}
 	}
 
-	move(spd, force = false){
-
+	move(spd){
 		if (this.currentIndex < Path.length(this.pathID)){
-			let finalSpeed = force ? spd : spd * (100-this.frost)/100;
+			let finalSpeed = spd;
 
 			let currentNodeX = Path.getX(this.pathID,this.currentIndex) * gridScale;
 			let currentNodeY = Path.getY(this.pathID,this.currentIndex) * gridScale;

@@ -90,33 +90,35 @@ function setup() {
 	SmallEgg.initializeClass();
 	Snail.initializeClass();
 	Slug.initializeClass();
+	Rabbit.initializeClass();
 
 	Tower.initializeClass();
 	CooldownTower.initializeClass();
 
 	//elves
 	Elf.initializeClass();
-	ArrowTowerLevel1.initializeClass();
+	Archer.initializeClass();
 	FrostArcher.initializeClass();
+	DemonHunter.initializeClass();
 	NinjaTower.initializeClass();
+	Wizard.initializeClass();
 	FireElementalist.initializeClass();
 	FireElemental.initializeClass();
-	BeamTowerLevel1.initializeClass();
-	BeamTowerLevel2.initializeClass();
+	FrostElementalist.initializeClass();
 
 	//dwarves
 	Dwarf.initializeClass();
-	BombTowerLevel1.initializeClass();
+	Engineer.initializeClass();
 
 	//humans
 	Human.initializeClass();
 	Fighter.initializeClass();
+	Knight.initializeClass();
 	Brawler.initializeClass();
 	Master.initializeClass();
 	Druid.initializeClass();
 	Rhino.initializeClass();
 	Elephant.initializeClass();
-	EarthquakeTowerLevel1.initializeClass();
 	Acolyte.initializeClass();
 
 	makeMainMenu();
@@ -649,6 +651,9 @@ function getClassFromEnemyName(enemyName){
 			break;
 		case "slug":
 		    enemyClass = Slug;
+			break;
+		case "rabbit":
+			enemyClass = Rabbit;
 			break;
 		default:
 		    // code block

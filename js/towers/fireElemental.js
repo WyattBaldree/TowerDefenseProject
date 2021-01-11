@@ -1,4 +1,4 @@
-class FireElemental extends BeamTowerLevel1{
+class FireElemental extends Wizard{
 	static initializeClass(){
 		let classRef = this;
 		classRef.animationFrames = [Art.fireElemental0, Art.fireElemental1];
