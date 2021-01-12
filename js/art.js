@@ -130,6 +130,8 @@ class Art{
 		Art.tileRange = loadImage('img/tileRange.png');
 		Art.tileSpeed = loadImage('img/tileSpeed.png');
 		Art.wand = loadImage('img/wand.png');
+		Art.warrior0 = loadImage('img/warrior0.png');
+		Art.warrior1 = loadImage('img/warrior1.png');
 		Art.wizard0 = loadImage('img/wizard0.png');
 		Art.wizard1 = loadImage('img/wizard1.png');
 		Art.wizardHat = loadImage('img/wizardHat.png');

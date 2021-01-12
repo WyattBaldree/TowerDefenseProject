@@ -1,21 +1,21 @@
-class Knight extends CooldownTower{
+class Warrior extends CooldownTower{
 	static initializeClass(){
 		let classRef = this;
-		classRef.animationFrames = [Art.knight0, Art.knight1];
-		classRef.unitName = "Knight";
-		classRef.description = "Cleaves through multiple foes with each attack.";
+		classRef.animationFrames = [Art.warrior0, Art.warrior1];
+		classRef.unitName = "Warrior";
+		classRef.description = "Slices through multiple foes with each attack.";
 		classRef.range = 2.5;
-		classRef.damage = 9;
-		classRef.speed = 10;
+		classRef.damage = 6;
+		classRef.speed = 8;
 		classRef.magic = 0;
 		classRef.price = 100;
 		classRef.maxTargets = 1;
-		classRef.upgrades = [];
+		classRef.upgrades = [Knight];
 	}
 
 	constructor(x, y){
 		super(x, y);
-		this.arcAngle = 180;
+		this.arcAngle = 90;
 	}
 
 	shoot(shootTarget){

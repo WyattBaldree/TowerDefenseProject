@@ -113,6 +113,7 @@ function setup() {
 	//humans
 	Human.initializeClass();
 	Fighter.initializeClass();
+	Warrior.initializeClass();
 	Knight.initializeClass();
 	Brawler.initializeClass();
 	Master.initializeClass();
