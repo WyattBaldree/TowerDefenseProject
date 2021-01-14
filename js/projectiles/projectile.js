@@ -1,5 +1,5 @@
-
-var projectileList = new Array(); // holda all projectile objects.
+// holds all projectile objects.
+var projectileList = new Array();
 
 class Projectile extends Unit{
 	constructor(x, y){
@@ -46,8 +46,13 @@ class Projectile extends Unit{
 		}
 	}
 
-	die(){
-		super.die();
+	moveInDirection(dTime, direction){
+		let directionRadians = degrees_to_radians(direction);
+		let velocityX = Math.cos(directionRadians)*this.speed*dTime;
+		let velocityY = Math.sin(directionRadians)*this.speed*dTime;
+
+		this.x += velocityX;
+		this.y += velocityY;
 	}
 
 	updateAngle(){

@@ -18,7 +18,7 @@ class DemonHunter extends CooldownTower{
 		let projectile = new ProjectileToUnitDamage(this.getXGrid(), this.getYGrid(), shootTarget, this.getDamage());
 		projectile.animationFrames = [Art.bolt];
 		projectile.texture = Art.bolt;
-		projectile.angleOffset = 225;
+		projectile.angleOffset = 45;
 		projectile.effect = "stun;1;20";
 	}
 }

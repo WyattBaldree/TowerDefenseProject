@@ -413,6 +413,12 @@ function mousePressed(event) {
 }
 
 function userPress(event){
+	let projectile = new ProjectileToDirectionDamage(mouseX/gridScale, mouseY/gridScale, pointsToDegrees(0, 0, 1, 1), 5, .5);
+	projectile.animationFrames = [Art.bolt];
+	projectile.texture = Art.bolt;
+	projectile.angleOffset = 45;
+	projectile.effect = "stun;1;20";
+
   	if(gameState == 2){
 	  	switch(controlMode){
 	  		case 0:
