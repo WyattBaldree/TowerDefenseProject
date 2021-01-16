@@ -38,7 +38,7 @@ function initializeData(){
 
 	let data = JSON.stringify(
 		{
-			levelProgressData:3,
+			levelProgressData:4,
 			perks:
 			{
 				perksPointsData:1

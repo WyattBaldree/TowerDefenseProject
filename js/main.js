@@ -58,6 +58,7 @@ function preload(){
 	loadLevel("level1");
 	loadLevel("level2");
 	loadLevel("level3");
+	loadLevel("level4");
 
 	fontKenny = loadFont('font/kenvector_future.ttf');
 	fontKennyThin = loadFont('font/kenvector_future_thin.ttf');
