@@ -254,10 +254,19 @@ function drawStep(){
 				//targeting mode
 				drawTargetingOverlay();
 
-				// draw targeting reticle
-				stroke(color('rgba(255,55,51, 1)'));
-				fill(color('rgba(255,55,51,.2)'));
-				ellipse(mouseX, mouseY, targetingSpell.range * 2 * gridScale);
+				if(targetingSpell.targetType == SpellTargetType.radius){
+					// draw targeting reticle
+					stroke(color('rgba(255,55,51, 1)'));
+					fill(color('rgba(255,55,51,.2)'));
+					strokeWeight(1);
+					ellipse(mouseX, mouseY, targetingSpell.range * 2 * gridScale);
+				}
+				else if(targetingSpell.targetType == SpellTargetType.line){
+					stroke(color('rgba(255,55,51, 1)'));
+					fill(color('rgba(255,55,51,.2)'));
+					strokeWeight(8);
+					line(mouseX, mouseY, targetingSpell.sourceUnit.x + gridScale/2, targetingSpell.sourceUnit.y + gridScale/2)
+				}
 				break;
 		}
 
@@ -414,12 +423,6 @@ function mousePressed(event) {
 }
 
 function userPress(event){
-	let projectile = new ProjectileToDirectionDamage(mouseX/gridScale, mouseY/gridScale, pointsToDegrees(0, 0, 1, 1), 5, .5);
-	projectile.animationFrames = [Art.bolt];
-	projectile.texture = Art.bolt;
-	projectile.angleOffset = 45;
-	projectile.effect = "stun;1;20";
-
   	if(gameState == 2){
 	  	switch(controlMode){
 	  		case 0:

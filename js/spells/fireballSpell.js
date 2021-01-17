@@ -1,7 +1,8 @@
-class Fireball extends Spell{
-	constructor(){
-		super();
+class FireballSpell extends Spell{
+	constructor(sourceUnit){
+		super(sourceUnit);
 		this.range = 2.5;
+		this.targetType = SpellTargetType.radius;
 	}
 
 	activate(x, y){

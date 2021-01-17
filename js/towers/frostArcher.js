@@ -7,10 +7,17 @@ class FrostArcher extends CooldownTower{
 		classRef.range = 5;
 		classRef.damage = 5;
 		classRef.speed = 7;
-		classRef.magic = 0;
+		classRef.magic = 200;
 		classRef.price = 150;
 		classRef.maxTargets = 1;
 		classRef.upgrades = [];
+	}
+
+	constructor(x, y){
+		super(x, y)
+		this.ability = function(){
+			beginTargetingMode(new IceArrowSpell(this));
+		}
 	}
 
 	shoot(shootTarget){

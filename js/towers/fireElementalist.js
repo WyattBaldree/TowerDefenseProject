@@ -16,7 +16,7 @@ class FireElementalist extends Wizard{
 	constructor(x, y){
 		super(x, y);
 		this.ability = function(){
-			beginTargetingMode(new Fireball());
+			beginTargetingMode(new FireballSpell(this));
 		}
 	}
 }
