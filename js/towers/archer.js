@@ -4,8 +4,8 @@ class Archer extends CooldownTower{
 		classRef.animationFrames = [Art.archer0, Art.archer1];
 		classRef.unitName = "Archer";
 		classRef.description = "Fires arrows at distant foes.";
-		classRef.range = 4;
-		classRef.damage = 4;
+		classRef.range = 5;
+		classRef.damage = 5;
 		classRef.speed = 6;
 		classRef.magic = 0;
 		classRef.price = 100;

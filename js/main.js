@@ -98,6 +98,7 @@ function setup() {
 
 	//elves
 	Elf.initializeClass();
+	Recruit.initializeClass();
 	Archer.initializeClass();
 	FrostArcher.initializeClass();
 	DemonHunter.initializeClass();

@@ -27,6 +27,7 @@ class Art{
 		Art.cyclops0 = loadImage('img/cyclops0.png');
 		Art.cyclops1 = loadImage('img/cyclops1.png');
 		Art.darkGrayBackground = loadImage('img/darkGrayBackground.png');
+		Art.dart = loadImage('img/dart.png');
 		Art.demonHunter0 = loadImage('img/demonHunter0.png');
 		Art.demonHunter1 = loadImage('img/demonHunter1.png');
 		Art.diamond = loadImage('img/diamond.png');
@@ -105,6 +106,8 @@ class Art{
 		Art.potion = loadImage('img/potion.png');
 		Art.rabbit0 = loadImage('img/rabbit0.png');
 		Art.rabbit1 = loadImage('img/rabbit1.png');
+		Art.recruit0 = loadImage('img/recruit0.png');
+		Art.recruit1 = loadImage('img/recruit1.png');
 		Art.redBorder = loadImage('img/redBorder.png');
 		Art.redButton2In = loadImage('img/redButton2In.png');
 		Art.redButton2Out = loadImage('img/redButton2Out.png');

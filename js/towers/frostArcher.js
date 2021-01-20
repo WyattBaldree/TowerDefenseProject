@@ -5,7 +5,7 @@ class FrostArcher extends CooldownTower{
 		classRef.unitName = "Frost Archer";
 		classRef.description = "This unit launches frost arrows at enemy units, slowing and damaging them.";
 		classRef.range = 5;
-		classRef.damage = 5;
+		classRef.damage = 6;
 		classRef.speed = 7;
 		classRef.magic = 200;
 		classRef.price = 150;

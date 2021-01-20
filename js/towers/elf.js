@@ -10,7 +10,7 @@ class Elf extends CooldownTower{
 		classRef.magic = 0;
 		classRef.price = 100;
 		classRef.maxTargets = 1;
-		classRef.upgrades = [Archer, Wizard];
+		classRef.upgrades = [Recruit, Wizard];
 	}
 
 	shoot(shootTarget){
