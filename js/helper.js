@@ -153,7 +153,7 @@ function getUnitVector(x, y){
 	return {"x":x/mag,"y":y/mag};
 }
 
-function pointsToDegrees(x1, y1, x2, y2){
+function pointsToRadians(x1, y1, x2, y2){
 	let xdif = x2 - x1;
 	let rads = Math.atan((y2 - y1)/xdif);
 
@@ -161,7 +161,11 @@ function pointsToDegrees(x1, y1, x2, y2){
 	//the positive x axis not just the x axis.
 	if(xdif < 0) rads+=PI;
 
-	return directionToTarget = radians_to_degrees(rads);
+	return rads;
+}
+
+function pointsToDegrees(x1, y1, x2, y2){
+	return radians_to_degrees(pointsToRadians(x1, y1, x2, y2));
 }
 
 function drawBar(x, y, w, h, percent, fillColor = color("rgb(0,255,0)"), emptyColor = color("rgb(255,0,0)"), backgroundColor = color("black")){

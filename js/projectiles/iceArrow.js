@@ -1,9 +1,10 @@
 class IceArrow extends ProjectileToDirectionExplosion{
     constructor(x, y, direction, damage, explosionRange){
         super(x, y, direction, damage, explosionRange, 1);
-        this.animationFrames = [Art.bolt];
-		this.texture = Art.bolt;
-		this.angleOffset = 45;
+        this.animationFrames = [Art.frostArrow];
+        this.texture = Art.frostArrow;
+        this.angleOffset = 315;
+        this.drawScale = 2;
 		this.effect = "frost;90;40";
     }
 

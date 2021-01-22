@@ -15,6 +15,7 @@ class AdvancedDraw{
 		this.angle = 0;
 		this.tint = color("white");
 		this.opacity = 255;
+		this.drawScale = 1;
 		this.texture = this.animationFrames[0];
 		this.animationTime = 0;
 		this.animationSpeed = .08;
@@ -41,20 +42,26 @@ class AdvancedDraw{
 			angleMode(DEGREES)
 			this.tint.setAlpha(this.opacity);
 			tint(this.tint);
-			translate(this.x + gridScale/2, this.y + gridScale/2);
+			translate(this.x + (gridScale/2), this.y + (gridScale/2));
 			rotate(this.angle);
 			let xFlipSign = 1 - 2 * this.flipX;
 			let yFlipSign = 1 - 2 * this.flipY;
 			scale(xFlipSign, yFlipSign);
-			image(this.texture, -gridScale/2 + (this.drawOffsetX*xFlipSign), -gridScale/2 + (this.drawOffsetY*yFlipSign), gridScale, gridScale);
+			image(this.texture, -(gridScale*this.drawScale/2) + (this.drawOffsetX*xFlipSign), -(gridScale*this.drawScale/2) + (this.drawOffsetY*yFlipSign), gridScale*this.drawScale, gridScale*this.drawScale);
 			pop();
 		}
 		else{
 			strokeWeight(1);
 			stroke(color('black'));
 			fill(color('blue'));
-			ellipse(this.x + gridScale/2, this.y + gridScale/2, gridScale);
-		}		
+			ellipse(this.x + gridScale*this.drawScale/2, this.y + gridScale*this.drawScale/2, gridScale*this.drawScale/2);
+		}
+		if(DEBUG){
+			strokeWeight(2);
+			stroke(color('red'));
+			line(this.x - 10, this.y, this.x + 10, this.y)
+			line(this.x, this.y - 10, this.x, this.y + 10)
+		}
 	}
 
 	drawAtPosition(x, y){

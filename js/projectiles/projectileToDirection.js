@@ -2,8 +2,11 @@ class ProjectileToDirection extends Projectile{
 	constructor(x, y, direction, size = 1, targetType = "enemy"){
 		super(x, y);
 		this.direction = direction;
+		this.maxRange = 1000;
 		this.size = size;
 		this.targetType = targetType
+		this.startingX = this.x;
+		this.startingY = this.y;
 	}
 
 	update(dTime){
@@ -12,6 +15,7 @@ class ProjectileToDirection extends Projectile{
 		this.moveInDirection(dTime, this.direction);
 		this.checkForHits();
 		this.checkForOutOfBounds();
+		this.checkForOutOfRange();
 	}
 
 	checkForHits(){
@@ -25,6 +29,12 @@ class ProjectileToDirection extends Projectile{
 
 	checkForOutOfBounds(){
 		if(this.x < -gridScale || this.x > playAreaWidth || this.y < -gridScale || this.y > playAreaHeight){
+			this.die();
+		}
+	}
+
+	checkForOutOfRange(){
+		if(distanceFormula(this.x, this.y, this.startingX, this.startingY) > this.maxRange){
 			this.die();
 		}
 	}

@@ -26,7 +26,7 @@ class Acolyte extends CooldownTower{
 			strokeWeight(1);
 			noStroke();
 			fill(color('rgba(255, 223, 0, .125)'));
-			ellipse(this.x, this.y, this.range * 2 * gridScale * sin(this.numberOfFrames/this.numberOfFramesMax*90 + 90));
+			ellipse(this.x, this.y, this.range * 2 * gridScale * Math.sin(degrees_to_radians(this.numberOfFrames/this.numberOfFramesMax*90 + 90)));
 		}
 	}
 }

@@ -263,10 +263,16 @@ function drawStep(){
 					ellipse(mouseX, mouseY, targetingSpell.range * 2 * gridScale);
 				}
 				else if(targetingSpell.targetType == SpellTargetType.line){
-					stroke(color('rgba(255,55,51, 1)'));
-					fill(color('rgba(255,55,51,.2)'));
-					strokeWeight(8);
-					line(mouseX, mouseY, targetingSpell.sourceUnit.x + gridScale/2, targetingSpell.sourceUnit.y + gridScale/2)
+					stroke(color('rgba(255,55,51,.3)'));
+					fill(color('rgba(255,55,51,.3)'));
+					strokeWeight(32);
+
+					let unitCenterX = targetingSpell.sourceUnit.getXGridCenter();
+					let unitCenterY = targetingSpell.sourceUnit.getYGridCenter();
+					let mouseDirection = pointsToRadians(unitCenterX, unitCenterY, mouseX, mouseY)
+					let spellX = unitCenterX + Math.cos(mouseDirection)*targetingSpell.range;
+					let spellY = unitCenterY + Math.sin(mouseDirection)*targetingSpell.range;
+					line(unitCenterX, unitCenterY, spellX, spellY);
 				}
 				break;
 		}
