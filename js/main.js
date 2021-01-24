@@ -249,7 +249,7 @@ function drawStep(){
 				// draw the range of the tower.
 				stroke(color('rgba(255,255,51, 1)'));
 				fill(color('rgba(255,255,51,.2)'));
-				ellipse(mouseX - mouseX%gridScale + gridScale/2, mouseY - mouseY%gridScale + gridScale/2, placeTowerClass.range * 2 * gridScale);
+				ellipse(mouseX - mouseX%gridScale + gridScale/2, mouseY - mouseY%gridScale + gridScale/2, towerBeingPlaced.getRange() * 2 * gridScale);
 				break;
 			case 2:
 				//targeting mode
