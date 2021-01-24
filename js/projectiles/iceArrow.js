@@ -12,9 +12,9 @@ class IceArrow extends ProjectileToDirectionExplosion{
         super.onOverlap(overlappedUnit);
         let anim = new DeleteOnAnimEnd(this.x + gridScale/2 - this.explosionRange*gridScale, this.y + gridScale/2 - this.explosionRange*gridScale);
 
-		anim.animationFrames = [Art.explosion0, Art.explosion1, Art.explosion2, Art.explosion3, Art.explosion4, Art.explosion5];
+		anim.animationFrames = [Art.frostExplosion0, Art.frostExplosion1];
 		anim.texture = anim.animationFrames[0];
-		anim.animationSpeed = 1.5;
+		anim.animationSpeed = 1;
 		anim.w = this.explosionRange*2*gridScale;
 		anim.h = this.explosionRange*2*gridScale;
     }

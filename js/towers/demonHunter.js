@@ -3,14 +3,29 @@ class DemonHunter extends CooldownTower{
 		let classRef = this;
 		classRef.animationFrames = [Art.demonHunter0, Art.demonHunter1];
 		classRef.unitName = "Demon Hunter";
-		classRef.description = "This unit stuns enemies with its powerful crossbow.";
+		classRef.description = "This unit fires mutiple bolts with its multi-crossbow.";
 		classRef.range = 6;
 		classRef.damage = 8;
 		classRef.speed = 5;
-		classRef.magic = 0;
+		classRef.magic = 200;
 		classRef.price = 150;
 		classRef.maxTargets = 1;
 		classRef.upgrades = [];
+	}
+
+	constructor(x, y){
+		super(x, y)
+		this.ability = function(){
+			for(let i = 0 ; i < 360; i += 20){
+
+				let projectile = new ProjectileToDirectionDamage(this.getXGrid(), this.getYGrid(), i, this.getDamage());
+				projectile.animationFrames = [Art.bolt];
+				projectile.texture = Art.bolt;
+				projectile.angleOffset = 45;
+			}
+		}
+		
+		this.extraArrowAngle = 22.5;
 	}
 
 	shoot(shootTarget){
@@ -19,6 +34,15 @@ class DemonHunter extends CooldownTower{
 		projectile.animationFrames = [Art.bolt];
 		projectile.texture = Art.bolt;
 		projectile.angleOffset = 45;
-		projectile.effect = "stun;1;20";
+
+		let leftProjectile = new ProjectileToDirectionDamage(this.getXGrid(), this.getYGrid(), getDegreesToOtherUnit(this, shootTarget) + this.extraArrowAngle, this.getDamage());
+		leftProjectile.animationFrames = [Art.bolt];
+		leftProjectile.texture = Art.bolt;
+		leftProjectile.angleOffset = 45;
+
+		let rightProjectile = new ProjectileToDirectionDamage(this.getXGrid(), this.getYGrid(), getDegreesToOtherUnit(this, shootTarget) - this.extraArrowAngle, this.getDamage());
+		rightProjectile.animationFrames = [Art.bolt];
+		rightProjectile.texture = Art.bolt;
+		rightProjectile.angleOffset = 45;
 	}
 }

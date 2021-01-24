@@ -69,6 +69,8 @@ class Art{
 		Art.frostArrow = loadImage('img/frostArrow.png');
 		Art.frostElementalist0 = loadImage('img/frostElementalist0.png');
 		Art.frostElementalist1 = loadImage('img/frostElementalist1.png');
+		Art.frostExplosion0 = loadImage('img/frostExplosion0.png');
+		Art.frostExplosion1 = loadImage('img/frostExplosion1.png');
 		Art.ghost0 = loadImage('img/ghost0.png');
 		Art.ghost1 = loadImage('img/ghost1.png');
 		Art.glasses = loadImage('img/glasses.png');

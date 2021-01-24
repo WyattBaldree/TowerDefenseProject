@@ -168,6 +168,10 @@ function pointsToDegrees(x1, y1, x2, y2){
 	return radians_to_degrees(pointsToRadians(x1, y1, x2, y2));
 }
 
+function getDegreesToOtherUnit(unit1, unit2){
+	return pointsToDegrees(unit1.x, unit1.y, unit2.x, unit2.y)
+}
+
 function drawBar(x, y, w, h, percent, fillColor = color("rgb(0,255,0)"), emptyColor = color("rgb(255,0,0)"), backgroundColor = color("black")){
 	let margin = 2;
 	let innerX = x + margin;
