@@ -22,6 +22,8 @@ class Acolyte extends CooldownTower{
 		super.shoot();
 		let effect = "speedAura;" + this.getDamage() + ";" + 100/this.getSpeed();
 		let aura = new Aura(this.getXGrid() + .5, this.getYGrid() + .5, this.getRange(), effect);
+		aura.numberOfFrames = 20;
+		aura.numberOfFramesMax = 20;
 		aura.drawSelf = function(){
 			strokeWeight(1);
 			noStroke();

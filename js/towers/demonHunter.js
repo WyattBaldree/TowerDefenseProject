@@ -22,6 +22,7 @@ class DemonHunter extends CooldownTower{
 				projectile.animationFrames = [Art.bolt];
 				projectile.texture = Art.bolt;
 				projectile.angleOffset = 45;
+				projectile.maxRange = this.getRange();
 			}
 		}
 		
@@ -39,10 +40,12 @@ class DemonHunter extends CooldownTower{
 		leftProjectile.animationFrames = [Art.bolt];
 		leftProjectile.texture = Art.bolt;
 		leftProjectile.angleOffset = 45;
+		leftProjectile.maxRange = this.getRange();
 
 		let rightProjectile = new ProjectileToDirectionDamage(this.getXGrid(), this.getYGrid(), getDegreesToOtherUnit(this, shootTarget) - this.extraArrowAngle, this.getDamage());
 		rightProjectile.animationFrames = [Art.bolt];
 		rightProjectile.texture = Art.bolt;
 		rightProjectile.angleOffset = 45;
+		rightProjectile.maxRange = this.getRange();
 	}
 }
