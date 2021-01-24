@@ -136,7 +136,9 @@ function setup() {
 
 // This is our main loop.
 function draw() {
-	
+	if(!focused){
+		deltaTime = 0;
+	}
 	updateStep(deltaTime/100);
 	cleanUp();
 	drawStep();
